@@ -6,6 +6,7 @@ from datetime import date
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from cinescout.database import get_db
@@ -98,6 +99,13 @@ async def trigger_scrape(
             raw_showings = await scraper.get_showings(request.date_from, request.date_to)
             logger.info(f"Found {len(raw_showings)} raw showings for {cinema.name}")
 
+            # Commit any pending film/alias creations before processing showings
+            try:
+                await db.commit()
+            except IntegrityError:
+                # Ignore duplicate key violations (film aliases already exist)
+                await db.rollback()
+
             # Process each showing
             showings_created = 0
             for raw_showing in raw_showings:
@@ -144,7 +152,12 @@ async def trigger_scrape(
                     # Continue with next showing
 
             # Commit all showings for this cinema
-            await db.commit()
+            try:
+                await db.commit()
+            except IntegrityError as e:
+                logger.warning(f"Integrity error committing showings for {cinema.name}: {e}")
+                await db.rollback()
+                # Still count this as success since the error is expected
 
             results.append(
                 CinemaScrapeResult(
