@@ -74,27 +74,15 @@ class PrinceCharlesScraper(BaseScraper):
 
                 logger.debug(f"Processing film: {title}")
 
-                # Find all date divs and their associated times
-                # Each event can have multiple dates
-                date_divs = event.find_all("div", string=re.compile(
-                    r'(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\s+\d{1,2}(?:st|nd|rd|th)?\s+\w+',
-                    re.IGNORECASE
-                ))
+                # Find performance list containers
+                perf_lists = event.find_all("ul", class_="performance-list-items")
 
-                for date_div in date_divs:
+                for perf_list in perf_lists:
                     try:
-                        date_text = date_div.get_text(strip=True)
+                        # Get all children in order (dates and li elements)
+                        children = [c for c in perf_list.children if hasattr(c, 'name') and c.name]
 
-                        # Parse date like "Friday 30th January" or "Tuesday 24th March"
-                        date_match = re.search(
-                            r'\b(\d{1,2})(?:st|nd|rd|th)?\s+(\w+)\b',
-                            date_text
-                        )
-                        if not date_match:
-                            continue
-
-                        day = int(date_match.group(1))
-                        month_str = date_match.group(2)
+                        current_date = None
                         month_map = {
                             'jan': 1, 'january': 1, 'feb': 2, 'february': 2,
                             'mar': 3, 'march': 3, 'apr': 4, 'april': 4,
@@ -103,78 +91,87 @@ class PrinceCharlesScraper(BaseScraper):
                             'oct': 10, 'october': 10, 'nov': 11, 'november': 11,
                             'dec': 12, 'december': 12
                         }
-                        month = month_map.get(month_str.lower())
-                        if not month:
-                            continue
 
-                        # Determine year (handle year boundary)
-                        year = date_from.year
-                        showing_date = date(year, month, day)
-
-                        # Check if date is in range
-                        if not (date_from <= showing_date <= date_to):
-                            continue
-
-                        # Find the parent container for this date's times
-                        # Times are in the same parent as the date div
-                        date_parent = date_div.parent
-                        if not date_parent:
-                            continue
-
-                        # Find time spans near this date
-                        time_spans = date_parent.find_all("span", class_="time")
-
-                        for time_span in time_spans:
-                            try:
-                                time_text = time_span.get_text(strip=True)
-
-                                # Parse time (format: "5:45 pm")
-                                time_match = re.search(r"(\d{1,2}):(\d{2})", time_text)
-                                if not time_match:
-                                    continue
-
-                                hour = int(time_match.group(1))
-                                minute = int(time_match.group(2))
-
-                                # Handle AM/PM
-                                if "pm" in time_text.lower() and hour != 12:
-                                    hour += 12
-                                elif "am" in time_text.lower() and hour == 12:
-                                    hour = 0
-
-                                start_time = datetime(
-                                    showing_date.year,
-                                    showing_date.month,
-                                    showing_date.day,
-                                    hour,
-                                    minute,
-                                    tzinfo=LONDON_TZ,
+                        for child in children:
+                            # Check if this is a date heading
+                            if child.name == 'div' and 'heading' in child.get('class', []):
+                                date_text = child.get_text(strip=True)
+                                date_match = re.search(
+                                    r'\b(\d{1,2})(?:st|nd|rd|th)?\s+(\w+)\b',
+                                    date_text
                                 )
+                                if date_match:
+                                    day = int(date_match.group(1))
+                                    month_str = date_match.group(2)
+                                    month = month_map.get(month_str.lower())
 
-                                # Try to find booking URL
-                                booking_url = None
-                                if time_span.parent and time_span.parent.name == "a":
-                                    href = time_span.parent.get("href")
-                                    if href:
-                                        if href.startswith("/"):
-                                            booking_url = f"{self.BASE_URL}{href}"
-                                        else:
-                                            booking_url = href
+                                    if month:
+                                        year = date_from.year
+                                        try:
+                                            showing_date = date(year, month, day)
+                                            # Check if date is in range
+                                            if date_from <= showing_date <= date_to:
+                                                current_date = showing_date
+                                                logger.debug(f"  Date: {showing_date}")
+                                            else:
+                                                current_date = None
+                                        except ValueError:
+                                            current_date = None
 
-                                showing = RawShowing(
-                                    title=title,
-                                    start_time=start_time,
-                                    booking_url=booking_url,
-                                )
-                                showings.append(showing)
-                                logger.debug(f"Added: {title} at {start_time}")
+                            # Check if this is a time li element
+                            elif child.name == 'li' and current_date:
+                                time_span = child.find("span", class_="time")
+                                if time_span:
+                                    try:
+                                        time_text = time_span.get_text(strip=True)
 
-                            except Exception as e:
-                                logger.warning(f"Failed to parse time '{time_text}': {e}")
-                                continue
+                                        # Parse time (format: "5:45 pm")
+                                        time_match = re.search(r"(\d{1,2}):(\d{2})", time_text)
+                                        if not time_match:
+                                            continue
+
+                                        hour = int(time_match.group(1))
+                                        minute = int(time_match.group(2))
+
+                                        # Handle AM/PM
+                                        if "pm" in time_text.lower() and hour != 12:
+                                            hour += 12
+                                        elif "am" in time_text.lower() and hour == 12:
+                                            hour = 0
+
+                                        start_time = datetime(
+                                            current_date.year,
+                                            current_date.month,
+                                            current_date.day,
+                                            hour,
+                                            minute,
+                                            tzinfo=LONDON_TZ,
+                                        )
+
+                                        # Try to find booking URL
+                                        booking_url = None
+                                        if time_span.parent and time_span.parent.name == "a":
+                                            href = time_span.parent.get("href")
+                                            if href:
+                                                if href.startswith("/"):
+                                                    booking_url = f"{self.BASE_URL}{href}"
+                                                else:
+                                                    booking_url = href
+
+                                        showing = RawShowing(
+                                            title=title,
+                                            start_time=start_time,
+                                            booking_url=booking_url,
+                                        )
+                                        showings.append(showing)
+                                        logger.debug(f"  Added: {title} at {start_time}")
+
+                                    except Exception as e:
+                                        logger.warning(f"Failed to parse time '{time_text}': {e}")
+                                        continue
 
                     except Exception as e:
-                        logger.warning(f"Failed to parse date '{date_text}': {e}")
+                        logger.warning(f"Failed to parse performance list: {e}")
                         continue
 
             except Exception as e:
