@@ -4,10 +4,14 @@ from typing import Type
 
 from cinescout.scrapers.base import BaseScraper
 from cinescout.scrapers.bfi import BFIScraper
+from cinescout.scrapers.garden import GardenScraper
+from cinescout.scrapers.prince_charles import PrinceCharlesScraper
 
 # Registry mapping scraper type names to scraper classes
 SCRAPER_REGISTRY: dict[str, Type[BaseScraper]] = {
     "bfi": BFIScraper,
+    "garden": GardenScraper,
+    "prince-charles": PrinceCharlesScraper,
 }
 
 
@@ -27,4 +31,11 @@ def get_scraper(scraper_type: str) -> BaseScraper | None:
     return None
 
 
-__all__ = ["SCRAPER_REGISTRY", "get_scraper", "BaseScraper", "BFIScraper"]
+__all__ = [
+    "SCRAPER_REGISTRY",
+    "get_scraper",
+    "BaseScraper",
+    "BFIScraper",
+    "GardenScraper",
+    "PrinceCharlesScraper",
+]
