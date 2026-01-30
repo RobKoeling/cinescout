@@ -54,87 +54,60 @@ class PrinceCharlesScraper(BaseScraper):
         soup = BeautifulSoup(html, "html.parser")
         showings: list[RawShowing] = []
 
-        # Look for film containers - try multiple selector patterns
-        film_containers = (
-            soup.find_all("div", class_=re.compile(r"film", re.I))
-            or soup.find_all("article", class_=re.compile(r"film|post", re.I))
-        )
+        # Find all film data containers
+        film_data_divs = soup.find_all("div", class_="calendarfilm-filmdata")
 
-        for container in film_containers:
+        logger.debug(f"Found {len(film_data_divs)} film data containers")
+
+        for film_data in film_data_divs:
             try:
-                # Extract film title
-                title_elem = (
-                    container.find(["h2", "h3", "h4"], class_=re.compile(r"title|name", re.I))
-                    or container.find("a", href=re.compile(r"/film/\d+/"))
-                    or container.find(["h2", "h3", "h4"])
-                )
-
-                if not title_elem:
+                # Extract film title from the link
+                film_link = film_data.find("a", href=re.compile(r"/film/"))
+                if not film_link:
                     continue
 
-                title = self.normalise_title(title_elem.get_text(strip=True))
+                title_text = film_link.get_text(strip=True)
+                title = self.normalise_title(title_text)
+
                 if not title or len(title) < 2:
                     continue
 
-                # Find booking links with times
-                # Pattern: "Book 5:45 pm" or similar
-                booking_links = container.find_all("a", class_=re.compile(r"book|btn|time", re.I))
+                logger.debug(f"Processing film: {title}")
 
-                if not booking_links:
-                    # Try finding any links with "booknow" in href
-                    booking_links = container.find_all("a", href=re.compile(r"booknow"))
+                # Find the parent container that includes both film data and performance data
+                parent_container = film_data.parent
+                if not parent_container:
+                    continue
 
-                for link in booking_links:
+                # Find the grandparent (col-md-8) that contains the film and its times
+                grandparent = parent_container.parent
+                if not grandparent:
+                    continue
+
+                # Find all time spans in this film's container
+                time_spans = grandparent.find_all("span", class_="time")
+
+                for time_span in time_spans:
                     try:
-                        link_text = link.get_text(strip=True)
-                        booking_url = link.get("href")
+                        time_text = time_span.get_text(strip=True)
 
-                        # Extract time from link text
-                        # Patterns: "Book 5:45 pm", "5:45 pm", "17:45"
-                        time_match = re.search(r'\b(\d{1,2}):(\d{2})\s*(am|pm)?\b', link_text, re.IGNORECASE)
+                        # Parse time (format: "5:45 pm" or "18:30")
+                        time_match = re.search(r"(\d{1,2}):(\d{2})", time_text)
                         if not time_match:
                             continue
 
                         hour = int(time_match.group(1))
                         minute = int(time_match.group(2))
-                        am_pm = time_match.group(3)
 
-                        # Convert to 24-hour format if needed
-                        if am_pm:
-                            if am_pm.lower() == 'pm' and hour != 12:
-                                hour += 12
-                            elif am_pm.lower() == 'am' and hour == 12:
-                                hour = 0
+                        # Handle AM/PM if present
+                        if "pm" in time_text.lower() and hour != 12:
+                            hour += 12
+                        elif "am" in time_text.lower() and hour == 12:
+                            hour = 0
 
-                        # Try to extract date from surrounding context
-                        # Look for date indicators in parent elements
-                        date_elem = container.find_previous(text=re.compile(r'\b\d{1,2}(?:st|nd|rd|th)?\s+\w+\b'))
-                        showing_date = date_from  # Default
-
-                        if date_elem:
-                            # Try to parse date like "Friday 30th January" or "30 Jan"
-                            date_match = re.search(r'\b(\d{1,2})(?:st|nd|rd|th)?\s+(\w+)\b', str(date_elem))
-                            if date_match:
-                                day = int(date_match.group(1))
-                                month_str = date_match.group(2)
-                                month_map = {
-                                    'jan': 1, 'january': 1, 'feb': 2, 'february': 2,
-                                    'mar': 3, 'march': 3, 'apr': 4, 'april': 4,
-                                    'may': 5, 'jun': 6, 'june': 6, 'jul': 7, 'july': 7,
-                                    'aug': 8, 'august': 8, 'sep': 9, 'september': 9,
-                                    'oct': 10, 'october': 10, 'nov': 11, 'november': 11,
-                                    'dec': 12, 'december': 12
-                                }
-                                month = month_map.get(month_str.lower(), date_from.month)
-                                year = date_from.year
-                                try:
-                                    showing_date = date(year, month, day)
-                                except ValueError:
-                                    showing_date = date_from
-
-                        # Check if date is in range
-                        if not (date_from <= showing_date <= date_to):
-                            continue
+                        # The homepage shows today's showings
+                        # For a full scraper, you'd need to navigate to different dates
+                        showing_date = date_from
 
                         start_time = datetime(
                             showing_date.year,
@@ -145,9 +118,20 @@ class PrinceCharlesScraper(BaseScraper):
                             tzinfo=LONDON_TZ,
                         )
 
-                        # Make booking URL absolute if needed
-                        if booking_url and not booking_url.startswith('http'):
-                            booking_url = f"{self.BASE_URL}{booking_url}"
+                        # Check if date is in range
+                        if not (date_from <= start_time.date() <= date_to):
+                            continue
+
+                        # Try to find booking URL
+                        booking_url = None
+                        if time_span.parent and time_span.parent.name == "a":
+                            href = time_span.parent.get("href")
+                            if href:
+                                # Make absolute URL if needed
+                                if href.startswith("/"):
+                                    booking_url = f"{self.BASE_URL}{href}"
+                                else:
+                                    booking_url = href
 
                         showing = RawShowing(
                             title=title,
@@ -155,10 +139,10 @@ class PrinceCharlesScraper(BaseScraper):
                             booking_url=booking_url,
                         )
                         showings.append(showing)
-                        logger.debug(f"Parsed: {title} at {start_time}")
+                        logger.debug(f"Added: {title} at {start_time}")
 
                     except Exception as e:
-                        logger.warning(f"Failed to parse booking link: {e}")
+                        logger.warning(f"Failed to parse time '{time_text}': {e}")
                         continue
 
             except Exception as e:

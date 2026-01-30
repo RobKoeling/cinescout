@@ -6,6 +6,7 @@ from typing import Any
 
 from rapidfuzz import fuzz
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from cinescout.models.film import Film
@@ -210,6 +211,15 @@ class FilmMatcher:
             film_id=film_id,
         )
         self.db.add(alias)
+
+        # Flush to make the alias visible to other queries in this transaction
+        try:
+            await self.db.flush()
+        except IntegrityError:
+            # Another showing created this alias between our check and insert
+            # Roll back this alias addition and continue
+            await self.db.rollback()
+            logger.debug(f"Alias already exists for '{normalized_title}' (created by concurrent operation)")
 
     def _extract_year(self, release_date: str | None) -> int | None:
         """Extract year from TMDb release date string."""
