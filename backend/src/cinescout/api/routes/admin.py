@@ -1,0 +1,175 @@
+"""Admin API endpoints for manual operations."""
+
+import logging
+from datetime import date
+
+from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from cinescout.database import get_db
+from cinescout.models import Cinema, Showing
+from cinescout.scrapers import get_scraper
+from cinescout.services.film_matcher import FilmMatcher
+from cinescout.services.tmdb_client import TMDbClient
+
+logger = logging.getLogger(__name__)
+router = APIRouter()
+
+
+class ScrapeRequest(BaseModel):
+    """Request model for triggering a scrape."""
+
+    cinema_ids: list[str]
+    date_from: date
+    date_to: date
+
+
+class CinemaScrapeResult(BaseModel):
+    """Result for a single cinema scrape."""
+
+    cinema_id: str
+    cinema_name: str
+    success: bool
+    showings_created: int
+    error: str | None = None
+
+
+class ScrapeResponse(BaseModel):
+    """Response for scrape operation."""
+
+    status: str
+    results: list[CinemaScrapeResult]
+    total_showings: int
+
+
+@router.post("/admin/scrape", response_model=ScrapeResponse)
+async def trigger_scrape(
+    request: ScrapeRequest,
+    db: AsyncSession = Depends(get_db),
+) -> ScrapeResponse:
+    """
+    Manually trigger a scrape for specific cinemas.
+
+    This endpoint:
+    1. Fetches showings from cinema websites
+    2. Matches film titles to TMDb data
+    3. Stores showings in the database
+
+    Note: This is a synchronous operation that may take several seconds.
+    For production, consider using a background task queue.
+    """
+    # Fetch cinema records
+    stmt = select(Cinema).where(Cinema.id.in_(request.cinema_ids))
+    result = await db.execute(stmt)
+    cinemas = result.scalars().all()
+
+    if not cinemas:
+        raise HTTPException(status_code=404, detail="No cinemas found with provided IDs")
+
+    # Initialize services
+    tmdb_client = TMDbClient()
+    film_matcher = FilmMatcher(db, tmdb_client)
+
+    # Process each cinema
+    results: list[CinemaScrapeResult] = []
+    total_showings = 0
+
+    for cinema in cinemas:
+        logger.info(f"Scraping {cinema.name} ({cinema.id})")
+
+        # Get scraper for this cinema
+        scraper = get_scraper(cinema.scraper_type)
+        if not scraper:
+            results.append(
+                CinemaScrapeResult(
+                    cinema_id=cinema.id,
+                    cinema_name=cinema.name,
+                    success=False,
+                    showings_created=0,
+                    error=f"No scraper found for type: {cinema.scraper_type}",
+                )
+            )
+            continue
+
+        try:
+            # Fetch raw showings
+            raw_showings = await scraper.get_showings(request.date_from, request.date_to)
+            logger.info(f"Found {len(raw_showings)} raw showings for {cinema.name}")
+
+            # Process each showing
+            showings_created = 0
+            for raw_showing in raw_showings:
+                try:
+                    # Match or create film
+                    film = await film_matcher.match_or_create_film(raw_showing.title)
+
+                    # Check if showing already exists
+                    existing_stmt = select(Showing).where(
+                        Showing.cinema_id == cinema.id,
+                        Showing.film_id == film.id,
+                        Showing.start_time == raw_showing.start_time,
+                    )
+                    existing_result = await db.execute(existing_stmt)
+                    existing_showing = existing_result.scalar_one_or_none()
+
+                    if existing_showing:
+                        # Update existing showing
+                        existing_showing.booking_url = raw_showing.booking_url
+                        existing_showing.screen_name = raw_showing.screen_name
+                        existing_showing.format_tags = raw_showing.format_tags
+                        existing_showing.price = raw_showing.price
+                        existing_showing.raw_title = raw_showing.title
+                    else:
+                        # Create new showing
+                        showing = Showing(
+                            cinema_id=cinema.id,
+                            film_id=film.id,
+                            start_time=raw_showing.start_time,
+                            booking_url=raw_showing.booking_url,
+                            screen_name=raw_showing.screen_name,
+                            format_tags=raw_showing.format_tags,
+                            price=raw_showing.price,
+                            raw_title=raw_showing.title,
+                        )
+                        db.add(showing)
+                        showings_created += 1
+
+                except Exception as e:
+                    logger.error(
+                        f"Error processing showing '{raw_showing.title}' at {cinema.name}: {e}",
+                        exc_info=True,
+                    )
+                    # Continue with next showing
+
+            # Commit all showings for this cinema
+            await db.commit()
+
+            results.append(
+                CinemaScrapeResult(
+                    cinema_id=cinema.id,
+                    cinema_name=cinema.name,
+                    success=True,
+                    showings_created=showings_created,
+                )
+            )
+            total_showings += showings_created
+
+        except Exception as e:
+            logger.error(f"Error scraping {cinema.name}: {e}", exc_info=True)
+            results.append(
+                CinemaScrapeResult(
+                    cinema_id=cinema.id,
+                    cinema_name=cinema.name,
+                    success=False,
+                    showings_created=0,
+                    error=str(e),
+                )
+            )
+
+    return ScrapeResponse(
+        status="completed",
+        results=results,
+        total_showings=total_showings,
+    )
