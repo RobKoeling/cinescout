@@ -35,7 +35,7 @@ class PrinceCharlesScraper(BaseScraper):
         showings: list[RawShowing] = []
 
         try:
-            async with httpx.AsyncClient(timeout=settings.scrape_timeout) as client:
+            async with httpx.AsyncClient(timeout=settings.scrape_timeout, verify=False) as client:
                 # Fetch main "What's On" page
                 response = await client.get(f"{self.BASE_URL}/whats-on/")
                 response.raise_for_status()
@@ -54,15 +54,15 @@ class PrinceCharlesScraper(BaseScraper):
         soup = BeautifulSoup(html, "html.parser")
         showings: list[RawShowing] = []
 
-        # Find all film data containers
-        film_data_divs = soup.find_all("div", class_="calendarfilm-filmdata")
+        # Find all jacro-event containers (one per film with multiple dates/times)
+        jacro_events = soup.find_all("div", class_="jacro-event")
 
-        logger.debug(f"Found {len(film_data_divs)} film data containers")
+        logger.debug(f"Found {len(jacro_events)} jacro-event containers")
 
-        for film_data in film_data_divs:
+        for event in jacro_events:
             try:
-                # Extract film title from the link
-                film_link = film_data.find("a", href=re.compile(r"/film/"))
+                # Extract film title from the liveeventtitle link
+                film_link = event.find("a", class_="liveeventtitle")
                 if not film_link:
                     continue
 
@@ -74,79 +74,111 @@ class PrinceCharlesScraper(BaseScraper):
 
                 logger.debug(f"Processing film: {title}")
 
-                # Find the parent container that includes both film data and performance data
-                parent_container = film_data.parent
-                if not parent_container:
-                    continue
+                # Find all date divs and their associated times
+                # Each event can have multiple dates
+                date_divs = event.find_all("div", string=re.compile(
+                    r'(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\s+\d{1,2}(?:st|nd|rd|th)?\s+\w+',
+                    re.IGNORECASE
+                ))
 
-                # Find the grandparent (col-md-8) that contains the film and its times
-                grandparent = parent_container.parent
-                if not grandparent:
-                    continue
-
-                # Find all time spans in this film's container
-                time_spans = grandparent.find_all("span", class_="time")
-
-                for time_span in time_spans:
+                for date_div in date_divs:
                     try:
-                        time_text = time_span.get_text(strip=True)
+                        date_text = date_div.get_text(strip=True)
 
-                        # Parse time (format: "5:45 pm" or "18:30")
-                        time_match = re.search(r"(\d{1,2}):(\d{2})", time_text)
-                        if not time_match:
+                        # Parse date like "Friday 30th January" or "Tuesday 24th March"
+                        date_match = re.search(
+                            r'\b(\d{1,2})(?:st|nd|rd|th)?\s+(\w+)\b',
+                            date_text
+                        )
+                        if not date_match:
                             continue
 
-                        hour = int(time_match.group(1))
-                        minute = int(time_match.group(2))
+                        day = int(date_match.group(1))
+                        month_str = date_match.group(2)
+                        month_map = {
+                            'jan': 1, 'january': 1, 'feb': 2, 'february': 2,
+                            'mar': 3, 'march': 3, 'apr': 4, 'april': 4,
+                            'may': 5, 'jun': 6, 'june': 6, 'jul': 7, 'july': 7,
+                            'aug': 8, 'august': 8, 'sep': 9, 'september': 9,
+                            'oct': 10, 'october': 10, 'nov': 11, 'november': 11,
+                            'dec': 12, 'december': 12
+                        }
+                        month = month_map.get(month_str.lower())
+                        if not month:
+                            continue
 
-                        # Handle AM/PM if present
-                        if "pm" in time_text.lower() and hour != 12:
-                            hour += 12
-                        elif "am" in time_text.lower() and hour == 12:
-                            hour = 0
-
-                        # The homepage shows today's showings
-                        # For a full scraper, you'd need to navigate to different dates
-                        showing_date = date_from
-
-                        start_time = datetime(
-                            showing_date.year,
-                            showing_date.month,
-                            showing_date.day,
-                            hour,
-                            minute,
-                            tzinfo=LONDON_TZ,
-                        )
+                        # Determine year (handle year boundary)
+                        year = date_from.year
+                        showing_date = date(year, month, day)
 
                         # Check if date is in range
-                        if not (date_from <= start_time.date() <= date_to):
+                        if not (date_from <= showing_date <= date_to):
                             continue
 
-                        # Try to find booking URL
-                        booking_url = None
-                        if time_span.parent and time_span.parent.name == "a":
-                            href = time_span.parent.get("href")
-                            if href:
-                                # Make absolute URL if needed
-                                if href.startswith("/"):
-                                    booking_url = f"{self.BASE_URL}{href}"
-                                else:
-                                    booking_url = href
+                        # Find the parent container for this date's times
+                        # Times are in the same parent as the date div
+                        date_parent = date_div.parent
+                        if not date_parent:
+                            continue
 
-                        showing = RawShowing(
-                            title=title,
-                            start_time=start_time,
-                            booking_url=booking_url,
-                        )
-                        showings.append(showing)
-                        logger.debug(f"Added: {title} at {start_time}")
+                        # Find time spans near this date
+                        time_spans = date_parent.find_all("span", class_="time")
+
+                        for time_span in time_spans:
+                            try:
+                                time_text = time_span.get_text(strip=True)
+
+                                # Parse time (format: "5:45 pm")
+                                time_match = re.search(r"(\d{1,2}):(\d{2})", time_text)
+                                if not time_match:
+                                    continue
+
+                                hour = int(time_match.group(1))
+                                minute = int(time_match.group(2))
+
+                                # Handle AM/PM
+                                if "pm" in time_text.lower() and hour != 12:
+                                    hour += 12
+                                elif "am" in time_text.lower() and hour == 12:
+                                    hour = 0
+
+                                start_time = datetime(
+                                    showing_date.year,
+                                    showing_date.month,
+                                    showing_date.day,
+                                    hour,
+                                    minute,
+                                    tzinfo=LONDON_TZ,
+                                )
+
+                                # Try to find booking URL
+                                booking_url = None
+                                if time_span.parent and time_span.parent.name == "a":
+                                    href = time_span.parent.get("href")
+                                    if href:
+                                        if href.startswith("/"):
+                                            booking_url = f"{self.BASE_URL}{href}"
+                                        else:
+                                            booking_url = href
+
+                                showing = RawShowing(
+                                    title=title,
+                                    start_time=start_time,
+                                    booking_url=booking_url,
+                                )
+                                showings.append(showing)
+                                logger.debug(f"Added: {title} at {start_time}")
+
+                            except Exception as e:
+                                logger.warning(f"Failed to parse time '{time_text}': {e}")
+                                continue
 
                     except Exception as e:
-                        logger.warning(f"Failed to parse time '{time_text}': {e}")
+                        logger.warning(f"Failed to parse date '{date_text}': {e}")
                         continue
 
             except Exception as e:
-                logger.warning(f"Failed to parse film container: {e}")
+                logger.warning(f"Failed to parse jacro-event: {e}")
                 continue
 
         return showings

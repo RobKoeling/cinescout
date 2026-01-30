@@ -78,18 +78,23 @@ async def trigger_scrape(
     total_showings = 0
 
     for cinema in cinemas:
-        logger.info(f"Scraping {cinema.name} ({cinema.id})")
+        # Capture cinema attributes before any potential rollback
+        cinema_id = cinema.id
+        cinema_name = cinema.name
+        scraper_type = cinema.scraper_type
+
+        logger.info(f"Scraping {cinema_name} ({cinema_id})")
 
         # Get scraper for this cinema
-        scraper = get_scraper(cinema.scraper_type)
+        scraper = get_scraper(scraper_type)
         if not scraper:
             results.append(
                 CinemaScrapeResult(
-                    cinema_id=cinema.id,
-                    cinema_name=cinema.name,
+                    cinema_id=cinema_id,
+                    cinema_name=cinema_name,
                     success=False,
                     showings_created=0,
-                    error=f"No scraper found for type: {cinema.scraper_type}",
+                    error=f"No scraper found for type: {scraper_type}",
                 )
             )
             continue
@@ -97,7 +102,7 @@ async def trigger_scrape(
         try:
             # Fetch raw showings
             raw_showings = await scraper.get_showings(request.date_from, request.date_to)
-            logger.info(f"Found {len(raw_showings)} raw showings for {cinema.name}")
+            logger.info(f"Found {len(raw_showings)} raw showings for {cinema_name}")
 
             # Commit any pending film/alias creations before processing showings
             try:
@@ -115,7 +120,7 @@ async def trigger_scrape(
 
                     # Check if showing already exists
                     existing_stmt = select(Showing).where(
-                        Showing.cinema_id == cinema.id,
+                        Showing.cinema_id == cinema_id,
                         Showing.film_id == film.id,
                         Showing.start_time == raw_showing.start_time,
                     )
@@ -132,7 +137,7 @@ async def trigger_scrape(
                     else:
                         # Create new showing
                         showing = Showing(
-                            cinema_id=cinema.id,
+                            cinema_id=cinema_id,
                             film_id=film.id,
                             start_time=raw_showing.start_time,
                             booking_url=raw_showing.booking_url,
@@ -146,7 +151,7 @@ async def trigger_scrape(
 
                 except Exception as e:
                     logger.error(
-                        f"Error processing showing '{raw_showing.title}' at {cinema.name}: {e}",
+                        f"Error processing showing '{raw_showing.title}' at {cinema_name}: {e}",
                         exc_info=True,
                     )
                     # Continue with next showing
@@ -155,14 +160,14 @@ async def trigger_scrape(
             try:
                 await db.commit()
             except IntegrityError as e:
-                logger.warning(f"Integrity error committing showings for {cinema.name}: {e}")
+                logger.warning(f"Integrity error committing showings for {cinema_name}: {e}")
                 await db.rollback()
                 # Still count this as success since the error is expected
 
             results.append(
                 CinemaScrapeResult(
-                    cinema_id=cinema.id,
-                    cinema_name=cinema.name,
+                    cinema_id=cinema_id,
+                    cinema_name=cinema_name,
                     success=True,
                     showings_created=showings_created,
                 )
@@ -170,11 +175,11 @@ async def trigger_scrape(
             total_showings += showings_created
 
         except Exception as e:
-            logger.error(f"Error scraping {cinema.name}: {e}", exc_info=True)
+            logger.error(f"Error scraping {cinema_name}: {e}", exc_info=True)
             results.append(
                 CinemaScrapeResult(
-                    cinema_id=cinema.id,
-                    cinema_name=cinema.name,
+                    cinema_id=cinema_id,
+                    cinema_name=cinema_name,
                     success=False,
                     showings_created=0,
                     error=str(e),
