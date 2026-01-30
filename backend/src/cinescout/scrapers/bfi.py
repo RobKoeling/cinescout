@@ -1,7 +1,7 @@
 """BFI Southbank scraper."""
 
 import logging
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 
 import httpx
@@ -34,17 +34,20 @@ class BFIScraper(BaseScraper):
         showings: list[RawShowing] = []
 
         try:
-            async with httpx.AsyncClient(timeout=settings.scrape_timeout) as client:
+            headers = {
+                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+                "Accept-Language": "en-GB,en;q=0.5",
+            }
+            async with httpx.AsyncClient(
+                timeout=settings.scrape_timeout, verify=False, headers=headers, follow_redirects=True
+            ) as client:
                 # BFI shows one day at a time
                 current_date = date_from
                 while current_date <= date_to:
                     date_showings = await self._scrape_date(client, current_date)
                     showings.extend(date_showings)
-                    current_date = date(
-                        current_date.year,
-                        current_date.month,
-                        current_date.day + 1,
-                    )
+                    current_date = current_date + timedelta(days=1)
 
         except Exception as e:
             logger.error(f"BFI scraper error: {e}", exc_info=True)
