@@ -67,6 +67,20 @@ async def seed_cinemas() -> None:
             "has_online_booking": True,
             "supports_availability_check": False,
         },
+        {
+            "id": "picturehouse-central",
+            "name": "Picturehouse Central",
+            "city": "london",
+            "address": "Corner of Shaftesbury Avenue and Great Windmill Street",
+            "postcode": "W1D 7DH",
+            "latitude": 51.5104,
+            "longitude": -0.1338,
+            "website": "https://www.picturehouses.com/cinema/picturehouse-central",
+            "scraper_type": "picturehouse",
+            "scraper_config": {"cinema_slug": "picturehouse-central"},
+            "has_online_booking": True,
+            "supports_availability_check": False,
+        },
     ]
 
     async with AsyncSessionLocal() as session:
