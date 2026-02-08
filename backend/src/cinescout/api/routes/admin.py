@@ -86,7 +86,7 @@ async def trigger_scrape(
         logger.info(f"Scraping {cinema_name} ({cinema_id})")
 
         # Get scraper for this cinema
-        scraper = get_scraper(scraper_type)
+        scraper = get_scraper(scraper_type, cinema.scraper_config)
         if not scraper:
             results.append(
                 CinemaScrapeResult(

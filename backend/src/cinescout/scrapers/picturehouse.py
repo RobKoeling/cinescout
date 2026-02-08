@@ -73,8 +73,15 @@ class PicturehouseScraper(BaseScraper):
             logger.error(f"Picturehouse scraper error: {e}", exc_info=True)
             return []
 
-        logger.info(f"Picturehouse ({self.cinema_slug}): Found {len(showings)} showings")
-        return showings
+        # Filter showings to only include those within the requested date range
+        # (API sometimes returns showings for future dates)
+        filtered_showings = [
+            s for s in showings
+            if date_from <= s.start_time.date() <= date_to
+        ]
+
+        logger.info(f"Picturehouse ({self.cinema_slug}): Found {len(filtered_showings)} showings (filtered from {len(showings)})")
+        return filtered_showings
 
     async def _fetch_date(self, showing_date: date) -> list[RawShowing]:
         """Fetch showings for a specific date."""

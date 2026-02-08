@@ -50,7 +50,7 @@ class TMDbClient:
             params["year"] = year
 
         try:
-            async with httpx.AsyncClient(timeout=settings.scrape_timeout) as client:
+            async with httpx.AsyncClient(timeout=settings.scrape_timeout, verify=False) as client:
                 response = await client.get(f"{self.BASE_URL}/search/movie", params=params)
                 response.raise_for_status()
                 data = response.json()
@@ -63,7 +63,7 @@ class TMDbClient:
                 # Return the first result
                 return results[0]
 
-        except httpx.HTTPError as e:
+        except Exception as e:
             logger.error(f"TMDb search error for '{title}': {e}")
             return None
 
@@ -88,7 +88,7 @@ class TMDbClient:
         }
 
         try:
-            async with httpx.AsyncClient(timeout=settings.scrape_timeout) as client:
+            async with httpx.AsyncClient(timeout=settings.scrape_timeout, verify=False) as client:
                 response = await client.get(
                     f"{self.BASE_URL}/movie/{tmdb_id}",
                     params=params,
@@ -96,7 +96,7 @@ class TMDbClient:
                 response.raise_for_status()
                 return response.json()
 
-        except httpx.HTTPError as e:
+        except Exception as e:
             logger.error(f"TMDb details error for ID {tmdb_id}: {e}")
             return None
 

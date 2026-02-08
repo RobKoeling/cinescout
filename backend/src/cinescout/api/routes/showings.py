@@ -58,7 +58,7 @@ async def get_showings(
             and_(
                 Cinema.city == city,
                 Showing.start_time >= datetime_from,
-                Showing.start_time <= datetime_to,
+                Showing.start_time < datetime_to,
             )
         )
         .order_by(Showing.start_time)

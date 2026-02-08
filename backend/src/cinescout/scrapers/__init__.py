@@ -17,18 +17,23 @@ SCRAPER_REGISTRY: dict[str, Type[BaseScraper]] = {
 }
 
 
-def get_scraper(scraper_type: str) -> BaseScraper | None:
+def get_scraper(scraper_type: str, scraper_config: dict | None = None) -> BaseScraper | None:
     """
     Get a scraper instance by type.
 
     Args:
         scraper_type: The scraper type (e.g., "bfi", "curzon")
+        scraper_config: Optional configuration dict for the scraper
 
     Returns:
         Scraper instance or None if type not found
     """
     scraper_class = SCRAPER_REGISTRY.get(scraper_type)
     if scraper_class:
+        # Pass config to scrapers that need it (like Picturehouse)
+        if scraper_config and scraper_type == "picturehouse":
+            cinema_slug = scraper_config.get("cinema_slug", "picturehouse-central")
+            return scraper_class(cinema_slug=cinema_slug)
         return scraper_class()
     return None
 
