@@ -20,7 +20,7 @@ CINEMA_ID_MAP = {
     "greenwich-picturehouse": "011",
     "hackney-picturehouse": "019",
     "the-gate": "014",
-    "the-ritzy": "008",
+    "the-ritzy": "004",  # Fixed: was "008"
     "clapham-picturehouse": "007",
     "crouch-end-picturehouse": "009",
     "east-dulwich": "013",
