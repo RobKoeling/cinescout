@@ -12,6 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from cinescout.api.routes import admin, cinemas, health, showings
 from cinescout.tasks.scrape_job import run_scrape_all
 
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
