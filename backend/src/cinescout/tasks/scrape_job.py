@@ -29,15 +29,24 @@ async def run_scrape_all() -> None:
     date_to = date_from + timedelta(days=SCRAPE_DAYS_AHEAD)
 
     async with AsyncSessionLocal() as db:
-        # Fetch all cinemas
+        # Fetch all cinemas and extract attributes eagerly to avoid
+        # lazy-load issues after commits expire ORM objects
         result = await db.execute(select(Cinema))
-        cinemas = result.scalars().all()
+        cinema_rows = [
+            {
+                "id": c.id,
+                "name": c.name,
+                "scraper_type": c.scraper_type,
+                "scraper_config": c.scraper_config,
+            }
+            for c in result.scalars().all()
+        ]
 
-        if not cinemas:
+        if not cinema_rows:
             logger.warning("No cinemas found in database, skipping scrape")
             return
 
-        logger.info(f"Scraping {len(cinemas)} cinemas for {date_from} to {date_to}")
+        logger.info(f"Scraping {len(cinema_rows)} cinemas for {date_from} to {date_to}")
 
         tmdb_client = TMDbClient()
         film_matcher = FilmMatcher(db, tmdb_client)
@@ -46,12 +55,12 @@ async def run_scrape_all() -> None:
         successes = 0
         failures = 0
 
-        for cinema in cinemas:
-            cinema_id = cinema.id
-            cinema_name = cinema.name
-            scraper_type = cinema.scraper_type
+        for cinema in cinema_rows:
+            cinema_id = cinema["id"]
+            cinema_name = cinema["name"]
+            scraper_type = cinema["scraper_type"]
 
-            scraper = get_scraper(scraper_type, cinema.scraper_config)
+            scraper = get_scraper(scraper_type, cinema["scraper_config"])
             if not scraper:
                 logger.warning(f"No scraper found for {cinema_name} (type: {scraper_type})")
                 failures += 1
