@@ -3,7 +3,7 @@
 import logging
 from datetime import date
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
@@ -14,6 +14,7 @@ from cinescout.models import Cinema, Showing
 from cinescout.scrapers import get_scraper
 from cinescout.services.film_matcher import FilmMatcher
 from cinescout.services.tmdb_client import TMDbClient
+from cinescout.tasks.scrape_job import run_scrape_all
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -191,3 +192,13 @@ async def trigger_scrape(
         results=results,
         total_showings=total_showings,
     )
+
+
+@router.post("/admin/scrape-all")
+async def trigger_scrape_all(background_tasks: BackgroundTasks) -> dict[str, str]:
+    """Trigger a full scrape of all cinemas as a background task.
+
+    Returns immediately; the scrape runs asynchronously.
+    """
+    background_tasks.add_task(run_scrape_all)
+    return {"status": "started"}

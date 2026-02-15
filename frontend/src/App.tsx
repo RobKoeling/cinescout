@@ -7,6 +7,8 @@ function App() {
   const [showings, setShowings] = useState<ShowingsResponse | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [refreshing, setRefreshing] = useState(false)
+  const [refreshMessage, setRefreshMessage] = useState<string | null>(null)
 
   const handleSearch = async (searchParams: {
     date: string
@@ -40,14 +42,54 @@ function App() {
     }
   }
 
+  const handleRefresh = async () => {
+    setRefreshing(true)
+    setRefreshMessage(null)
+
+    try {
+      const response = await fetch(
+        'http://localhost:8000/api/admin/scrape-all',
+        { method: 'POST' }
+      )
+
+      if (!response.ok) {
+        throw new Error('Failed to trigger refresh')
+      }
+
+      setRefreshMessage('Refresh started — new data will appear in a few minutes')
+      setTimeout(() => setRefreshMessage(null), 10000)
+    } catch {
+      setRefreshMessage('Failed to start refresh')
+      setTimeout(() => setRefreshMessage(null), 5000)
+    } finally {
+      setRefreshing(false)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <h1 className="text-3xl font-bold text-gray-900">CineScout</h1>
-          <p className="mt-1 text-sm text-gray-600">
-            Find films showing in London cinemas
-          </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">CineScout</h1>
+              <p className="mt-1 text-sm text-gray-600">
+                Find films showing in London cinemas
+              </p>
+            </div>
+            <div className="flex flex-col items-end gap-1">
+              <button
+                onClick={handleRefresh}
+                disabled={refreshing}
+                className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {refreshing ? 'Refreshing...' : 'Refresh Data'}
+              </button>
+              {refreshMessage && (
+                <p className="text-xs text-gray-500">{refreshMessage}</p>
+              )}
+            </div>
+          </div>
         </div>
       </header>
 
