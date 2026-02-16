@@ -30,6 +30,11 @@ class Settings(BaseSettings):
     api_host: str = "0.0.0.0"
     api_port: int = 8000
 
+    # Admin settings
+    admin_username: str = "admin"
+    admin_password: str = "changeme"
+    admin_secret_key: str = "change-this-secret"
+
 
 # Global settings instance
 settings = Settings()
