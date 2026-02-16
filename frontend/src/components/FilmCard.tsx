@@ -60,15 +60,18 @@ function FilmCard({ filmWithCinemas }: FilmCardProps) {
           </svg>
         </div>
 
-        {(film.directors?.length || film.countries?.length || film.runtime) && (
-          <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-600">
+        {expanded && (film.directors?.length || film.countries?.length || film.cast?.length) && (
+          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-600">
             {film.directors && film.directors.length > 0 && (
               <span>Dir: {film.directors.join(', ')}</span>
             )}
             {film.countries && film.countries.length > 0 && (
               <span>{film.countries.join(', ')}</span>
             )}
-            {film.runtime && <span>{film.runtime} min</span>}
+            {film.year && <span>{film.year}</span>}
+            {film.cast && film.cast.length > 0 && (
+              <span>{film.cast.slice(0, 3).join(', ')}</span>
+            )}
           </div>
         )}
       </button>
@@ -85,7 +88,7 @@ function FilmCard({ filmWithCinemas }: FilmCardProps) {
               <div
                 key={cinemaWithShowings.cinema.id}
                 className="grid items-center gap-x-4"
-                style={{ gridTemplateColumns: '40% 1fr auto' }}
+                style={{ gridTemplateColumns: '35% 1fr auto' }}
               >
                 {/* Cinema name — indented 5cm from the left */}
                 <div className="pl-[3cm]">

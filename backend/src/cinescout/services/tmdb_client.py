@@ -128,3 +128,17 @@ class TMDbClient:
         """
         countries = film_data.get("production_countries", [])
         return [country["name"] for country in countries]
+
+    def extract_cast(self, credits: dict[str, Any], n: int = 3) -> list[str]:
+        """
+        Extract top-billed cast member names from TMDb credits.
+
+        Args:
+            credits: TMDb credits data
+            n: Maximum number of cast members to return
+
+        Returns:
+            List of actor names (up to n)
+        """
+        cast = credits.get("cast", [])
+        return [person["name"] for person in cast[:n] if person.get("name")]

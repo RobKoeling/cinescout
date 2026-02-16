@@ -10,6 +10,7 @@ class FilmBase(BaseModel):
     year: int | None = None
     directors: list[str] | None = None
     countries: list[str] | None = None
+    cast: list[str] | None = None
     runtime: int | None = None
     overview: str | None = None
     poster_path: str | None = None

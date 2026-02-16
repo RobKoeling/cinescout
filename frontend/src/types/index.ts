@@ -6,6 +6,7 @@ export interface Film {
   year: number | null
   directors: string[] | null
   countries: string[] | null
+  cast: string[] | null
   runtime: number | null
   overview: string | null
   poster_path: string | null

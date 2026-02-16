@@ -142,6 +142,7 @@ class FilmMatcher:
         year = self._extract_year(details.get("release_date"))
         directors = self.tmdb_client.extract_directors(details.get("credits", {}))
         countries = self.tmdb_client.extract_countries(details)
+        cast = self.tmdb_client.extract_cast(details.get("credits", {}))
         overview = details.get("overview")
         poster_path = details.get("poster_path")
         runtime = details.get("runtime")
@@ -157,6 +158,7 @@ class FilmMatcher:
             tmdb_id=tmdb_id,
             directors=directors if directors else None,
             countries=countries if countries else None,
+            cast=cast if cast else None,
             overview=overview,
             poster_path=poster_path,
             runtime=runtime,

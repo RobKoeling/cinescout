@@ -31,6 +31,7 @@ class Film(Base, TimestampMixin):
     tmdb_id: Mapped[int | None] = mapped_column(Integer, nullable=True, unique=True, index=True)
     directors: Mapped[list[str] | None] = mapped_column(ARRAY(String), nullable=True)
     countries: Mapped[list[str] | None] = mapped_column(ARRAY(String), nullable=True)
+    cast: Mapped[list[str] | None] = mapped_column(ARRAY(String), nullable=True)
     overview: Mapped[str | None] = mapped_column(Text, nullable=True)
     poster_path: Mapped[str | None] = mapped_column(String(200), nullable=True)
     runtime: Mapped[int | None] = mapped_column(Integer, nullable=True)
