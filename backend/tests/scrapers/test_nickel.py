@@ -160,6 +160,15 @@ class TestNickelParseTime:
     def test_parses_12am_as_midnight(self) -> None:
         assert self.scraper._parse_time("12am") == (0, 0)
 
+    def test_parses_dot_separator(self) -> None:
+        assert self.scraper._parse_time("6.30pm") == (18, 30)
+
+    def test_parses_24h_with_redundant_pm(self) -> None:
+        assert self.scraper._parse_time("20:45pm") == (20, 45)
+
+    def test_assumes_pm_when_no_period_given(self) -> None:
+        assert self.scraper._parse_time("9:15") == (21, 15)
+
     def test_returns_none_for_invalid_string(self) -> None:
         assert self.scraper._parse_time("no time here") is None
 
