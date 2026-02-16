@@ -1,0 +1,19 @@
+{
+  "showtimes": [
+    {
+      "id": "SHOW001",
+      "filmId": "FILM001",
+      "schedule": {"startsAt": "2026-02-20T14:30:00"}
+    },
+    {
+      "id": "SHOW002",
+      "filmId": "FILM002",
+      "schedule": {"startsAt": "2026-02-20T18:30:00"}
+    },
+    {
+      "id": "SHOW003",
+      "filmId": "UNKNOWN_FILM",
+      "schedule": {"startsAt": "2026-02-20T21:00:00"}
+    }
+  ]
+}

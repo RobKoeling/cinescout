@@ -1,0 +1,6 @@
+{
+  "films": [
+    {"id": "FILM001", "title": {"text": "The Grand Budapest Hotel"}},
+    {"id": "FILM002", "title": {"text": "Nosferatu"}}
+  ]
+}

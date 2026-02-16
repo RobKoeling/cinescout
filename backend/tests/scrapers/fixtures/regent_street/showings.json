@@ -1,0 +1,18 @@
+{
+  "data": {
+    "showingsForDate": {
+      "data": [
+        {
+          "id": "12345",
+          "time": "2026-02-20T18:30:00",
+          "movie": {"name": "Nosferatu", "urlSlug": "nosferatu"}
+        },
+        {
+          "id": "12346",
+          "time": "2026-02-20T20:45:00",
+          "movie": {"name": "The Substance", "urlSlug": "the-substance"}
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html><head><title>What's On | Rio Cinema</title></head>
+<body>
+<script>
+// Preamble to verify raw_decode starts at the right position
+var SomeOtherVar = "not json";
+var Events = {"Events":[
+  {
+    "Title": "Nosferatu",
+    "Performances": [
+      {
+        "StartDate": "2026-02-20",
+        "StartTime": "1830",
+        "URL": "Booking?ShowtimeId=1001&type=A",
+        "AuditoriumName": "Screen 1",
+        "HoH": "N",
+        "RS": "N",
+        "QA": "N"
+      },
+      {
+        "StartDate": "2026-02-21",
+        "StartTime": "1400",
+        "URL": "Booking?ShowtimeId=1002&type=A",
+        "AuditoriumName": "Screen 1",
+        "HoH": "Y",
+        "RS": "N",
+        "QA": "N"
+      }
+    ]
+  },
+  {
+    "Title": "Preview: The Substance (2024)",
+    "Performances": [
+      {
+        "StartDate": "2026-02-20",
+        "StartTime": "2000",
+        "URL": "Booking?ShowtimeId=1003&type=A",
+        "AuditoriumName": "Screen 1",
+        "QA": "Y",
+        "RS": "Y",
+        "HoH": "N"
+      }
+    ]
+  },
+  {
+    "Title": "Old Film",
+    "Performances": [
+      {
+        "StartDate": "2026-02-15",
+        "StartTime": "1800",
+        "URL": "Booking?ShowtimeId=9999&type=A",
+        "AuditoriumName": "Screen 1"
+      }
+    ]
+  }
+]};
+// Another var after the JSON with }; inside to verify raw_decode handles it
+var Config = {"key": "value with }; inside string"};
+</script>
+</body>
+</html>
