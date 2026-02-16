@@ -80,16 +80,21 @@ function FilmCard({ filmWithCinemas }: FilmCardProps) {
             <p className="text-sm text-gray-700 mb-6">{film.overview}</p>
           )}
 
-          <div className="space-y-6">
+          <div className="space-y-3">
             {cinemas.map((cinemaWithShowings) => (
-              <div key={cinemaWithShowings.cinema.id}>
-                <h3 className="font-medium text-gray-900 mb-2">
-                  {cinemaWithShowings.cinema.name}
-                </h3>
-                <p className="text-sm text-gray-600 mb-3">
-                  {cinemaWithShowings.cinema.address}
-                </p>
+              <div
+                key={cinemaWithShowings.cinema.id}
+                className="grid items-center gap-x-4"
+                style={{ gridTemplateColumns: '40% 1fr auto' }}
+              >
+                {/* Cinema name — indented 5cm from the left */}
+                <div className="pl-[5cm]">
+                  <span className="font-medium text-gray-900">
+                    {cinemaWithShowings.cinema.name}
+                  </span>
+                </div>
 
+                {/* Showing times — start at the 40% mark */}
                 <div className="flex flex-wrap gap-2">
                   {cinemaWithShowings.times.map((showing) => (
                     <div
@@ -130,6 +135,11 @@ function FilmCard({ filmWithCinemas }: FilmCardProps) {
                       )}
                     </div>
                   ))}
+                </div>
+
+                {/* Address — far right */}
+                <div className="text-sm text-gray-500 text-right whitespace-nowrap">
+                  {cinemaWithShowings.cinema.address}
                 </div>
               </div>
             ))}
