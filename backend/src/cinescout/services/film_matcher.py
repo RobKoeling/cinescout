@@ -6,6 +6,7 @@ from typing import Any
 
 from rapidfuzz import fuzz
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from cinescout.models.film import Film
@@ -161,8 +162,17 @@ class FilmMatcher:
             runtime=runtime,
         )
 
-        self.db.add(film)
-        await self.db.flush()  # Get the film into the session
+        try:
+            self.db.add(film)
+            await self.db.flush()
+        except IntegrityError:
+            await self.db.rollback()
+            # Another cinema in this run already created the same film; fetch it.
+            existing = await self.db.get(Film, film_id)
+            if existing:
+                logger.debug(f"Film {film_id!r} already exists, reusing.")
+                return existing
+            raise
 
         return film
 
@@ -190,8 +200,16 @@ class FilmMatcher:
             runtime=None,
         )
 
-        self.db.add(film)
-        await self.db.flush()
+        try:
+            self.db.add(film)
+            await self.db.flush()
+        except IntegrityError:
+            await self.db.rollback()
+            existing = await self.db.get(Film, film_id)
+            if existing:
+                logger.debug(f"Film {film_id!r} already exists, reusing.")
+                return existing
+            raise
 
         return film
 

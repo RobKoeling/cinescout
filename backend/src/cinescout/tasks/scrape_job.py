@@ -131,6 +131,10 @@ async def run_scrape_all() -> None:
             except Exception as e:
                 logger.error(f"Error scraping {cinema_name}: {e}", exc_info=True)
                 failures += 1
+                try:
+                    await db.rollback()
+                except Exception:
+                    pass
 
     logger.info(
         f"Scheduled scrape complete: {successes} succeeded, {failures} failed, "
