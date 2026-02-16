@@ -6,22 +6,24 @@ Find films showing in London cinemas within your time window.
 
 CineScout aggregates film showings from independent and arthouse cinemas in London, allowing you to search by date and time window. When you find a film you're interested in, expand it to see all venues and showtimes, check availability, and book tickets.
 
-## Features (MVP)
+## Features
 
 - Search for films by date and time window
 - View aggregated listings from multiple cinemas
-- Expand films to see all showings grouped by cinema
+- Expand films to see all showings grouped by cinema with director, year, country, and cast
 - Direct links to booking pages
-- Film metadata from TMDb (director, year, country)
+- Film metadata from TMDb (director, year, country, cast, overview, runtime)
+- SQLAdmin data management panel (CRUD + scrape/backfill triggers) on port 8001
 
-## Target Cinemas
+## Implemented Cinemas
 
 1. BFI Southbank
 2. Curzon (Soho, Mayfair, Bloomsbury, Victoria)
 3. Prince Charles Cinema
 4. Picturehouse (Hackney, Central, etc.)
-5. Barbican
-6. The Garden Cinema
+5. The Garden Cinema
+6. Regent Street Cinema
+7. Rio Cinema
 
 ## Tech Stack
 
@@ -40,19 +42,19 @@ CineScout aggregates film showings from independent and arthouse cinemas in Lond
 cinescout/
 ├── backend/                 # Python FastAPI backend
 │   ├── src/cinescout/      # Main package
+│   │   ├── admin/          # SQLAdmin panel (port 8001)
 │   │   ├── api/            # API routes
 │   │   ├── models/         # SQLAlchemy models
 │   │   ├── schemas/        # Pydantic schemas
 │   │   ├── scrapers/       # Cinema scrapers
 │   │   ├── services/       # Business logic
-│   │   └── tasks/          # Background jobs
+│   │   ├── tasks/          # Background jobs
+│   │   └── scripts/        # One-off scripts (TMDb backfill, etc.)
 │   ├── tests/              # Test suite
 │   └── alembic/            # Database migrations
-├── frontend/               # React frontend
+├── frontend/               # React + Vite frontend
 │   └── src/
-│       ├── api/            # API client
 │       ├── components/     # React components
-│       ├── hooks/          # Custom hooks
 │       └── types/          # TypeScript types
 └── docs/                   # Documentation
 ```
@@ -98,14 +100,17 @@ cinescout/
 
 5. Run the development servers:
    ```bash
-   # Terminal 1: Backend
+   # Terminal 1: Backend API
    cd backend && uvicorn cinescout.main:app --reload
 
-   # Terminal 2: Frontend
+   # Terminal 2: Admin panel
+   cd backend && uvicorn cinescout.admin.app:admin_app --port 8001 --reload
+
+   # Terminal 3: Frontend
    cd frontend && npm run dev
    ```
 
-6. Open http://localhost:5173
+6. Open http://localhost:5173 (viewer) or http://localhost:8001/admin (admin panel)
 
 ## Documentation
 

@@ -9,8 +9,8 @@ CineScout aggregates film showings from independent and arthouse cinemas in Lond
 ## Architecture
 
 ### Monorepo Structure
-- `backend/` - Python FastAPI backend (not yet implemented, only pyproject.toml exists)
-- `frontend/` - React + Vite frontend (not yet implemented, only package.json exists)
+- `backend/` - Python FastAPI backend
+- `frontend/` - React + Vite frontend
 - `docs/` - Comprehensive technical documentation
 
 ### Key Data Flow
@@ -50,14 +50,17 @@ npm install
 
 ### Running Development Servers
 ```bash
-# Terminal 1: Backend
+# Terminal 1: Backend API
 cd backend && uvicorn cinescout.main:app --reload
 
-# Terminal 2: Frontend
+# Terminal 2: Admin panel
+cd backend && uvicorn cinescout.admin.app:admin_app --port 8001 --reload
+
+# Terminal 3: Frontend
 cd frontend && npm run dev
 ```
 
-Frontend runs at http://localhost:5173, backend at http://localhost:8000
+Frontend at http://localhost:5173, backend API at http://localhost:8000, admin panel at http://localhost:8001/admin (login: admin / changeme by default)
 
 ### Testing
 
@@ -221,6 +224,8 @@ Copy `.env.example` to `.env` and configure:
 - `TMDB_API_KEY` - Required for film metadata (get from https://www.themoviedb.org/settings/api)
 - `SCRAPE_TIMEOUT` - Timeout in seconds for scraper HTTP requests
 - `SCRAPE_MAX_RETRIES` - Number of retry attempts for failed scrapes
+- `ADMIN_USERNAME` / `ADMIN_PASSWORD` - Credentials for the SQLAdmin panel (default: admin / changeme)
+- `ADMIN_SECRET_KEY` - Secret used to sign the admin session cookie (change in production)
 
 ## Code Style
 
@@ -254,12 +259,14 @@ Mark tests that make real HTTP requests with `@pytest.mark.live` to exclude from
 ## File Organization
 
 **Backend:**
+- `src/cinescout/admin/` - SQLAdmin panel (auth, model views, scrape tools) — served on port 8001
 - `src/cinescout/api/` - FastAPI route handlers
 - `src/cinescout/models/` - SQLAlchemy ORM models
 - `src/cinescout/schemas/` - Pydantic request/response schemas
 - `src/cinescout/scrapers/` - Cinema-specific scrapers
 - `src/cinescout/services/` - Business logic (FilmMatcher, TMDb client, etc.)
 - `src/cinescout/tasks/` - Background jobs (scheduled scraping)
+- `src/cinescout/scripts/` - One-off scripts (TMDb backfill, seed data, etc.)
 
 **Frontend:**
 - `src/api/` - API client (fetch wrappers)
