@@ -88,7 +88,7 @@ function FilmCard({ filmWithCinemas }: FilmCardProps) {
                 style={{ gridTemplateColumns: '40% 1fr auto' }}
               >
                 {/* Cinema name — indented 5cm from the left */}
-                <div className="pl-[5cm]">
+                <div className="pl-[3cm]">
                   <span className="font-medium text-gray-900">
                     {cinemaWithShowings.cinema.name}
                   </span>
