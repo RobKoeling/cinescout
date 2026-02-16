@@ -28,51 +28,49 @@ function FilmCard({ filmWithCinemas }: FilmCardProps) {
       {/* Film Header - Always Visible */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full text-left p-6 hover:bg-gray-50 transition-colors"
+        className="w-full text-left py-3 px-6 hover:bg-gray-50 transition-colors"
       >
-        <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <h2 className="text-xl font-semibold text-gray-900">
-              {film.title}
-              {film.year && (
-                <span className="text-gray-500 font-normal ml-2">({film.year})</span>
-              )}
-            </h2>
+        <div className="flex items-center">
+          <h2 className="w-1/2 text-xl font-semibold text-gray-900 pr-4">
+            {film.title}
+            {film.year && (
+              <span className="text-gray-500 font-normal ml-2">({film.year})</span>
+            )}
+          </h2>
 
-            <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-600">
-              {film.directors && film.directors.length > 0 && (
-                <span>Dir: {film.directors.join(', ')}</span>
-              )}
-              {film.countries && film.countries.length > 0 && (
-                <span>{film.countries.join(', ')}</span>
-              )}
-              {film.runtime && <span>{film.runtime} min</span>}
-            </div>
+          <span className="flex-1 text-sm text-gray-500">
+            {film.showing_count} showing{film.showing_count !== 1 ? 's' : ''} at{' '}
+            {cinemas.length} cinema{cinemas.length !== 1 ? 's' : ''}
+          </span>
 
-            <div className="mt-2 text-sm text-gray-500">
-              {film.showing_count} showing{film.showing_count !== 1 ? 's' : ''} at{' '}
-              {cinemas.length} cinema{cinemas.length !== 1 ? 's' : ''}
-            </div>
-          </div>
-
-          <div className="ml-4 flex-shrink-0">
-            <svg
-              className={`h-6 w-6 text-gray-400 transition-transform ${
-                expanded ? 'rotate-180' : ''
-              }`}
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </div>
+          <svg
+            className={`h-6 w-6 text-gray-400 ml-4 flex-shrink-0 transition-transform ${
+              expanded ? 'rotate-180' : ''
+            }`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
         </div>
+
+        {(film.directors?.length || film.countries?.length || film.runtime) && (
+          <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-600">
+            {film.directors && film.directors.length > 0 && (
+              <span>Dir: {film.directors.join(', ')}</span>
+            )}
+            {film.countries && film.countries.length > 0 && (
+              <span>{film.countries.join(', ')}</span>
+            )}
+            {film.runtime && <span>{film.runtime} min</span>}
+          </div>
+        )}
       </button>
 
       {/* Expanded Content - Cinemas and Showtimes */}

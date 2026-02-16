@@ -15,7 +15,7 @@ function FilmList({ films }: FilmListProps) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       {films.map((filmWithCinemas) => (
         <FilmCard key={filmWithCinemas.film.id} filmWithCinemas={filmWithCinemas} />
       ))}
