@@ -319,6 +319,20 @@ async def seed_cinemas() -> None:
             "has_online_booking": True,
             "supports_availability_check": False,
         },
+        {
+            "id": "the-nickel",
+            "name": "The Nickel",
+            "city": "london",
+            "address": "117-119 Clerkenwell Road",
+            "postcode": "EC1R 5BY",
+            "latitude": 51.5228,
+            "longitude": -0.1068,
+            "website": "https://thenickel.co.uk",
+            "scraper_type": "nickel",
+            "scraper_config": None,
+            "has_online_booking": True,
+            "supports_availability_check": False,
+        },
     ]
 
     async with AsyncSessionLocal() as session:
