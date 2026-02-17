@@ -158,13 +158,21 @@ class PrinceCharlesScraper(BaseScraper):
                                                 else:
                                                     booking_url = href
 
+                                        # Detect format tags from li class (e.g. class="35mm")
+                                        _known_formats = {'35mm', '70mm', '4k', 'imax'}
+                                        li_classes = {c.lower() for c in child.get('class', [])}
+                                        format_tags = next(
+                                            (c for c in li_classes if c in _known_formats), None
+                                        )
+
                                         showing = RawShowing(
                                             title=title,
                                             start_time=start_time,
                                             booking_url=booking_url,
+                                            format_tags=format_tags,
                                         )
                                         showings.append(showing)
-                                        logger.debug(f"  Added: {title} at {start_time}")
+                                        logger.debug(f"  Added: {title} at {start_time} format={format_tags}")
 
                                     except Exception as e:
                                         logger.warning(f"Failed to parse time '{time_text}': {e}")

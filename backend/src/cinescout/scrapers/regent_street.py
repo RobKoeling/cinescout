@@ -2,6 +2,7 @@
 
 import json
 import logging
+import re
 from datetime import date, datetime
 from zoneinfo import ZoneInfo
 
@@ -212,6 +213,16 @@ class RegentStreetScraper(BaseScraper):
         if not title_raw or not showing_id or not time_str:
             return None
 
+        # Extract format tags from raw title BEFORE normalise_title strips them.
+        # RSC typically encodes format as "[35mm]" or "[70mm]" in the movie name.
+        _known_formats = {'35mm', '70mm', '4k', 'imax'}
+        _bracket_match = re.search(r'\[([^\]]+)\]', title_raw)
+        format_tags: str | None = None
+        if _bracket_match:
+            candidate = _bracket_match.group(1).lower()
+            if candidate in _known_formats:
+                format_tags = candidate
+
         title = self.normalise_title(title_raw)
         if not title or len(title) < 2:
             return None
@@ -234,4 +245,5 @@ class RegentStreetScraper(BaseScraper):
             title=title,
             start_time=start_time,
             booking_url=booking_url,
+            format_tags=format_tags,
         )
