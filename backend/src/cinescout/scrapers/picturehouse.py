@@ -73,15 +73,8 @@ class PicturehouseScraper(BaseScraper):
             logger.error(f"Picturehouse scraper error: {e}", exc_info=True)
             return []
 
-        # Filter showings to only include those within the requested date range
-        # (API sometimes returns showings for future dates)
-        filtered_showings = [
-            s for s in showings
-            if date_from <= s.start_time.date() <= date_to
-        ]
-
-        logger.info(f"Picturehouse ({self.cinema_slug}): Found {len(filtered_showings)} showings (filtered from {len(showings)})")
-        return filtered_showings
+        logger.info(f"Picturehouse ({self.cinema_slug}): Found {len(showings)} showings")
+        return showings
 
     async def _fetch_date(self, showing_date: date) -> list[RawShowing]:
         """Fetch showings for a specific date."""
@@ -123,7 +116,10 @@ class PicturehouseScraper(BaseScraper):
             logger.error(f"Failed to fetch Picturehouse data for {showing_date}: {e}")
             return []
 
-        return showings
+        # The API returns showings for all future dates regardless of the `date`
+        # parameter. Only keep showings that fall on the specific requested date
+        # to avoid duplicates when the caller iterates day-by-day.
+        return [s for s in showings if s.start_time.date() == showing_date]
 
     def _parse_movie(self, movie: dict) -> list[RawShowing]:
         """Parse a movie dict from the API into RawShowing objects."""

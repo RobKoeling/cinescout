@@ -4,6 +4,7 @@ import argparse
 import asyncio
 import sys
 from datetime import date, datetime, time
+from typing import TypedDict
 from zoneinfo import ZoneInfo
 
 from sqlalchemy import func, select
@@ -16,25 +17,29 @@ LONDON_TZ = ZoneInfo("Europe/London")
 DEFAULT_MIN_SHOWINGS = 1
 
 
-async def smoke_test(check_date: date, min_showings: int) -> bool:
-    """Check showings per cinema for a given date.
+class CinemaResult(TypedDict):
+    name: str
+    count: int
+    ok: bool
 
-    Returns True if all cinemas meet the threshold, False otherwise.
-    """
+
+class SmokeTestReport(TypedDict):
+    check_date: date
+    min_showings: int
+    results: list[CinemaResult]
+    all_ok: bool
+
+
+async def run_smoke_test(check_date: date, min_showings: int = DEFAULT_MIN_SHOWINGS) -> SmokeTestReport:
+    """Query showings per cinema for a given date and return a structured report."""
     day_start = datetime.combine(check_date, time.min, tzinfo=LONDON_TZ)
     day_end = datetime.combine(check_date, time.max, tzinfo=LONDON_TZ)
 
+    results: list[CinemaResult] = []
+
     async with AsyncSessionLocal() as db:
-        result = await db.execute(select(Cinema).order_by(Cinema.name))
-        cinemas = result.scalars().all()
-
-        if not cinemas:
-            print("No cinemas found in database.")
-            return False
-
-        print(f"Smoke test for {check_date}  (min showings per cinema: {min_showings})\n")
-
-        warnings: list[str] = []
+        cinemas_result = await db.execute(select(Cinema).order_by(Cinema.name))
+        cinemas = cinemas_result.scalars().all()
 
         for cinema in cinemas:
             count_result = await db.execute(
@@ -47,22 +52,31 @@ async def smoke_test(check_date: date, min_showings: int) -> bool:
                 )
             )
             count = count_result.scalar_one()
-            ok = count >= min_showings
-            status = "✓" if ok else "✗"
-            label = f"{cinema.name:<45}"
-            print(f"  {status}  {label} {count} showing{'s' if count != 1 else ''}")
-            if not ok:
-                warnings.append(cinema.name)
+            results.append({"name": cinema.name, "count": count, "ok": count >= min_showings})
 
-        print()
-        if warnings:
-            print(f"WARNING: {len(warnings)} cinema(s) below threshold ({min_showings} showing(s)):")
-            for name in warnings:
-                print(f"  - {name}")
-            return False
+    all_ok = all(r["ok"] for r in results)
+    return {"check_date": check_date, "min_showings": min_showings, "results": results, "all_ok": all_ok}
 
-        print("All cinemas OK.")
-        return True
+
+async def smoke_test(check_date: date, min_showings: int) -> bool:
+    """Print a smoke test report and return True if all cinemas pass."""
+    report = await run_smoke_test(check_date, min_showings)
+
+    print(f"Smoke test for {check_date}  (min showings per cinema: {min_showings})\n")
+    for r in report["results"]:
+        status = "✓" if r["ok"] else "✗"
+        print(f"  {status}  {r['name']:<45} {r['count']} showing{'s' if r['count'] != 1 else ''}")
+
+    print()
+    warnings = [r["name"] for r in report["results"] if not r["ok"]]
+    if warnings:
+        print(f"WARNING: {len(warnings)} cinema(s) below threshold ({min_showings} showing(s)):")
+        for name in warnings:
+            print(f"  - {name}")
+        return False
+
+    print("All cinemas OK.")
+    return True
 
 
 def main() -> None:
