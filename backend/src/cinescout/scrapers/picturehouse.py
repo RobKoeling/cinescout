@@ -1,7 +1,7 @@
 """Picturehouse Cinemas scraper using their API."""
 
 import logging
-from datetime import date, datetime, timedelta
+from datetime import date, datetime
 from zoneinfo import ZoneInfo
 
 import httpx
@@ -58,26 +58,24 @@ class PicturehouseScraper(BaseScraper):
         date_from: date,
         date_to: date,
     ) -> list[RawShowing]:
-        """Fetch showings from Picturehouse API."""
-        showings: list[RawShowing] = []
+        """Fetch showings from Picturehouse API.
 
+        The API ignores the date parameter and always returns all future showings
+        from the current moment. A single call is therefore sufficient; we filter
+        the results to the requested date range.
+        """
         try:
-            # Fetch data for each date in range
-            current_date = date_from
-            while current_date <= date_to:
-                date_showings = await self._fetch_date(current_date)
-                showings.extend(date_showings)
-                current_date = current_date + timedelta(days=1)
-
+            all_showings = await self._fetch_all(date_from)
         except Exception as e:
             logger.error(f"Picturehouse scraper error: {e}", exc_info=True)
             return []
 
+        showings = [s for s in all_showings if date_from <= s.start_time.date() <= date_to]
         logger.info(f"Picturehouse ({self.cinema_slug}): Found {len(showings)} showings")
         return showings
 
-    async def _fetch_date(self, showing_date: date) -> list[RawShowing]:
-        """Fetch showings for a specific date."""
+    async def _fetch_all(self, from_date: date) -> list[RawShowing]:
+        """Fetch all future showings from the API (date param is used as a hint only)."""
         showings: list[RawShowing] = []
 
         headers = {
@@ -88,7 +86,7 @@ class PicturehouseScraper(BaseScraper):
 
         data = {
             'cinema_id': self.cinema_id or '',
-            'date': showing_date.strftime('%Y-%m-%d'),
+            'date': from_date.strftime('%Y-%m-%d'),
         }
 
         try:
@@ -103,8 +101,6 @@ class PicturehouseScraper(BaseScraper):
                     return []
 
                 movies = result.get('movies', [])
-                logger.debug(f"Found {len(movies)} movies for {showing_date}")
-
                 for movie in movies:
                     try:
                         showings.extend(self._parse_movie(movie))
@@ -113,13 +109,10 @@ class PicturehouseScraper(BaseScraper):
                         continue
 
         except Exception as e:
-            logger.error(f"Failed to fetch Picturehouse data for {showing_date}: {e}")
+            logger.error(f"Failed to fetch Picturehouse data: {e}")
             return []
 
-        # The API returns showings for all future dates regardless of the `date`
-        # parameter. Only keep showings that fall on the specific requested date
-        # to avoid duplicates when the caller iterates day-by-day.
-        return [s for s in showings if s.start_time.date() == showing_date]
+        return showings
 
     def _parse_movie(self, movie: dict) -> list[RawShowing]:
         """Parse a movie dict from the API into RawShowing objects."""
