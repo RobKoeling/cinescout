@@ -68,7 +68,10 @@ async def run_scrape_all() -> None:
 
             try:
                 raw_showings = await scraper.get_showings(date_from, date_to)
-                logger.info(f"Found {len(raw_showings)} raw showings for {cinema_name}")
+                if raw_showings:
+                    logger.info(f"Found {len(raw_showings)} raw showings for {cinema_name}")
+                else:
+                    logger.warning(f"Scraper returned 0 showings for {cinema_name} — possible scraper issue")
 
                 # Commit any pending film/alias creations before processing showings
                 try:
