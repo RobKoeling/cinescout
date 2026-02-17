@@ -1,6 +1,7 @@
 """BFI Southbank scraper using Playwright with stealth to bypass Cloudflare."""
 
 import asyncio
+import json
 import logging
 import re
 from datetime import date, datetime
@@ -242,6 +243,9 @@ class BFIScraper(BaseScraper):
         soup = BeautifulSoup(html, "html.parser")
         showings: list[RawShowing] = []
 
+        # Build format lookup from the JS data embedded in the page
+        format_lookup = self._extract_format_lookup(html)
+
         items = soup.find_all("div", class_="result-box-item")
         if not items:
             logger.debug("BFI: No .result-box-item elements on results page")
@@ -249,7 +253,7 @@ class BFIScraper(BaseScraper):
 
         for item in items:
             try:
-                showing = self._parse_result_item(item)
+                showing = self._parse_result_item(item, format_lookup)
                 if showing:
                     showings.append(showing)
             except Exception as e:
@@ -257,14 +261,66 @@ class BFIScraper(BaseScraper):
 
         return showings
 
-    def _parse_result_item(self, item: Tag) -> RawShowing | None:
+    def _extract_format_lookup(self, html: str) -> dict[tuple[str, str], str]:
+        """Extract format tags from the articleContext.searchResults JS data.
+
+        The page embeds a JS object with searchResults: an array of arrays.
+        Index 5 = title (description), index 7 = full date string, index 17 = keywords
+        (comma-separated, e.g. "35mm,Kathryn Bigelow").
+
+        Returns a dict mapping (title, date_string) → format_tag.
+        """
+        m = re.search(r'"searchResults"\s*:\s*(\[)', html)
+        if not m:
+            return {}
+
+        start = m.start(1)
+        depth = 0
+        end = start
+        for i, ch in enumerate(html[start:], start):
+            if ch == '[':
+                depth += 1
+            elif ch == ']':
+                depth -= 1
+                if depth == 0:
+                    end = i + 1
+                    break
+
+        try:
+            results = json.loads(html[start:end])
+        except (json.JSONDecodeError, ValueError):
+            logger.debug("BFI: Could not parse searchResults JS data")
+            return {}
+
+        known_formats = {'35mm', '70mm', '4k', 'imax'}
+        lookup: dict[tuple[str, str], str] = {}
+        for record in results:
+            if not isinstance(record, list) or len(record) <= 17:
+                continue
+            title = str(record[5])
+            date_str = str(record[7])
+            keywords_str = str(record[17])
+            tags = [t.strip().lower() for t in keywords_str.split(',')]
+            format_tag = next((t for t in tags if t in known_formats), None)
+            if format_tag:
+                lookup[(title, date_str)] = format_tag
+
+        logger.debug(f"BFI: format lookup has {len(lookup)} 35mm/format entries")
+        return lookup
+
+    def _parse_result_item(
+        self,
+        item: Tag,
+        format_lookup: dict[tuple[str, str], str] | None = None,
+    ) -> RawShowing | None:
         """Parse a single .result-box-item into a RawShowing."""
         # Title
         name_link = item.select_one(".item-name a.more-info")
         if not name_link:
             return None
 
-        title = self.normalise_title(name_link.get_text(strip=True))
+        title_raw = name_link.get_text(strip=True)
+        title = self.normalise_title(title_raw)
         if not title or len(title) < 2:
             return None
 
@@ -288,11 +344,15 @@ class BFIScraper(BaseScraper):
         venue_elem = item.select_one(".item-venue")
         screen_name = venue_elem.get_text(strip=True) if venue_elem else None
 
+        # Format tags from JS data lookup (keyed by raw title + full date string)
+        format_tags = format_lookup.get((title_raw, start_text)) if format_lookup else None
+
         return RawShowing(
             title=title,
             start_time=start_time,
             booking_url=booking_url,
             screen_name=screen_name,
+            format_tags=format_tags,
         )
 
     def _parse_start_date(self, text: str) -> datetime | None:
