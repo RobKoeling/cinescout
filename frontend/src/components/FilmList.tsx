@@ -1,11 +1,12 @@
 import FilmCard from './FilmCard'
-import type { FilmWithCinemas } from '../types'
+import type { Cinema, FilmWithCinemas } from '../types'
 
 interface FilmListProps {
   films: FilmWithCinemas[]
+  onCinemaClick: (cinema: Cinema) => void
 }
 
-function FilmList({ films }: FilmListProps) {
+function FilmList({ films, onCinemaClick }: FilmListProps) {
   if (films.length === 0) {
     return (
       <div className="text-center py-12">
@@ -17,7 +18,12 @@ function FilmList({ films }: FilmListProps) {
   return (
     <div className="space-y-2">
       {films.map((filmWithCinemas) => (
-        <FilmCard key={filmWithCinemas.film.id} filmWithCinemas={filmWithCinemas} />
+        <FilmCard
+          key={filmWithCinemas.film.id}
+          filmWithCinemas={filmWithCinemas}
+          allFilms={films}
+          onCinemaClick={onCinemaClick}
+        />
       ))}
     </div>
   )

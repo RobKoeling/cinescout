@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import SearchForm from './components/SearchForm'
 import FilmList from './components/FilmList'
-import type { ShowingsResponse } from './types'
+import CinemaModal from './components/CinemaModal'
+import type { Cinema, ShowingsResponse } from './types'
 
 function App() {
   const [showings, setShowings] = useState<ShowingsResponse | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [selectedCinema, setSelectedCinema] = useState<Cinema | null>(null)
 
   const handleSearch = async (searchParams: {
     date: string
@@ -74,7 +76,7 @@ function App() {
             <div className="mb-4 text-sm text-gray-600">
               Found {showings.total_films} films with {showings.total_showings} showings
             </div>
-            <FilmList films={showings.films} />
+            <FilmList films={showings.films} onCinemaClick={setSelectedCinema} />
           </div>
         )}
 
@@ -84,6 +86,14 @@ function App() {
           </div>
         )}
       </main>
+      {selectedCinema && showings && (
+        <CinemaModal
+          cinema={selectedCinema}
+          date={showings.query.date}
+          allFilms={showings.films}
+          onClose={() => setSelectedCinema(null)}
+        />
+      )}
     </div>
   )
 }

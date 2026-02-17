@@ -1,11 +1,13 @@
 import { useState } from 'react'
-import type { FilmWithCinemas } from '../types'
+import type { Cinema, FilmWithCinemas } from '../types'
 
 interface FilmCardProps {
   filmWithCinemas: FilmWithCinemas
+  allFilms: FilmWithCinemas[]
+  onCinemaClick: (cinema: Cinema) => void
 }
 
-function FilmCard({ filmWithCinemas }: FilmCardProps) {
+function FilmCard({ filmWithCinemas, onCinemaClick }: FilmCardProps) {
   const [expanded, setExpanded] = useState(false)
   const { film, cinemas } = filmWithCinemas
 
@@ -92,9 +94,12 @@ function FilmCard({ filmWithCinemas }: FilmCardProps) {
               >
                 {/* Cinema name — indented 5cm from the left */}
                 <div className="pl-[3cm]">
-                  <span className="font-medium text-gray-900">
+                  <button
+                    onClick={() => onCinemaClick(cinemaWithShowings.cinema)}
+                    className="font-medium text-gray-900 hover:text-blue-600 hover:underline transition-colors text-left"
+                  >
                     {cinemaWithShowings.cinema.name}
-                  </span>
+                  </button>
                 </div>
 
                 {/* Showing times — start at the 40% mark */}
