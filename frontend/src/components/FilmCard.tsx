@@ -5,9 +5,10 @@ interface FilmCardProps {
   filmWithCinemas: FilmWithCinemas
   allFilms: FilmWithCinemas[]
   onCinemaClick: (cinema: Cinema) => void
+  onDirectorClick: (director: string, filmId: string) => void
 }
 
-function FilmCard({ filmWithCinemas, onCinemaClick }: FilmCardProps) {
+function FilmCard({ filmWithCinemas, onCinemaClick, onDirectorClick }: FilmCardProps) {
   const [expanded, setExpanded] = useState(false)
   const { film, cinemas } = filmWithCinemas
 
@@ -62,25 +63,38 @@ function FilmCard({ filmWithCinemas, onCinemaClick }: FilmCardProps) {
           </svg>
         </div>
 
-        {expanded && (film.directors?.length || film.countries?.length || film.cast?.length) && (
-          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-600">
-            {film.directors && film.directors.length > 0 && (
-              <span>Dir: {film.directors.join(', ')}</span>
-            )}
-            {film.countries && film.countries.length > 0 && (
-              <span>{film.countries.join(', ')}</span>
-            )}
-            {film.year && <span>{film.year}</span>}
-            {film.cast && film.cast.length > 0 && (
-              <span>{film.cast.slice(0, 3).join(', ')}</span>
-            )}
-          </div>
-        )}
       </button>
 
       {/* Expanded Content - Cinemas and Showtimes */}
       {expanded && (
         <div className="border-t border-gray-200 bg-gray-50 p-6">
+          {(film.directors?.length || film.countries?.length || film.cast?.length) && (
+            <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-600 mb-3">
+              {film.directors && film.directors.length > 0 && (
+                <span>
+                  Dir:{' '}
+                  {film.directors.map((dir, i) => (
+                    <span key={dir}>
+                      <button
+                        onClick={e => { e.stopPropagation(); onDirectorClick(dir, film.id) }}
+                        className="hover:text-blue-600 hover:underline transition-colors"
+                      >
+                        {dir}
+                      </button>
+                      {i < film.directors!.length - 1 && ', '}
+                    </span>
+                  ))}
+                </span>
+              )}
+              {film.countries && film.countries.length > 0 && (
+                <span>{film.countries.join(', ')}</span>
+              )}
+              {film.year && <span>{film.year}</span>}
+              {film.cast && film.cast.length > 0 && (
+                <span>{film.cast.slice(0, 3).join(', ')}</span>
+              )}
+            </div>
+          )}
           {film.overview && (
             <p className="text-sm text-gray-700 mb-6">{film.overview}</p>
           )}

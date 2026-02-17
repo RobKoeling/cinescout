@@ -2,6 +2,7 @@ import { useState } from 'react'
 import SearchForm from './components/SearchForm'
 import FilmList from './components/FilmList'
 import CinemaModal from './components/CinemaModal'
+import DirectorModal from './components/DirectorModal'
 import type { Cinema, ShowingsResponse } from './types'
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [selectedCinema, setSelectedCinema] = useState<Cinema | null>(null)
+  const [selectedDirector, setSelectedDirector] = useState<{ name: string; filmId: string } | null>(null)
 
   const handleSearch = async (searchParams: {
     date: string
@@ -76,7 +78,11 @@ function App() {
             <div className="mb-4 text-sm text-gray-600">
               Found {showings.total_films} films with {showings.total_showings} showings
             </div>
-            <FilmList films={showings.films} onCinemaClick={setSelectedCinema} />
+            <FilmList
+              films={showings.films}
+              onCinemaClick={setSelectedCinema}
+              onDirectorClick={(name, filmId) => setSelectedDirector({ name, filmId })}
+            />
           </div>
         )}
 
@@ -86,6 +92,14 @@ function App() {
           </div>
         )}
       </main>
+      {selectedDirector && showings && (
+        <DirectorModal
+          director={selectedDirector.name}
+          city={showings.query.city}
+          excludeFilmId={selectedDirector.filmId}
+          onClose={() => setSelectedDirector(null)}
+        />
+      )}
       {selectedCinema && showings && (
         <CinemaModal
           cinema={selectedCinema}
