@@ -18,33 +18,28 @@ LONDON_TZ = ZoneInfo("Europe/London")
 BASE_URL = "https://www.regentstreetcinema.com"
 GRAPHQL_URL = f"{BASE_URL}/graphql"
 
-# Site ID and badge filter discovered from browser network traffic
+# Site ID discovered from browser network traffic
 _SITE_IDS = [85]
-_ANY_BADGE_IDS = [1314]
-_EVERY_BADGE_IDS = [None]
 
 # Minimal query: only the fields we actually need
 _DATES_QUERY = """
 query ($ids: [ID], $movieId: ID, $movieIds: [ID], $titleClassId: ID, $titleClassIds: [ID],
-       $siteIds: [ID], $everyShowingBadgeIds: [ID], $anyShowingBadgeIds: [ID]) {
+       $siteIds: [ID]) {
   datesWithShowing(
     ids: $ids movieId: $movieId movieIds: $movieIds
     titleClassId: $titleClassId titleClassIds: $titleClassIds
-    siteIds: $siteIds everyShowingBadgeIds: $everyShowingBadgeIds
-    anyShowingBadgeIds: $anyShowingBadgeIds
+    siteIds: $siteIds
   ) { value }
 }
 """
 
 _SHOWINGS_QUERY = """
 query ($date: String, $ids: [ID], $movieId: ID, $movieIds: [ID], $titleClassId: ID,
-       $titleClassIds: [ID], $siteIds: [ID], $everyShowingBadgeIds: [ID],
-       $anyShowingBadgeIds: [ID], $resultVersion: String) {
+       $titleClassIds: [ID], $siteIds: [ID], $resultVersion: String) {
   showingsForDate(
     date: $date ids: $ids movieId: $movieId movieIds: $movieIds
     titleClassId: $titleClassId titleClassIds: $titleClassIds
-    siteIds: $siteIds everyShowingBadgeIds: $everyShowingBadgeIds
-    anyShowingBadgeIds: $anyShowingBadgeIds resultVersion: $resultVersion
+    siteIds: $siteIds resultVersion: $resultVersion
   ) {
     data {
       id
@@ -62,8 +57,6 @@ _BASE_VARIABLES: dict = {
     "titleClassId": None,
     "titleClassIds": [],
     "siteIds": _SITE_IDS,
-    "anyShowingBadgeIds": _ANY_BADGE_IDS,
-    "everyShowingBadgeIds": _EVERY_BADGE_IDS,
 }
 
 

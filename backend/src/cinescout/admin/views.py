@@ -50,6 +50,7 @@ class ShowingAdmin(ModelView, model=Showing):
         Showing.format_tags,
         Showing.price,
     ]
+    column_searchable_list = [Showing.cinema_id]
     can_create = False
     can_edit = False
 
