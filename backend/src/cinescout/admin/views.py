@@ -63,7 +63,7 @@ class FilmAliasAdmin(ModelView, model=FilmAlias):
 
 
 _TOOLS_TEMPLATE = """\
-{% extends "layout.html" %}
+{% extends "sqladmin/layout.html" %}
 {% block content %}
 <div class="container-fluid p-4">
   <h2>Scrape Tools</h2>
