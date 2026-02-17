@@ -138,7 +138,7 @@ class ScrapeToolsView(BaseView):
                 smoke_report = await run_smoke_test(check_date, min_showings)
 
         tmpl = self.templates.env.from_string(_TOOLS_TEMPLATE)
-        content = tmpl.render(
+        content = await tmpl.render_async(
             request=request,
             message=message,
             smoke_report=smoke_report,
