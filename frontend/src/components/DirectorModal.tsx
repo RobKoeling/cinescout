@@ -13,6 +13,8 @@ interface FilmShowings {
   cinemas: { cinema: Cinema; times: ShowingTime[] }[]
 }
 
+type Mode = 'upcoming' | 'future' | 'past'
+
 const LONDON_TZ = 'Europe/London'
 
 function todayInLondon(): string {
@@ -23,13 +25,6 @@ function addDays(isoDate: string, n: number): string {
   const d = new Date(`${isoDate}T00:00:00`)
   d.setDate(d.getDate() + n)
   return d.toLocaleDateString('sv', { timeZone: LONDON_TZ })
-}
-
-function formatDateTime(isoString: string): string {
-  const d = new Date(isoString)
-  const day = d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: LONDON_TZ })
-  const time = d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: LONDON_TZ })
-  return `${day} · ${time}`
 }
 
 function formatTime(isoString: string): string {
@@ -45,9 +40,24 @@ async function fetchDay(date: string, city: string): Promise<{ films: { film: Fi
   return res.json()
 }
 
+function datesForMode(mode: Mode): string[] {
+  const today = todayInLondon()
+  if (mode === 'upcoming') return Array.from({ length: 7 },  (_, i) => addDays(today, i))
+  if (mode === 'future')   return Array.from({ length: 14 }, (_, i) => addDays(today, i))
+  // past: last 90 days (yesterday back to 90 days ago)
+  return Array.from({ length: 90 }, (_, i) => addDays(today, -(i + 1))).reverse()
+}
+
+const MODE_LABEL: Record<Mode, string> = {
+  upcoming: 'Next 7 days',
+  future:   'All future screenings',
+  past:     'Past screenings',
+}
+
 export default function DirectorModal({ director, city, excludeFilmId, onClose }: DirectorModalProps) {
   const [films, setFilms] = useState<FilmShowings[] | null>(null)
   const [loading, setLoading] = useState(true)
+  const [mode, setMode] = useState<Mode>('upcoming')
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
@@ -58,9 +68,9 @@ export default function DirectorModal({ director, city, excludeFilmId, onClose }
   useEffect(() => {
     let cancelled = false
     setLoading(true)
+    setFilms(null)
 
-    const today = todayInLondon()
-    const dates = Array.from({ length: 7 }, (_, i) => addDays(today, i))
+    const dates = datesForMode(mode)
 
     Promise.all(dates.map(d => fetchDay(d, city)))
       .then(responses => {
@@ -88,16 +98,20 @@ export default function DirectorModal({ director, city, excludeFilmId, onClose }
           }
         }
 
-        // Convert to sorted array; sort films by title, times chronologically
+        // For past mode sort most-recent-first; otherwise chronological
+        const timeCmp = mode === 'past'
+          ? (a: ShowingTime, b: ShowingTime) => b.start_time.localeCompare(a.start_time)
+          : (a: ShowingTime, b: ShowingTime) => a.start_time.localeCompare(b.start_time)
+
         const result: FilmShowings[] = Array.from(filmMap.values())
           .map(({ film, cinemaMap }) => ({
             film,
             cinemas: Array.from(cinemaMap.values())
               .map(({ cinema, times }) => ({
                 cinema,
-                times: times.sort((a, b) => a.start_time.localeCompare(b.start_time)),
+                times: times.sort(timeCmp),
               }))
-              .sort((a, b) => a.times[0].start_time.localeCompare(b.times[0].start_time)),
+              .sort((a, b) => timeCmp(a.times[0], b.times[0])),
           }))
           .sort((a, b) => a.film.title.localeCompare(b.film.title))
 
@@ -107,7 +121,7 @@ export default function DirectorModal({ director, city, excludeFilmId, onClose }
       .catch(() => { if (!cancelled) setLoading(false) })
 
     return () => { cancelled = true }
-  }, [director, city])
+  }, [director, city, mode])
 
   // Group a flat list of times by date label
   const groupByDate = (times: ShowingTime[]): { label: string; times: ShowingTime[] }[] => {
@@ -133,7 +147,21 @@ export default function DirectorModal({ director, city, excludeFilmId, onClose }
         <div className="flex items-start justify-between p-5 border-b border-gray-200">
           <div>
             <h2 className="text-xl font-bold text-gray-900">{director}</h2>
-            <p className="text-sm text-gray-500 mt-0.5">Showings in the next 7 days</p>
+            <div className="flex gap-2 mt-2">
+              {(['upcoming', 'future', 'past'] as Mode[]).map(m => (
+                <button
+                  key={m}
+                  onClick={() => setMode(m)}
+                  className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
+                    mode === m
+                      ? 'bg-gray-900 text-white border-gray-900'
+                      : 'text-gray-500 border-gray-300 hover:border-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  {MODE_LABEL[m]}
+                </button>
+              ))}
+            </div>
           </div>
           <button onClick={onClose} className="ml-4 text-gray-400 hover:text-gray-600 transition-colors" aria-label="Close">
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -147,7 +175,9 @@ export default function DirectorModal({ director, city, excludeFilmId, onClose }
           {loading && <p className="text-sm text-gray-500">Loading…</p>}
 
           {!loading && films?.length === 0 && (
-            <p className="text-sm text-gray-500">No showings found for {director} in the next 7 days.</p>
+            <p className="text-sm text-gray-500">
+              No {mode === 'past' ? 'past' : 'upcoming'} screenings found for {director}.
+            </p>
           )}
 
           {!loading && films && films.length > 0 && (
