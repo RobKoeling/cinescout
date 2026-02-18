@@ -210,6 +210,20 @@ async def seed_cinemas() -> None:
         },
         # --- End Everyman venues ---
         {
+            "id": "genesis",
+            "name": "Genesis Cinema",
+            "city": "london",
+            "address": "93-95 Mile End Road",
+            "postcode": "E1 4UJ",
+            "latitude": 51.5213,
+            "longitude": -0.0468,
+            "website": "https://genesiscinema.co.uk/whats-on",
+            "scraper_type": "genesis",
+            "scraper_config": None,
+            "has_online_booking": True,
+            "supports_availability_check": False,
+        },
+        {
             "id": "ica",
             "name": "ICA Cinema",
             "city": "london",
