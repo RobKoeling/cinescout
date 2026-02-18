@@ -25,7 +25,7 @@ const MODE_LABELS: { mode: SearchMode; label: string }[] = [
   { mode: 'format', label: 'Format' },
 ]
 
-const FORMAT_OPTIONS = ['16mm', '35mm', '70mm', 'unspecified']
+const FORMAT_OPTIONS = ['16mm', '35mm', '70mm']
 
 function SearchForm({ onSearch, loading }: SearchFormProps) {
   const today = new Date().toISOString().split('T')[0]

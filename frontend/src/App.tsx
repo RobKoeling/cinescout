@@ -22,19 +22,13 @@ function applyFilter(films: FilmWithCinemas[], params: SearchParams): FilmWithCi
   }
 
   if (params.mode === 'format') {
-    const wantUnspecified = params.format === 'unspecified'
-    const wantAny = !params.format
     return films
       .map(f => ({
         ...f,
         cinemas: f.cinemas
           .map(c => ({
             ...c,
-            times: c.times.filter(t => {
-              if (wantAny) return true
-              if (wantUnspecified) return !t.format_tags
-              return t.format_tags === params.format
-            }),
+            times: c.times.filter(t => !params.format || t.format_tags === params.format),
           }))
           .filter(c => c.times.length > 0),
       }))
