@@ -333,6 +333,20 @@ async def seed_cinemas() -> None:
             "has_online_booking": True,
             "supports_availability_check": False,
         },
+        {
+            "id": "cinema-museum",
+            "name": "The Cinema Museum",
+            "city": "london",
+            "address": "2 Dugard Way, Kennington",
+            "postcode": "SE11 4TH",
+            "latitude": 51.4876,
+            "longitude": -0.1072,
+            "website": "https://www.cinemamuseum.org.uk",
+            "scraper_type": "cinema-museum",
+            "scraper_config": None,
+            "has_online_booking": True,
+            "supports_availability_check": False,
+        },
     ]
 
     async with AsyncSessionLocal() as session:
