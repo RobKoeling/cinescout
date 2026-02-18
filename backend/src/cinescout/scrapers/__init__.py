@@ -2,6 +2,7 @@
 
 from typing import Type
 
+from cinescout.scrapers.barbican import BarbicanScraper
 from cinescout.scrapers.base import BaseScraper
 from cinescout.scrapers.bfi import BFIScraper
 from cinescout.scrapers.cinema_museum import CinemaMuseumScraper
@@ -17,6 +18,7 @@ from cinescout.scrapers.screen_shot import ScreenShotScraper
 
 # Registry mapping scraper type names to scraper classes
 SCRAPER_REGISTRY: dict[str, Type[BaseScraper]] = {
+    "barbican": BarbicanScraper,
     "bfi": BFIScraper,
     "cinema-museum": CinemaMuseumScraper,
     "curzon": CurzonScraper,
@@ -57,6 +59,7 @@ def get_scraper(scraper_type: str, scraper_config: dict | None = None) -> BaseSc
 __all__ = [
     "SCRAPER_REGISTRY",
     "get_scraper",
+    "BarbicanScraper",
     "BaseScraper",
     "BFIScraper",
     "CinemaMuseumScraper",
