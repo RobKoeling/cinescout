@@ -8,6 +8,7 @@ from cinescout.scrapers.bfi import BFIScraper
 from cinescout.scrapers.cinema_museum import CinemaMuseumScraper
 from cinescout.scrapers.curzon import CurzonScraper
 from cinescout.scrapers.depot_lewes import DepotLewesScraper
+from cinescout.scrapers.everyman import EverymanScraper
 from cinescout.scrapers.garden import GardenScraper
 from cinescout.scrapers.ica import ICAScraper
 from cinescout.scrapers.nickel import NickelScraper
@@ -24,6 +25,7 @@ SCRAPER_REGISTRY: dict[str, Type[BaseScraper]] = {
     "cinema-museum": CinemaMuseumScraper,
     "curzon": CurzonScraper,
     "depot-lewes": DepotLewesScraper,
+    "everyman": EverymanScraper,
     "garden": GardenScraper,
     "ica": ICAScraper,
     "nickel": NickelScraper,
@@ -51,6 +53,9 @@ def get_scraper(scraper_type: str, scraper_config: dict | None = None) -> BaseSc
         if scraper_config and scraper_type == "picturehouse":
             cinema_slug = scraper_config.get("cinema_slug", "picturehouse-central")
             return scraper_class(cinema_slug=cinema_slug)
+        if scraper_config and scraper_type == "everyman":
+            theater_id = scraper_config.get("theater_id", "X0712")
+            return scraper_class(theater_id=theater_id)
         if scraper_config and scraper_type == "curzon":
             venue_id = scraper_config.get("venue_id", "SOH1")
             return scraper_class(venue_id=venue_id)
@@ -67,6 +72,7 @@ __all__ = [
     "CinemaMuseumScraper",
     "CurzonScraper",
     "DepotLewesScraper",
+    "EverymanScraper",
     "GardenScraper",
     "ICAScraper",
     "NickelScraper",
