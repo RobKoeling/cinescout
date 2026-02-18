@@ -1,42 +1,77 @@
 import { useState } from 'react'
 import SearchForm from './components/SearchForm'
+import type { SearchParams } from './components/SearchForm'
 import FilmList from './components/FilmList'
 import CinemaModal from './components/CinemaModal'
 import DirectorModal from './components/DirectorModal'
-import type { Cinema, ShowingsResponse } from './types'
+import type { Cinema, FilmWithCinemas, ShowingsResponse } from './types'
+
+function applyFilter(films: FilmWithCinemas[], params: SearchParams): FilmWithCinemas[] {
+  if (params.mode === 'film' && params.filmTitle) {
+    const q = params.filmTitle.toLowerCase()
+    return films.filter(f => f.film.title.toLowerCase().includes(q))
+  }
+
+  if (params.mode === 'cinema' && params.cinemaId) {
+    return films
+      .map(f => ({
+        ...f,
+        cinemas: f.cinemas.filter(c => c.cinema.id === params.cinemaId),
+      }))
+      .filter(f => f.cinemas.length > 0)
+  }
+
+  if (params.mode === 'format') {
+    const wantUnspecified = params.format === 'unspecified'
+    const wantAny = !params.format
+    return films
+      .map(f => ({
+        ...f,
+        cinemas: f.cinemas
+          .map(c => ({
+            ...c,
+            times: c.times.filter(t => {
+              if (wantAny) return true
+              if (wantUnspecified) return !t.format_tags
+              return t.format_tags === params.format
+            }),
+          }))
+          .filter(c => c.times.length > 0),
+      }))
+      .filter(f => f.cinemas.length > 0)
+  }
+
+  return films
+}
 
 function App() {
   const [showings, setShowings] = useState<ShowingsResponse | null>(null)
+  const [filteredFilms, setFilteredFilms] = useState<FilmWithCinemas[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [selectedCinema, setSelectedCinema] = useState<Cinema | null>(null)
   const [selectedDirector, setSelectedDirector] = useState<{ name: string; filmId: string } | null>(null)
 
-  const handleSearch = async (searchParams: {
-    date: string
-    timeFrom: string
-    timeTo: string
-  }) => {
+  const handleSearch = async (params: SearchParams) => {
     setLoading(true)
     setError(null)
 
     try {
-      const params = new URLSearchParams({
-        date: searchParams.date,
-        time_from: searchParams.timeFrom,
-        time_to: searchParams.timeTo,
+      const timeFrom = params.mode === 'time' ? params.timeFrom : '00:00'
+      const timeTo   = params.mode === 'time' ? params.timeTo   : '23:59'
+
+      const apiParams = new URLSearchParams({
+        date: params.date,
+        time_from: timeFrom,
+        time_to: timeTo,
       })
 
-      const response = await fetch(
-        `http://localhost:8000/api/showings?${params.toString()}`
-      )
+      const response = await fetch(`http://localhost:8000/api/showings?${apiParams}`)
+      if (!response.ok) throw new Error('Failed to fetch showings')
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch showings')
-      }
-
-      const data = await response.json()
+      const data: ShowingsResponse = await response.json()
       setShowings(data)
+      setFilteredFilms(applyFilter(data.films, params))
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
@@ -76,10 +111,10 @@ function App() {
         {!loading && showings && (
           <div className="mt-8">
             <div className="mb-4 text-sm text-gray-600">
-              Found {showings.total_films} films with {showings.total_showings} showings
+              Found {filteredFilms.length} film{filteredFilms.length !== 1 ? 's' : ''}
             </div>
             <FilmList
-              films={showings.films}
+              films={filteredFilms}
               onCinemaClick={setSelectedCinema}
               onDirectorClick={(name, filmId) => setSelectedDirector({ name, filmId })}
             />
@@ -92,6 +127,7 @@ function App() {
           </div>
         )}
       </main>
+
       {selectedDirector && showings && (
         <DirectorModal
           director={selectedDirector.name}

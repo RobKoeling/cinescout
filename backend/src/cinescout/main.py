@@ -9,7 +9,7 @@ from apscheduler.triggers.cron import CronTrigger
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from cinescout.api.routes import admin, cinemas, health, showings
+from cinescout.api.routes import admin, cinemas, films, health, showings
 from cinescout.tasks.scrape_job import run_scrape_all
 
 logging.basicConfig(level=logging.INFO)
@@ -64,5 +64,6 @@ app.add_middleware(
 # Include routers
 app.include_router(health.router)
 app.include_router(cinemas.router, prefix="/api", tags=["cinemas"])
+app.include_router(films.router, prefix="/api", tags=["films"])
 app.include_router(showings.router, prefix="/api", tags=["showings"])
 app.include_router(admin.router, prefix="/api", tags=["admin"])
