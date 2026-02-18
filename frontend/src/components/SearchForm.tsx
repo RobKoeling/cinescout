@@ -25,12 +25,7 @@ const MODE_LABELS: { mode: SearchMode; label: string }[] = [
   { mode: 'format', label: 'Format' },
 ]
 
-const FORMAT_OPTIONS: { value: string; label: string }[] = [
-  { value: '16mm',  label: '16mm' },
-  { value: '35mm',  label: '35mm' },
-  { value: '70mm',  label: '70mm' },
-  { value: 'other', label: 'Any other format' },
-]
+const FORMAT_OPTIONS = ['16mm', '35mm', '70mm', 'unspecified']
 
 function SearchForm({ onSearch, loading }: SearchFormProps) {
   const today = new Date().toISOString().split('T')[0]
@@ -231,8 +226,8 @@ function SearchForm({ onSearch, loading }: SearchFormProps) {
                 className="mt-1 block rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               >
                 <option value="">Any format</option>
-                {FORMAT_OPTIONS.map(({ value, label }) => (
-                  <option key={value} value={value}>{label}</option>
+                {FORMAT_OPTIONS.map(f => (
+                  <option key={f} value={f}>{f}</option>
                 ))}
               </select>
             </div>

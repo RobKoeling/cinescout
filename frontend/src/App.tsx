@@ -22,7 +22,8 @@ function applyFilter(films: FilmWithCinemas[], params: SearchParams): FilmWithCi
   }
 
   if (params.mode === 'format') {
-    const knownFormats = ['16mm', '35mm', '70mm']
+    const wantUnspecified = params.format === 'unspecified'
+    const wantAny = !params.format
     return films
       .map(f => ({
         ...f,
@@ -30,8 +31,8 @@ function applyFilter(films: FilmWithCinemas[], params: SearchParams): FilmWithCi
           .map(c => ({
             ...c,
             times: c.times.filter(t => {
-              if (!params.format) return true
-              if (params.format === 'other') return !!t.format_tags && !knownFormats.includes(t.format_tags)
+              if (wantAny) return true
+              if (wantUnspecified) return !t.format_tags
               return t.format_tags === params.format
             }),
           }))
