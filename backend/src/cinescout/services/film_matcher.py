@@ -165,11 +165,11 @@ class FilmMatcher:
         )
 
         try:
-            self.db.add(film)
-            await self.db.flush()
+            async with self.db.begin_nested():
+                self.db.add(film)
+                await self.db.flush()
         except IntegrityError:
-            await self.db.rollback()
-            # Another cinema in this run already created the same film; fetch it.
+            # Savepoint rolled back; outer session (including pending showings) unaffected.
             existing = await self.db.get(Film, film_id)
             if existing:
                 logger.debug(f"Film {film_id!r} already exists, reusing.")
@@ -203,10 +203,11 @@ class FilmMatcher:
         )
 
         try:
-            self.db.add(film)
-            await self.db.flush()
+            async with self.db.begin_nested():
+                self.db.add(film)
+                await self.db.flush()
         except IntegrityError:
-            await self.db.rollback()
+            # Savepoint rolled back; outer session (including pending showings) unaffected.
             existing = await self.db.get(Film, film_id)
             if existing:
                 logger.debug(f"Film {film_id!r} already exists, reusing.")
@@ -229,8 +230,12 @@ class FilmMatcher:
             normalized_title=normalized_title,
             film_id=film_id,
         )
-        self.db.add(alias)
-        await self.db.flush()
+        try:
+            async with self.db.begin_nested():
+                self.db.add(alias)
+                await self.db.flush()
+        except IntegrityError:
+            pass  # Another concurrent process stored the same alias; that's fine.
 
     def _extract_year(self, release_date: str | None) -> int | None:
         """Extract year from TMDb release date string."""

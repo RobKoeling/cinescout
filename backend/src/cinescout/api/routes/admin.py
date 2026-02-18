@@ -136,7 +136,9 @@ async def trigger_scrape(
                         existing_showing.price = raw_showing.price
                         existing_showing.raw_title = raw_showing.title
                     else:
-                        # Create new showing
+                        # Create new showing — flush immediately so the next iteration's
+                        # duplicate check can see it, and use a savepoint so an unexpected
+                        # IntegrityError only rolls back this one showing.
                         showing = Showing(
                             cinema_id=cinema_id,
                             film_id=film.id,
@@ -147,8 +149,16 @@ async def trigger_scrape(
                             price=raw_showing.price,
                             raw_title=raw_showing.title,
                         )
-                        db.add(showing)
-                        showings_created += 1
+                        try:
+                            async with db.begin_nested():
+                                db.add(showing)
+                                await db.flush()
+                            showings_created += 1
+                        except IntegrityError:
+                            logger.debug(
+                                f"Duplicate showing skipped: {raw_showing.title} "
+                                f"at {raw_showing.start_time}"
+                            )
 
                 except Exception as e:
                     logger.error(

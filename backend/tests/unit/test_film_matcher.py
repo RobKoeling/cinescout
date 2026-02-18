@@ -36,12 +36,21 @@ def make_film(
     return Film(id=id, title=title, year=year)
 
 
+def make_nested_ctx() -> MagicMock:
+    """Async context manager that mimics SQLAlchemy's begin_nested() / SAVEPOINT."""
+    ctx = MagicMock()
+    ctx.__aenter__ = AsyncMock(return_value=ctx)
+    ctx.__aexit__ = AsyncMock(return_value=False)  # never suppress exceptions
+    return ctx
+
+
 def make_db() -> AsyncMock:
     db = AsyncMock()
     db.add = MagicMock()
     db.flush = AsyncMock()
     db.rollback = AsyncMock()
     db.get = AsyncMock(return_value=None)
+    db.begin_nested = MagicMock(side_effect=lambda: make_nested_ctx())
     return db
 
 
@@ -267,4 +276,5 @@ class TestMatchOrCreateFilm:
         result = await matcher.match_or_create_film("Nosferatu")
 
         assert result is existing
-        db.rollback.assert_called_once()
+        # Savepoints are used instead of session-level rollback, so db.rollback is NOT called.
+        db.rollback.assert_not_called()
