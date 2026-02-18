@@ -10,6 +10,7 @@ import httpx
 from cinescout.config import settings
 from cinescout.scrapers.base import BaseScraper
 from cinescout.scrapers.models import RawShowing
+from cinescout.utils.text import split_double_bill
 
 logger = logging.getLogger(__name__)
 
@@ -61,9 +62,7 @@ class CinemaMuseumScraper(BaseScraper):
 
                 for event in events:
                     try:
-                        showing = self._parse_event(event, date_from, date_to)
-                        if showing:
-                            showings.append(showing)
+                        showings.extend(self._parse_event(event, date_from, date_to))
                     except Exception as e:
                         logger.warning(
                             f"Cinema Museum: Failed to parse event {event.get('id')}: {e}"
@@ -76,34 +75,30 @@ class CinemaMuseumScraper(BaseScraper):
 
         return showings
 
-    def _parse_event(self, event: dict, date_from: date, date_to: date) -> RawShowing | None:
+    def _parse_event(self, event: dict, date_from: date, date_to: date) -> list[RawShowing]:
         title_raw = html.unescape(event.get("title", ""))
         if not title_raw:
-            return None
+            return []
 
         # Skip non-screening events (tours, talks, etc.) by checking categories
         categories = [c.get("slug", "") for c in (event.get("categories") or [])]
         if "tours" in categories:
-            return None
-
-        title = self.normalise_title(title_raw)
-        if not title or len(title) < 2:
-            return None
+            return []
 
         # start_date is London local time ("2026-02-18 19:30:00")
         start_date_str = event.get("start_date", "")
         if not start_date_str:
-            return None
+            return []
 
         try:
             start_time = datetime.strptime(start_date_str, "%Y-%m-%d %H:%M:%S").replace(
                 tzinfo=LONDON_TZ
             )
         except ValueError:
-            return None
+            return []
 
         if not (date_from <= start_time.date() <= date_to):
-            return None
+            return []
 
         # Event page URL is the best available booking link
         booking_url = event.get("url") or None
@@ -118,9 +113,18 @@ class CinemaMuseumScraper(BaseScraper):
             except (ValueError, TypeError):
                 pass
 
-        return RawShowing(
-            title=title,
-            start_time=start_time,
-            booking_url=booking_url,
-            price=price,
-        )
+        # Split double bills: "Film A (1936) and Film B (1964)" → two showings
+        titles = split_double_bill(title_raw)
+        if len(titles) > 1:
+            logger.debug(f"Cinema Museum: double bill split → {titles}")
+
+        return [
+            RawShowing(
+                title=title,
+                start_time=start_time,
+                booking_url=booking_url,
+                price=price,
+            )
+            for title in titles
+            if title and len(title) >= 2
+        ]

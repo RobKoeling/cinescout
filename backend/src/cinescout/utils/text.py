@@ -65,6 +65,37 @@ def normalise_title(title: str) -> str:
     return title
 
 
+def split_double_bill(title: str) -> list[str]:
+    """
+    Split a double-bill event title into individual film titles.
+
+    Uses a year in parentheses immediately before the conjunction as the
+    signal that this is a double bill rather than a single title containing
+    "and" (e.g. "Crime and Punishment", "Love and Mercy").
+
+    Examples:
+        "The Devil-Doll (1936) and Witchcraft (1964)"
+            → ["The Devil-Doll", "Witchcraft"]
+        "Near Dark (1987) and Blue Steel (1990)"
+            → ["Near Dark", "Blue Steel"]
+        "Love Story"  →  ["Love Story"]   (no split)
+        "Crime and Punishment"  →  ["Crime and Punishment"]  (no year → no split)
+
+    Returns a list of normalised titles; single-film titles return a
+    one-element list.
+    """
+    # Only split when a year "(YYYY)" immediately precedes " and "
+    # so we don't accidentally split titles like "Love and Mercy".
+    m = re.match(r'^(.+\(\d{4}\))\s+and\s+(.+)$', title.strip(), re.IGNORECASE)
+    if m:
+        parts = [normalise_title(m.group(1).strip()), normalise_title(m.group(2).strip())]
+        valid = [p for p in parts if p and len(p) >= 2]
+        if len(valid) == 2:
+            return valid
+
+    return [normalise_title(title)]
+
+
 def slugify(text: str) -> str:
     """
     Convert text to a URL-safe slug.
