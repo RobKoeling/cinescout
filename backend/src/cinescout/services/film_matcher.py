@@ -127,6 +127,20 @@ class FilmMatcher:
 
         # Search TMDb
         search_result = await self.tmdb_client.search_film(normalized_title, year)
+
+        # If no match and the title contains a colon, it may have an event-series prefix
+        # (e.g. "Film Club: Certain Women", "Dochouse: The Shepherd and the Bear").
+        # Try again with just the part after the first colon.
+        prefix_stripped: str | None = None
+        if not search_result and ":" in normalized_title:
+            after_colon = normalized_title.split(":", 1)[1].strip()
+            if len(after_colon) >= 2:
+                prefix_stripped = after_colon
+                logger.debug(
+                    f"TMDb miss for '{normalized_title}'; retrying with stripped title '{prefix_stripped}'"
+                )
+                search_result = await self.tmdb_client.search_film(prefix_stripped, year)
+
         if not search_result:
             return None
 
@@ -175,6 +189,11 @@ class FilmMatcher:
                 logger.debug(f"Film {film_id!r} already exists, reusing.")
                 return existing
             raise
+
+        # When we found the film via a stripped title (event-series prefix removed),
+        # store an alias for the stripped form too so future lookups skip the retry.
+        if prefix_stripped:
+            await self._store_alias(prefix_stripped, film.id)
 
         return film
 

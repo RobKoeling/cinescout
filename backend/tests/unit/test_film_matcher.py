@@ -278,3 +278,44 @@ class TestMatchOrCreateFilm:
         assert result is existing
         # Savepoints are used instead of session-level rollback, so db.rollback is NOT called.
         db.rollback.assert_not_called()
+
+    async def test_event_series_prefix_stripped_on_tmdb_retry(self) -> None:
+        """'Film Club: Certain Women' should match TMDb as 'Certain Women'."""
+        db = make_db()
+        db.execute = AsyncMock(
+            side_effect=[
+                make_execute_result(scalar_one_or_none=None),  # alias miss (full title)
+                make_execute_result(scalars_all=[]),            # fuzzy: empty DB
+                make_execute_result(scalar_one_or_none=None),  # store alias: stripped title check
+                make_execute_result(scalar_one_or_none=None),  # store alias: full title check
+            ]
+        )
+
+        tmdb = make_tmdb(
+            search_result={"id": 99999},
+            details={
+                "title": "Certain Women",
+                "release_date": "2016-10-14",
+                "credits": {"crew": [{"name": "Kelly Reichardt", "job": "Director"}]},
+                "production_countries": [{"name": "United States"}],
+                "overview": "Three women in Montana.",
+                "poster_path": "/xyz.jpg",
+                "runtime": 107,
+            },
+        )
+        # First TMDb search (full title) returns nothing; second (stripped) succeeds.
+        tmdb.search_film = AsyncMock(side_effect=[None, {"id": 99999}])
+
+        matcher = FilmMatcher(db, tmdb_client=tmdb)
+        result = await matcher.match_or_create_film("Film Club: Certain Women")
+
+        assert result.title == "Certain Women"
+        # TMDb was called twice: once for full title, once for stripped title
+        assert tmdb.search_film.call_count == 2
+        first_call_arg = tmdb.search_film.call_args_list[0][0][0]
+        second_call_arg = tmdb.search_film.call_args_list[1][0][0]
+        assert first_call_arg == "Film Club: Certain Women"
+        assert second_call_arg == "Certain Women"
+        # Three aliases stored: stripped title + full title (from match_or_create_film)
+        # (film itself also added, so add count = 3: film + alias-stripped + alias-full)
+        assert db.add.call_count == 3
