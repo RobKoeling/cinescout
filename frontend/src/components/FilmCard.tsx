@@ -12,6 +12,20 @@ function FilmCard({ filmWithCinemas, onCinemaClick, onDirectorClick }: FilmCardP
   const [expanded, setExpanded] = useState(false)
   const { film, cinemas } = filmWithCinemas
 
+  // Use the raw_title from any showing that differs from the canonical film title
+  // (e.g. "Film Club: Certain Women" instead of "Certain Women"). This preserves
+  // the event-series context while still grouping under the correct TMDb film.
+  const displayTitle = (() => {
+    for (const c of cinemas) {
+      for (const t of c.times) {
+        if (t.raw_title && t.raw_title.toLowerCase() !== film.title.toLowerCase()) {
+          return t.raw_title
+        }
+      }
+    }
+    return film.title
+  })()
+
   const formatTime = (isoString: string) => {
     const date = new Date(isoString)
     return date.toLocaleTimeString('en-GB', {
@@ -35,7 +49,7 @@ function FilmCard({ filmWithCinemas, onCinemaClick, onDirectorClick }: FilmCardP
       >
         <div className="flex items-center">
           <h2 className="w-1/2 text-xl font-semibold text-gray-900 pr-4">
-            {film.title}
+            {displayTitle}
             {film.year && (
               <span className="text-gray-500 font-normal ml-2">({film.year})</span>
             )}

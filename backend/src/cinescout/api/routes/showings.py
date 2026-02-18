@@ -101,6 +101,7 @@ async def get_showings(
                     format_tags=showing.format_tags,
                     booking_url=showing.booking_url,
                     price=showing.price,
+                    raw_title=showing.raw_title,
                 )
                 for showing in cinema_showings
             ]

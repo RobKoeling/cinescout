@@ -10,7 +10,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from cinescout.database import get_db
-from cinescout.models import Cinema, Showing
+from cinescout.models import Cinema, Film, Showing
 from cinescout.scrapers import get_scraper
 from cinescout.services.film_matcher import FilmMatcher
 from cinescout.services.tmdb_client import TMDbClient
@@ -135,7 +135,36 @@ async def trigger_scrape(
                         existing_showing.format_tags = raw_showing.format_tags
                         existing_showing.price = raw_showing.price
                         existing_showing.raw_title = raw_showing.title
-                    else:
+                    elif film.tmdb_id is not None:
+                        # Check if a placeholder showing exists at the same time/cinema
+                        # (happens when a previous scrape stored the film as a placeholder
+                        # before TMDb matching worked, e.g. "Film Club: Certain Women").
+                        # Migrate it to the real film rather than creating a duplicate.
+                        placeholder_stmt = (
+                            select(Showing)
+                            .join(Film, Showing.film_id == Film.id)
+                            .where(
+                                Showing.cinema_id == cinema_id,
+                                Showing.start_time == raw_showing.start_time,
+                                Film.tmdb_id.is_(None),
+                            )
+                        )
+                        placeholder_result = await db.execute(placeholder_stmt)
+                        placeholder_showing = placeholder_result.scalar_one_or_none()
+                        if placeholder_showing:
+                            logger.info(
+                                f"Migrating placeholder showing {placeholder_showing.film_id!r}"
+                                f" → {film.id!r} for {raw_showing.title!r}"
+                            )
+                            placeholder_showing.film_id = film.id
+                            placeholder_showing.booking_url = raw_showing.booking_url
+                            placeholder_showing.screen_name = raw_showing.screen_name
+                            placeholder_showing.format_tags = raw_showing.format_tags
+                            placeholder_showing.price = raw_showing.price
+                            placeholder_showing.raw_title = raw_showing.title
+                            existing_showing = placeholder_showing  # suppress the create below
+
+                    if not existing_showing:
                         # Create new showing — flush immediately so the next iteration's
                         # duplicate check can see it, and use a savepoint so an unexpected
                         # IntegrityError only rolls back this one showing.
