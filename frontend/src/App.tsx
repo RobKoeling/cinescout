@@ -2,6 +2,7 @@ import { useState } from 'react'
 import SearchForm from './components/SearchForm'
 import type { SearchParams } from './components/SearchForm'
 import FilmList from './components/FilmList'
+import CinemaSchedule from './components/CinemaSchedule'
 import CinemaModal from './components/CinemaModal'
 import DirectorModal from './components/DirectorModal'
 import type { Cinema, FilmWithCinemas, ShowingsResponse } from './types'
@@ -41,6 +42,7 @@ function applyFilter(films: FilmWithCinemas[], params: SearchParams): FilmWithCi
 function App() {
   const [showings, setShowings] = useState<ShowingsResponse | null>(null)
   const [filteredFilms, setFilteredFilms] = useState<FilmWithCinemas[]>([])
+  const [activeMode, setActiveMode] = useState<SearchParams['mode']>('time')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [selectedCinema, setSelectedCinema] = useState<Cinema | null>(null)
@@ -66,6 +68,7 @@ function App() {
       const data: ShowingsResponse = await response.json()
       setShowings(data)
       setFilteredFilms(applyFilter(data.films, params))
+      setActiveMode(params.mode)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
@@ -107,11 +110,18 @@ function App() {
             <div className="mb-4 text-sm text-gray-600">
               Found {filteredFilms.length} film{filteredFilms.length !== 1 ? 's' : ''}
             </div>
-            <FilmList
-              films={filteredFilms}
-              onCinemaClick={setSelectedCinema}
-              onDirectorClick={(name, filmId) => setSelectedDirector({ name, filmId })}
-            />
+            {activeMode === 'cinema' ? (
+              <CinemaSchedule
+                films={filteredFilms}
+                onDirectorClick={(name, filmId) => setSelectedDirector({ name, filmId })}
+              />
+            ) : (
+              <FilmList
+                films={filteredFilms}
+                onCinemaClick={setSelectedCinema}
+                onDirectorClick={(name, filmId) => setSelectedDirector({ name, filmId })}
+              />
+            )}
           </div>
         )}
 
