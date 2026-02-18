@@ -9,6 +9,7 @@ def normalise_title(title: str) -> str:
 
     Removes common variations to improve matching accuracy:
     - Year suffixes: "Film (2024)" → "Film"
+    - Dash suffixes: "Film — Restoration", "Film - Subtitled" → "Film"
     - Prefixes: "Preview: Film" → "Film"
     - Format indicators: "Film [35mm]" → "Film"
     - Extra whitespace
@@ -21,6 +22,13 @@ def normalise_title(title: str) -> str:
     """
     # Remove leading/trailing whitespace
     title = title.strip()
+
+    # Remove dash suffixes BEFORE year strip so "Film (1929) — Restoration"
+    # becomes "Film (1929)" and the year can then be stripped correctly.
+    # Matches hyphen/en-dash/em-dash preceded by whitespace to avoid
+    # breaking hyphenated titles like "Spider-Man".
+    # Examples: "Film — Restoration", "Film - Subtitled", "Film – Director's Cut"
+    title = re.sub(r"\s+[-–—]\s+\S.*$", "", title)
 
     # Remove year suffixes: "Title (2024)" or "Title (2024-25)"
     title = re.sub(r"\s*\(\d{4}(?:-\d{2,4})?\)\s*$", "", title)
