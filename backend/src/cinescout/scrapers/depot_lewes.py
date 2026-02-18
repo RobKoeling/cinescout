@@ -1,13 +1,17 @@
 """Lewes Depot Cinema scraper.
 
-The site uses a Jacro WordPress plugin. The /whats-on/this-week page renders
-static HTML (one upcoming showing per film). Each showing links to a lightweight
-popup that returns the exact date, time, screen, and booking URL.
+The site uses a Jacro WordPress plugin. Three-step HTTP approach — no Playwright needed:
 
-Strategy:
-1. GET /whats-on/this-week  →  extract (title, slug, perf_id) per film box
-2. GET perf-popup.php?id=X  →  extract exact datetime + booking URL
-3. Filter results to the requested date range.
+1. GET /whats-on/this-week → static HTML listing every film showing this week,
+   one box per film with title, slug, and the *next* upcoming performance ID.
+
+2. GET /film/{slug} → the film's own page, which embeds booking URLs for *all*
+   upcoming performances (pattern: /film/.../booknow/{perf_id}).
+
+3. GET perf-popup.php?id={perf_id} → lightweight popup with exact date, time,
+   screen name, and booking URL for that individual performance.
+
+Filtering to the requested date range happens in step 3.
 """
 
 import asyncio
@@ -28,8 +32,8 @@ logger = logging.getLogger(__name__)
 LONDON_TZ = ZoneInfo("Europe/London")
 
 THIS_WEEK_URL = "https://lewesdepot.org/whats-on/this-week"
+FILM_PAGE_BASE = "https://lewesdepot.org/film"
 PERF_POPUP_BASE = "https://lewesdepot.org/wp-content/themes/lewesdepot/perf-popup.php"
-BOOKING_BASE = "https://lewesdepot.org/film"
 
 _HEADERS = {
     "User-Agent": (
@@ -60,20 +64,41 @@ class DepotLewesScraper(BaseScraper):
             follow_redirects=True,
             headers=_HEADERS,
         ) as client:
+            # Step 1: get film list for the week
             r = await client.get(THIS_WEEK_URL)
             r.raise_for_status()
-            entries = _parse_this_week(r.text)
-
-            if not entries:
+            films = _parse_this_week(r.text)
+            if not films:
                 logger.warning("Lewes Depot: no film entries found on this-week page")
                 return []
 
+            # Step 2: for each film, fetch its page to get all perf IDs
             sem = asyncio.Semaphore(_CONCURRENCY)
-            tasks = [
-                _fetch_popup(client, sem, title, slug, perf_id)
-                for title, slug, perf_id in entries
+            film_page_tasks = [
+                _fetch_film_perf_ids(client, sem, title, slug)
+                for title, slug in films
             ]
-            results = await asyncio.gather(*tasks, return_exceptions=True)
+            film_perf_lists = await asyncio.gather(*film_page_tasks, return_exceptions=True)
+
+            # Flatten to (title, perf_id, booking_url_from_page) tuples
+            perf_entries: list[tuple[str, str, str | None]] = []
+            for i, result in enumerate(film_perf_lists):
+                if isinstance(result, Exception):
+                    logger.warning(f"Lewes Depot: film page error for {films[i]}: {result}")
+                    continue
+                title = films[i][0]
+                for perf_id, booking_url in result:
+                    perf_entries.append((title, perf_id, booking_url))
+
+            if not perf_entries:
+                return []
+
+            # Step 3: fetch popup for each perf_id to get exact date/time
+            popup_tasks = [
+                _fetch_popup(client, sem, title, perf_id, booking_url)
+                for title, perf_id, booking_url in perf_entries
+            ]
+            results = await asyncio.gather(*popup_tasks, return_exceptions=True)
 
         showings: list[RawShowing] = []
         for result in results:
@@ -85,39 +110,61 @@ class DepotLewesScraper(BaseScraper):
         return showings
 
 
-# ── helpers ──────────────────────────────────────────────────────────────────
+# ── parsing helpers ───────────────────────────────────────────────────────────
 
 _BOX_RE = re.compile(
     r'<div\s+class="col-md-4[^"]*live-event-box-sml[^"]*"[^>]*>(.*?)</div>\s*</div>\s*</div>',
     re.DOTALL,
 )
 _TITLE_RE = re.compile(r'<strong>(.*?)</strong>', re.DOTALL)
-_PERF_RE = re.compile(r'perf-popup\.php\?id=(\d+)')
 _SLUG_RE = re.compile(r'href="/film/([^"/]+)"')
+_BOOKNOW_RE = re.compile(r'href="(https://lewesdepot\.org/film/[^"]+/booknow/(\d+))"')
 
 
-def _parse_this_week(html: str) -> list[tuple[str, str, str]]:
-    """Return [(title, slug, perf_id), ...] from the this-week page."""
-    entries: list[tuple[str, str, str]] = []
+def _parse_this_week(html: str) -> list[tuple[str, str]]:
+    """Return [(title, slug), ...] for each film box on the this-week page."""
+    films: list[tuple[str, str]] = []
+    seen_slugs: set[str] = set()
     for box in _BOX_RE.finditer(html):
         box_html = box.group(1)
-
-        perf_match = _PERF_RE.search(box_html)
-        if not perf_match:
+        title_m = _TITLE_RE.search(box_html)
+        if not title_m:
             continue
-        perf_id = perf_match.group(1)
-
-        title_match = _TITLE_RE.search(box_html)
-        if not title_match:
-            continue
-        title = html_lib.unescape(re.sub(r"<[^>]+>", "", title_match.group(1))).strip()
+        title = html_lib.unescape(re.sub(r"<[^>]+>", "", title_m.group(1))).strip()
         if not title:
             continue
+        slug_m = _SLUG_RE.search(box_html)
+        slug = slug_m.group(1) if slug_m else ""
+        if slug and slug not in seen_slugs:
+            seen_slugs.add(slug)
+            films.append((title, slug))
+    return films
 
-        slug_match = _SLUG_RE.search(box_html)
-        slug = slug_match.group(1) if slug_match else ""
 
-        entries.append((title, slug, perf_id))
+async def _fetch_film_perf_ids(
+    client: httpx.AsyncClient,
+    sem: asyncio.Semaphore,
+    title: str,
+    slug: str,
+) -> list[tuple[str, str | None]]:
+    """Return [(perf_id, booking_url), ...] from a film's own page."""
+    if not slug:
+        return []
+    async with sem:
+        try:
+            r = await client.get(f"{FILM_PAGE_BASE}/{slug}")
+            r.raise_for_status()
+            html = r.text
+        except Exception as e:
+            logger.warning(f"Lewes Depot: failed to fetch film page for '{slug}': {e}")
+            return []
+
+    entries: list[tuple[str, str | None]] = []
+    seen: set[str] = set()
+    for booking_url, perf_id in _BOOKNOW_RE.findall(html):
+        if perf_id not in seen:
+            seen.add(perf_id)
+            entries.append((perf_id, booking_url))
     return entries
 
 
@@ -125,8 +172,8 @@ async def _fetch_popup(
     client: httpx.AsyncClient,
     sem: asyncio.Semaphore,
     title_fallback: str,
-    slug: str,
     perf_id: str,
+    booking_url_fallback: str | None,
 ) -> RawShowing | None:
     async with sem:
         try:
@@ -137,14 +184,13 @@ async def _fetch_popup(
             logger.warning(f"Lewes Depot: failed to fetch popup {perf_id}: {e}")
             return None
 
-    return _parse_popup(popup_html, title_fallback, slug, perf_id)
+    return _parse_popup(popup_html, title_fallback, booking_url_fallback)
 
 
 def _parse_popup(
     popup_html: str,
     title_fallback: str,
-    slug: str,
-    perf_id: str,
+    booking_url_fallback: str | None,
 ) -> RawShowing | None:
     # Title
     tm = re.search(r'class="mb-ShortFilmTitle"[^>]*>(.*?)</h2>', popup_html, re.DOTALL)
@@ -173,19 +219,19 @@ def _parse_popup(
         logger.warning(f"Lewes Depot: cannot parse '{date_str} {time_str}' for '{title}'")
         return None
 
-    # Booking URL
+    # Booking URL — prefer the one embedded in the popup
     bm = re.search(r'href="(https://lewesdepot\.org/film/[^"]+/booknow/[^"]+)"', popup_html)
-    if bm:
-        booking_url: str | None = bm.group(1)
-    elif slug:
-        booking_url = f"{BOOKING_BASE}/{slug}/booknow/{perf_id}"
-    else:
-        booking_url = None
+    booking_url = bm.group(1) if bm else booking_url_fallback
+
+    # Screen name
+    sm = re.search(r'class="mb-Screen">(.*?)</span>', popup_html)
+    screen_name = sm.group(1).strip() if sm else None
 
     return RawShowing(
         title=title,
         start_time=start_time,
         booking_url=booking_url,
+        screen_name=screen_name,
     )
 
 
