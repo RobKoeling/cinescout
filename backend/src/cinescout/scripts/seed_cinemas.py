@@ -12,6 +12,20 @@ async def seed_cinemas() -> None:
     """Seed the database with initial cinema data."""
     cinemas_data = [
         {
+            "id": "ica",
+            "name": "ICA Cinema",
+            "city": "london",
+            "address": "The Mall",
+            "postcode": "SW1Y 5AH",
+            "latitude": 51.5072,
+            "longitude": -0.1296,
+            "website": "https://www.ica.art/whats-on",
+            "scraper_type": "ica",
+            "scraper_config": None,
+            "has_online_booking": True,
+            "supports_availability_check": False,
+        },
+        {
             "id": "barbican",
             "name": "Barbican Centre",
             "city": "london",

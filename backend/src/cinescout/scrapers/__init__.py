@@ -9,6 +9,7 @@ from cinescout.scrapers.cinema_museum import CinemaMuseumScraper
 from cinescout.scrapers.curzon import CurzonScraper
 from cinescout.scrapers.depot_lewes import DepotLewesScraper
 from cinescout.scrapers.garden import GardenScraper
+from cinescout.scrapers.ica import ICAScraper
 from cinescout.scrapers.nickel import NickelScraper
 from cinescout.scrapers.picturehouse import PicturehouseScraper
 from cinescout.scrapers.prince_charles import PrinceCharlesScraper
@@ -24,6 +25,7 @@ SCRAPER_REGISTRY: dict[str, Type[BaseScraper]] = {
     "curzon": CurzonScraper,
     "depot-lewes": DepotLewesScraper,
     "garden": GardenScraper,
+    "ica": ICAScraper,
     "nickel": NickelScraper,
     "picturehouse": PicturehouseScraper,
     "prince-charles": PrinceCharlesScraper,
@@ -66,6 +68,7 @@ __all__ = [
     "CurzonScraper",
     "DepotLewesScraper",
     "GardenScraper",
+    "ICAScraper",
     "NickelScraper",
     "PicturehouseScraper",
     "PrinceCharlesScraper",
