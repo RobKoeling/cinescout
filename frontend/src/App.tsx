@@ -263,6 +263,7 @@ function App() {
         <CinemaModal
           cinema={selectedCinema}
           date={showings.query.date}
+          city={city}
           allFilms={showings.films}
           onClose={() => setSelectedCinema(null)}
         />

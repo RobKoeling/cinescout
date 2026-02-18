@@ -4,11 +4,12 @@ import type { Cinema, FilmWithCinemas } from '../types'
 interface CinemaModalProps {
   cinema: Cinema
   date: string
+  city: string
   allFilms: FilmWithCinemas[]
   onClose: () => void
 }
 
-function CinemaModal({ cinema, date, allFilms, onClose }: CinemaModalProps) {
+function CinemaModal({ cinema, date, city, allFilms, onClose }: CinemaModalProps) {
   const [showFullDay, setShowFullDay] = useState(false)
   const [fullDayFilms, setFullDayFilms] = useState<FilmWithCinemas[] | null>(null)
   const [fullDayLoading, setFullDayLoading] = useState(false)
@@ -42,7 +43,7 @@ function CinemaModal({ cinema, date, allFilms, onClose }: CinemaModalProps) {
     }
     setFullDayLoading(true)
     try {
-      const params = new URLSearchParams({ date, time_from: '00:00', time_to: '23:59' })
+      const params = new URLSearchParams({ date, city, time_from: '00:00', time_to: '23:59' })
       const res = await fetch(`http://localhost:8000/api/showings?${params}`)
       if (!res.ok) throw new Error('Failed to fetch')
       const data = await res.json()

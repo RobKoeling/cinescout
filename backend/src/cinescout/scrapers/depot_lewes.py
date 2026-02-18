@@ -2,16 +2,16 @@
 
 The site uses a Jacro WordPress plugin. Three-step HTTP approach — no Playwright needed:
 
-1. GET /whats-on/this-week → static HTML listing every film showing this week,
-   one box per film with title, slug, and the *next* upcoming performance ID.
+1. GET /whats-on/this-week → static HTML listing every film showing this week.
+   We extract unique /film/{slug} hrefs from the page (simple, robust).
 
-2. GET /film/{slug} → the film's own page, which embeds booking URLs for *all*
-   upcoming performances (pattern: /film/.../booknow/{perf_id}).
+2. GET /film/{slug} → the film's own page embeds booking URLs for *all* upcoming
+   performances (pattern: .../booknow/{perf_id}).
 
-3. GET perf-popup.php?id={perf_id} → lightweight popup with exact date, time,
-   screen name, and booking URL for that individual performance.
+3. GET perf-popup.php?id={perf_id} → exact date, time, screen, booking URL.
 
-Filtering to the requested date range happens in step 3.
+Non-screening events (workshops, wine tastings, music events) are excluded via
+slug keyword filtering before we make any network requests for them.
 """
 
 import asyncio
@@ -44,6 +44,20 @@ _HEADERS = {
 }
 _CONCURRENCY = 10
 
+# Slug substrings that identify non-film events to skip
+_NON_FILM_SLUG_PARTS: tuple[str, ...] = (
+    "workshop",
+    "wine-tasting",
+    "wine-",
+    "music-with-",
+    "tasting",
+    "screenwriting",
+)
+
+
+def _is_film_slug(slug: str) -> bool:
+    return not any(part in slug for part in _NON_FILM_SLUG_PARTS)
+
 
 class DepotLewesScraper(BaseScraper):
     """Scraper for Lewes Depot cinema."""
@@ -64,39 +78,43 @@ class DepotLewesScraper(BaseScraper):
             follow_redirects=True,
             headers=_HEADERS,
         ) as client:
-            # Step 1: get film list for the week
+            # Step 1: get all unique film slugs from the this-week page
             r = await client.get(THIS_WEEK_URL)
             r.raise_for_status()
-            films = _parse_this_week(r.text)
-            if not films:
-                logger.warning("Lewes Depot: no film entries found on this-week page")
+            slugs = _extract_film_slugs(r.text)
+            if not slugs:
+                logger.warning("Lewes Depot: no film slugs found on this-week page")
                 return []
+            logger.debug(f"Lewes Depot: found {len(slugs)} film slugs")
 
-            # Step 2: for each film, fetch its page to get all perf IDs
+            # Step 2: for each film slug, fetch its page to get all perf IDs
             sem = asyncio.Semaphore(_CONCURRENCY)
             film_page_tasks = [
-                _fetch_film_perf_ids(client, sem, title, slug)
-                for title, slug in films
+                _fetch_film_perf_ids(client, sem, slug)
+                for slug in slugs
             ]
             film_perf_lists = await asyncio.gather(*film_page_tasks, return_exceptions=True)
 
-            # Flatten to (title, perf_id, booking_url_from_page) tuples
+            # Flatten to (slug, perf_id, booking_url) — deduplicate across films
             perf_entries: list[tuple[str, str, str | None]] = []
+            seen_perf_ids: set[str] = set()
             for i, result in enumerate(film_perf_lists):
                 if isinstance(result, Exception):
-                    logger.warning(f"Lewes Depot: film page error for {films[i]}: {result}")
+                    logger.warning(f"Lewes Depot: film page error for {slugs[i]}: {result}")
                     continue
-                title = films[i][0]
                 for perf_id, booking_url in result:
-                    perf_entries.append((title, perf_id, booking_url))
+                    if perf_id not in seen_perf_ids:
+                        seen_perf_ids.add(perf_id)
+                        perf_entries.append((slugs[i], perf_id, booking_url))
 
             if not perf_entries:
                 return []
+            logger.debug(f"Lewes Depot: {len(perf_entries)} unique perf IDs to fetch")
 
             # Step 3: fetch popup for each perf_id to get exact date/time
             popup_tasks = [
-                _fetch_popup(client, sem, title, perf_id, booking_url)
-                for title, perf_id, booking_url in perf_entries
+                _fetch_popup(client, sem, slug, perf_id, booking_url)
+                for slug, perf_id, booking_url in perf_entries
             ]
             results = await asyncio.gather(*popup_tasks, return_exceptions=True)
 
@@ -110,53 +128,36 @@ class DepotLewesScraper(BaseScraper):
         return showings
 
 
-# ── parsing helpers ───────────────────────────────────────────────────────────
+# ── helpers ───────────────────────────────────────────────────────────────────
 
-_BOX_RE = re.compile(
-    r'<div\s+class="col-md-4[^"]*live-event-box-sml[^"]*"[^>]*>(.*?)</div>\s*</div>\s*</div>',
-    re.DOTALL,
-)
-_TITLE_RE = re.compile(r'<strong>(.*?)</strong>', re.DOTALL)
 _SLUG_RE = re.compile(r'href="/film/([^"/]+)"')
 _BOOKNOW_RE = re.compile(r'href="(https://lewesdepot\.org/film/[^"]+/booknow/(\d+))"')
 
 
-def _parse_this_week(html: str) -> list[tuple[str, str]]:
-    """Return [(title, slug), ...] for each film box on the this-week page."""
-    films: list[tuple[str, str]] = []
-    seen_slugs: set[str] = set()
-    for box in _BOX_RE.finditer(html):
-        box_html = box.group(1)
-        title_m = _TITLE_RE.search(box_html)
-        if not title_m:
-            continue
-        title = html_lib.unescape(re.sub(r"<[^>]+>", "", title_m.group(1))).strip()
-        if not title:
-            continue
-        slug_m = _SLUG_RE.search(box_html)
-        slug = slug_m.group(1) if slug_m else ""
-        if slug and slug not in seen_slugs:
-            seen_slugs.add(slug)
-            films.append((title, slug))
-    return films
+def _extract_film_slugs(html: str) -> list[str]:
+    """Return unique film slugs from the this-week page, filtering non-film events."""
+    seen: set[str] = set()
+    slugs: list[str] = []
+    for slug in _SLUG_RE.findall(html):
+        if slug not in seen and _is_film_slug(slug):
+            seen.add(slug)
+            slugs.append(slug)
+    return slugs
 
 
 async def _fetch_film_perf_ids(
     client: httpx.AsyncClient,
     sem: asyncio.Semaphore,
-    title: str,
     slug: str,
 ) -> list[tuple[str, str | None]]:
     """Return [(perf_id, booking_url), ...] from a film's own page."""
-    if not slug:
-        return []
     async with sem:
         try:
             r = await client.get(f"{FILM_PAGE_BASE}/{slug}")
             r.raise_for_status()
             html = r.text
         except Exception as e:
-            logger.warning(f"Lewes Depot: failed to fetch film page for '{slug}': {e}")
+            logger.warning(f"Lewes Depot: failed to fetch film page '{slug}': {e}")
             return []
 
     entries: list[tuple[str, str | None]] = []
@@ -171,7 +172,7 @@ async def _fetch_film_perf_ids(
 async def _fetch_popup(
     client: httpx.AsyncClient,
     sem: asyncio.Semaphore,
-    title_fallback: str,
+    slug: str,
     perf_id: str,
     booking_url_fallback: str | None,
 ) -> RawShowing | None:
@@ -184,21 +185,19 @@ async def _fetch_popup(
             logger.warning(f"Lewes Depot: failed to fetch popup {perf_id}: {e}")
             return None
 
-    return _parse_popup(popup_html, title_fallback, booking_url_fallback)
+    return _parse_popup(popup_html, slug, booking_url_fallback)
 
 
 def _parse_popup(
     popup_html: str,
-    title_fallback: str,
+    slug_fallback: str,
     booking_url_fallback: str | None,
 ) -> RawShowing | None:
     # Title
     tm = re.search(r'class="mb-ShortFilmTitle"[^>]*>(.*?)</h2>', popup_html, re.DOTALL)
-    title = (
-        html_lib.unescape(re.sub(r"<[^>]+>", "", tm.group(1))).strip()
-        if tm
-        else title_fallback
-    )
+    if not tm:
+        return None
+    title = html_lib.unescape(re.sub(r"<[^>]+>", "", tm.group(1))).strip()
     if not title or len(title) < 2:
         return None
 
@@ -216,7 +215,9 @@ def _parse_popup(
 
     start_time = _parse_depot_datetime(date_str, time_str)
     if start_time is None:
-        logger.warning(f"Lewes Depot: cannot parse '{date_str} {time_str}' for '{title}'")
+        logger.warning(
+            f"Lewes Depot: cannot parse '{date_str} {time_str}' for '{slug_fallback}'"
+        )
         return None
 
     # Booking URL — prefer the one embedded in the popup
