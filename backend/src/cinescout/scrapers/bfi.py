@@ -270,7 +270,7 @@ class BFIScraper(BaseScraper):
 
         Returns a dict mapping (title, date_string) → format_tag.
         """
-        m = re.search(r'"searchResults"\s*:\s*(\[)', html)
+        m = re.search(r'"?searchResults"?\s*:\s*(\[)', html)
         if not m:
             return {}
 
