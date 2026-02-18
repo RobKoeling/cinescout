@@ -14,6 +14,7 @@ export interface SearchParams {
 }
 
 interface SearchFormProps {
+  city: string
   onSearch: (params: SearchParams) => void
   onLiveFormatChange?: (format: string | null, period: 'today' | 'week') => void
   loading: boolean
@@ -28,7 +29,7 @@ const MODE_LABELS: { mode: SearchMode; label: string }[] = [
 
 const FORMAT_OPTIONS = ['16mm', '35mm', '70mm']
 
-function SearchForm({ onSearch, onLiveFormatChange, loading }: SearchFormProps) {
+function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormProps) {
   const today = new Date().toISOString().split('T')[0]
 
   const [date, setDate]       = useState(today)
@@ -53,13 +54,16 @@ function SearchForm({ onSearch, onLiveFormatChange, loading }: SearchFormProps) 
   const [format, setFormat] = useState<string>('')
   const [period, setPeriod] = useState<'today' | 'week'>('today')
 
-  // Fetch cinemas once
+  // Fetch cinemas when city changes
   useEffect(() => {
-    fetch('http://localhost:8000/api/cinemas')
+    setCinemas([])
+    setCinemaInput('')
+    setSelectedCinemaId(null)
+    fetch(`http://localhost:8000/api/cinemas?city=${city}`)
       .then(r => r.json())
       .then((data: Cinema[]) => setCinemas(data))
       .catch(() => {})
-  }, [])
+  }, [city])
 
   // Film autocomplete: fetch suggestions on input change
   useEffect(() => {
@@ -72,7 +76,7 @@ function SearchForm({ onSearch, onLiveFormatChange, loading }: SearchFormProps) 
     }
     filmDebounce.current = setTimeout(async () => {
       try {
-        const params = new URLSearchParams({ q: filmInput })
+        const params = new URLSearchParams({ q: filmInput, city })
         const res = await fetch(`http://localhost:8000/api/films/search?${params}`)
         const data = await res.json()
         setFilmSuggestions(data)

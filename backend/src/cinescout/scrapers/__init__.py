@@ -6,24 +6,28 @@ from cinescout.scrapers.base import BaseScraper
 from cinescout.scrapers.bfi import BFIScraper
 from cinescout.scrapers.cinema_museum import CinemaMuseumScraper
 from cinescout.scrapers.curzon import CurzonScraper
+from cinescout.scrapers.depot_lewes import DepotLewesScraper
 from cinescout.scrapers.garden import GardenScraper
 from cinescout.scrapers.nickel import NickelScraper
 from cinescout.scrapers.picturehouse import PicturehouseScraper
 from cinescout.scrapers.prince_charles import PrinceCharlesScraper
 from cinescout.scrapers.regent_street import RegentStreetScraper
 from cinescout.scrapers.rio import RioScraper
+from cinescout.scrapers.screen_shot import ScreenShotScraper
 
 # Registry mapping scraper type names to scraper classes
 SCRAPER_REGISTRY: dict[str, Type[BaseScraper]] = {
     "bfi": BFIScraper,
     "cinema-museum": CinemaMuseumScraper,
     "curzon": CurzonScraper,
+    "depot-lewes": DepotLewesScraper,
     "garden": GardenScraper,
     "nickel": NickelScraper,
     "picturehouse": PicturehouseScraper,
     "prince-charles": PrinceCharlesScraper,
     "regent-street": RegentStreetScraper,
     "rio": RioScraper,
+    "screen-shot": ScreenShotScraper,
 }
 
 
@@ -57,10 +61,12 @@ __all__ = [
     "BFIScraper",
     "CinemaMuseumScraper",
     "CurzonScraper",
+    "DepotLewesScraper",
     "GardenScraper",
     "NickelScraper",
     "PicturehouseScraper",
     "PrinceCharlesScraper",
     "RegentStreetScraper",
     "RioScraper",
+    "ScreenShotScraper",
 ]

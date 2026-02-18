@@ -14,19 +14,23 @@ logger = logging.getLogger(__name__)
 
 LONDON_TZ = ZoneInfo("Europe/London")
 
-# Mapping of cinema slugs to API IDs
+# Mapping of cinema slugs to API IDs (verified against live ajax-cinema-list endpoint)
 CINEMA_ID_MAP = {
-    "picturehouse-central": "010",
-    "greenwich-picturehouse": "011",
-    "hackney-picturehouse": "019",
-    "the-gate": "014",
-    "the-ritzy": "004",  # Fixed: was "008"
-    "clapham-picturehouse": "007",
-    "crouch-end-picturehouse": "009",
-    "east-dulwich": "013",
-    "finsbury-park": "020",
-    "ealing-picturehouse": "016",
-    "west-norwood-picturehouse": "024",
+    # London
+    "picturehouse-central": "022",
+    "greenwich-picturehouse": "021",
+    "hackney-picturehouse": "010",
+    "the-gate": "016",
+    "the-ritzy": "004",
+    "clapham-picturehouse": "020",
+    "crouch-end-picturehouse": "024",
+    "east-dulwich": "009",
+    "finsbury-park": "029",
+    "ealing-picturehouse": "031",
+    "west-norwood-picturehouse": "023",
+    # Brighton
+    "duke-of-york-s-picturehouse": "008",
+    "duke-s-at-komedia": "019",
 }
 
 
