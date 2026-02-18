@@ -15,6 +15,7 @@ export interface SearchParams {
 
 interface SearchFormProps {
   onSearch: (params: SearchParams) => void
+  onLiveFormatChange?: (format: string | null, period: 'today' | 'week') => void
   loading: boolean
 }
 
@@ -27,7 +28,7 @@ const MODE_LABELS: { mode: SearchMode; label: string }[] = [
 
 const FORMAT_OPTIONS = ['16mm', '35mm', '70mm']
 
-function SearchForm({ onSearch, loading }: SearchFormProps) {
+function SearchForm({ onSearch, onLiveFormatChange, loading }: SearchFormProps) {
   const today = new Date().toISOString().split('T')[0]
 
   const [date, setDate]       = useState(today)
@@ -50,6 +51,7 @@ function SearchForm({ onSearch, loading }: SearchFormProps) {
 
   // Format
   const [format, setFormat] = useState<string>('')
+  const [period, setPeriod] = useState<'today' | 'week'>('today')
 
   // Fetch cinemas once
   useEffect(() => {
@@ -219,17 +221,41 @@ function SearchForm({ onSearch, loading }: SearchFormProps) {
           {mode === 'format' && (
             <div>
               <label htmlFor="format" className="block text-sm font-medium text-gray-700">Format</label>
-              <select
-                id="format"
-                value={format}
-                onChange={e => setFormat(e.target.value)}
-                className="mt-1 block rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-              >
-                <option value="">Any format</option>
-                {FORMAT_OPTIONS.map(f => (
-                  <option key={f} value={f}>{f}</option>
-                ))}
-              </select>
+              <div className="mt-1 flex items-center gap-3">
+                <select
+                  id="format"
+                  value={format}
+                  onChange={e => {
+                    setFormat(e.target.value)
+                    onLiveFormatChange?.(e.target.value || null, period)
+                  }}
+                  className="block rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                >
+                  <option value="">Any format</option>
+                  {FORMAT_OPTIONS.map(f => (
+                    <option key={f} value={f}>{f}</option>
+                  ))}
+                </select>
+                <div className="flex gap-1">
+                  {(['today', 'week'] as const).map(p => (
+                    <button
+                      key={p}
+                      type="button"
+                      onClick={() => {
+                        setPeriod(p)
+                        onLiveFormatChange?.(format || null, p)
+                      }}
+                      className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
+                        period === p
+                          ? 'bg-gray-900 text-white border-gray-900'
+                          : 'text-gray-500 border-gray-300 hover:border-gray-500 hover:text-gray-700'
+                      }`}
+                    >
+                      {p === 'today' ? 'Today' : 'This week'}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
         </div>

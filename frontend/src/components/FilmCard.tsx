@@ -100,7 +100,15 @@ function FilmCard({ filmWithCinemas, onCinemaClick, onDirectorClick }: FilmCardP
           )}
 
           <div className="space-y-3">
-            {cinemas.map((cinemaWithShowings) => (
+            {cinemas.map((cinemaWithShowings) => {
+              const multiDay = new Set(cinemaWithShowings.times.map(t => t.start_time.slice(0, 10))).size > 1
+              const displayTime = (iso: string) => {
+                if (!multiDay) return formatTime(iso)
+                const d = new Date(iso)
+                const day = d.toLocaleDateString('en-GB', { weekday: 'short', timeZone: 'Europe/London' })
+                return `${day} ${formatTime(iso)}`
+              }
+              return (
               <div
                 key={cinemaWithShowings.cinema.id}
                 className="grid items-center gap-x-4"
@@ -130,11 +138,11 @@ function FilmCard({ filmWithCinemas, onCinemaClick, onDirectorClick }: FilmCardP
                           rel="noopener noreferrer"
                           className="text-blue-600 hover:text-blue-800 font-medium"
                         >
-                          {formatTime(showing.start_time)}
+                          {displayTime(showing.start_time)}
                         </a>
                       ) : (
                         <span className="font-medium text-gray-900">
-                          {formatTime(showing.start_time)}
+                          {displayTime(showing.start_time)}
                         </span>
                       )}
 
@@ -164,7 +172,8 @@ function FilmCard({ filmWithCinemas, onCinemaClick, onDirectorClick }: FilmCardP
                   {cinemaWithShowings.cinema.address}
                 </div>
               </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       )}
