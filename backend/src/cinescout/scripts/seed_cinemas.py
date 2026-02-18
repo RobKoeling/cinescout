@@ -395,7 +395,7 @@ async def seed_cinemas() -> None:
             "name": "Screen-Shot Brighton",
             "city": "brighton",
             "address": "Various venues, Brighton & Sussex",
-            "postcode": None,
+            "postcode": "BN1",
             "latitude": 50.8225,
             "longitude": -0.1372,
             "website": "https://screen-shot.co.uk",
