@@ -41,8 +41,11 @@ def normalise_title(title: str) -> str:
     # Only remove if it's the last element and doesn't contain numbers
     title = re.sub(r"\s*\([^)]*(?<!\d)\)\s*$", "", title)
 
-    # Remove common prefixes
+    # Remove common prefixes — both generic screening types and known event-series names.
+    # When a cinema uses "Series Name: Film Title", the series name is stripped so the
+    # title can be matched against TMDb. Add new event-series names here as they appear.
     prefixes = [
+        # Generic screening descriptors
         r"^Preview:\s+",
         r"^Sneak Preview:\s+",
         r"^Advanced Screening:\s+",
@@ -52,6 +55,20 @@ def normalise_title(title: str) -> str:
         r"^Intro:\s+",
         r"^NT Live:\s+",
         r"^ROH:\s+",  # Royal Opera House
+        # Event-series names used by specific cinemas
+        r"^Film Club:\s+",
+        r"^Dochouse:\s+",
+        r"^Doc House:\s+",
+        r"^Shorts:\s+",
+        r"^Shorts Club:\s+",
+        r"^Documentary:\s+",
+        r"^Relaxed:\s+",
+        r"^Relaxed Screening:\s+",
+        r"^Dementia Friendly:\s+",
+        r"^Silver Screen:\s+",
+        r"^Parent & Baby:\s+",
+        r"^Baby Cinema:\s+",
+        r"^Autism Friendly:\s+",
     ]
     for prefix in prefixes:
         title = re.sub(prefix, "", title, flags=re.IGNORECASE)

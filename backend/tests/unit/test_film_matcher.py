@@ -279,8 +279,40 @@ class TestMatchOrCreateFilm:
         # Savepoints are used instead of session-level rollback, so db.rollback is NOT called.
         db.rollback.assert_not_called()
 
-    async def test_event_series_prefix_stripped_on_tmdb_retry(self) -> None:
-        """'Film Club: Certain Women' should match TMDb as 'Certain Women'."""
+    async def test_known_series_prefix_stripped_by_normalise_title(self) -> None:
+        """'Film Club: Certain Women' → normalise_title strips prefix → TMDb hit in one call."""
+        db = make_db()
+        db.execute = AsyncMock(
+            side_effect=[
+                make_execute_result(scalar_one_or_none=None),  # alias miss ("Certain Women")
+                make_execute_result(scalars_all=[]),            # fuzzy: empty DB
+                make_execute_result(scalar_one_or_none=None),  # store alias check
+            ]
+        )
+
+        tmdb = make_tmdb(
+            search_result={"id": 99999},
+            details={
+                "title": "Certain Women",
+                "release_date": "2016-10-14",
+                "credits": {"crew": [{"name": "Kelly Reichardt", "job": "Director"}]},
+                "production_countries": [{"name": "United States"}],
+                "overview": "Three women in Montana.",
+                "poster_path": "/xyz.jpg",
+                "runtime": 107,
+            },
+        )
+
+        matcher = FilmMatcher(db, tmdb_client=tmdb)
+        result = await matcher.match_or_create_film("Film Club: Certain Women")
+
+        assert result.title == "Certain Women"
+        # normalise_title already stripped the prefix, so TMDb called once with "Certain Women"
+        assert tmdb.search_film.call_count == 1
+        assert tmdb.search_film.call_args_list[0][0][0] == "Certain Women"
+
+    async def test_unknown_series_prefix_stripped_on_tmdb_retry(self) -> None:
+        """An unknown 'XYZ Series: Film Title' prefix triggers a retry in _create_from_tmdb."""
         db = make_db()
         db.execute = AsyncMock(
             side_effect=[
@@ -303,19 +335,16 @@ class TestMatchOrCreateFilm:
                 "runtime": 107,
             },
         )
-        # First TMDb search (full title) returns nothing; second (stripped) succeeds.
+        # First TMDb search (full unknown-prefixed title) fails; second (stripped) succeeds.
         tmdb.search_film = AsyncMock(side_effect=[None, {"id": 99999}])
 
         matcher = FilmMatcher(db, tmdb_client=tmdb)
-        result = await matcher.match_or_create_film("Film Club: Certain Women")
+        # "XYZ Series" is not a known prefix in normalise_title, so it reaches _create_from_tmdb
+        result = await matcher.match_or_create_film("XYZ Series: Certain Women")
 
         assert result.title == "Certain Women"
-        # TMDb was called twice: once for full title, once for stripped title
         assert tmdb.search_film.call_count == 2
-        first_call_arg = tmdb.search_film.call_args_list[0][0][0]
-        second_call_arg = tmdb.search_film.call_args_list[1][0][0]
-        assert first_call_arg == "Film Club: Certain Women"
-        assert second_call_arg == "Certain Women"
-        # Three aliases stored: stripped title + full title (from match_or_create_film)
-        # (film itself also added, so add count = 3: film + alias-stripped + alias-full)
+        assert tmdb.search_film.call_args_list[0][0][0] == "XYZ Series: Certain Women"
+        assert tmdb.search_film.call_args_list[1][0][0] == "Certain Women"
+        # film + alias for stripped + alias for full = 3 adds
         assert db.add.call_count == 3

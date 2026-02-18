@@ -28,6 +28,16 @@ class TestNormaliseTitle:
     def test_removes_nt_live_prefix(self) -> None:
         assert normalise_title("NT Live: The Film") == "The Film"
 
+    def test_removes_film_club_prefix(self) -> None:
+        assert normalise_title("Film Club: Certain Women") == "Certain Women"
+
+    def test_removes_dochouse_prefix(self) -> None:
+        assert normalise_title("Dochouse: The Shepherd and the Bear") == "The Shepherd and the Bear"
+
+    def test_preserves_colon_in_film_title(self) -> None:
+        # "Mission:" is not a known series prefix, so the colon stays
+        assert normalise_title("Mission: Impossible") == "Mission: Impossible"
+
     def test_removes_square_bracket_format_tag(self) -> None:
         assert normalise_title("Nosferatu [35mm]") == "Nosferatu"
 
