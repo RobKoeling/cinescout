@@ -210,6 +210,20 @@ async def seed_cinemas() -> None:
         },
         # --- End Everyman venues ---
         {
+            "id": "castle",
+            "name": "The Castle Cinema",
+            "city": "london",
+            "address": "64-66 Brooksby's Walk",
+            "postcode": "E9 6DA",
+            "latitude": 51.5461,
+            "longitude": -0.0354,
+            "website": "https://thecastlecinema.com",
+            "scraper_type": "castle",
+            "scraper_config": None,
+            "has_online_booking": True,
+            "supports_availability_check": False,
+        },
+        {
             "id": "genesis",
             "name": "Genesis Cinema",
             "city": "london",
