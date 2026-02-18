@@ -33,19 +33,31 @@ function formatTime(isoString: string): string {
   })
 }
 
-async function fetchDay(date: string, city: string): Promise<{ films: { film: Film; cinemas: { cinema: Cinema; times: ShowingTime[] }[] }[] }> {
-  const params = new URLSearchParams({ date, city, time_from: '00:00', time_to: '23:59' })
-  const res = await fetch(`http://localhost:8000/api/showings?${params}`)
-  if (!res.ok) throw new Error('Failed to fetch')
-  return res.json()
+function dateRangeForMode(mode: Mode): { dateFrom: string; dateTo: string } {
+  const today = todayInLondon()
+  if (mode === 'upcoming') return { dateFrom: today, dateTo: addDays(today, 6) }
+  if (mode === 'future')   return { dateFrom: today, dateTo: addDays(today, 179) }
+  // past: yesterday back 90 days
+  return { dateFrom: addDays(today, -90), dateTo: addDays(today, -1) }
 }
 
-function datesForMode(mode: Mode): string[] {
-  const today = todayInLondon()
-  if (mode === 'upcoming') return Array.from({ length: 7 },  (_, i) => addDays(today, i))
-  if (mode === 'future')   return Array.from({ length: 14 }, (_, i) => addDays(today, i))
-  // past: last 90 days (yesterday back to 90 days ago)
-  return Array.from({ length: 90 }, (_, i) => addDays(today, -(i + 1))).reverse()
+async function fetchDirectorShowings(
+  director: string,
+  city: string,
+  dateFrom: string,
+  dateTo: string,
+  excludeFilmId: string,
+): Promise<FilmShowings[]> {
+  const params = new URLSearchParams({
+    director,
+    city,
+    date_from: dateFrom,
+    date_to: dateTo,
+    exclude_film_id: excludeFilmId,
+  })
+  const res = await fetch(`http://localhost:8000/api/director-showings?${params}`)
+  if (!res.ok) throw new Error('Failed to fetch')
+  return res.json()
 }
 
 const MODE_LABEL: Record<Mode, string> = {
@@ -70,58 +82,29 @@ export default function DirectorModal({ director, city, excludeFilmId, onClose }
     setLoading(true)
     setFilms(null)
 
-    const dates = datesForMode(mode)
+    const { dateFrom, dateTo } = dateRangeForMode(mode)
 
-    Promise.all(dates.map(d => fetchDay(d, city)))
-      .then(responses => {
+    fetchDirectorShowings(director, city, dateFrom, dateTo, excludeFilmId)
+      .then(data => {
         if (cancelled) return
 
-        // Aggregate: film id → { film, cinema id → { cinema, times[] } }
-        const filmMap = new Map<string, { film: Film; cinemaMap: Map<string, { cinema: Cinema; times: ShowingTime[] }> }>()
-
-        for (const response of responses) {
-          for (const { film, cinemas } of response.films) {
-            if (!film.directors?.includes(director)) continue
-            if (film.id === excludeFilmId) continue
-
-            if (!filmMap.has(film.id)) {
-              filmMap.set(film.id, { film, cinemaMap: new Map() })
+        // For past mode sort times most-recent-first; backend returns chronological
+        if (mode === 'past') {
+          for (const { cinemas } of data) {
+            for (const c of cinemas) {
+              c.times.sort((a, b) => b.start_time.localeCompare(a.start_time))
             }
-            const entry = filmMap.get(film.id)!
-
-            for (const { cinema, times } of cinemas) {
-              if (!entry.cinemaMap.has(cinema.id)) {
-                entry.cinemaMap.set(cinema.id, { cinema, times: [] })
-              }
-              entry.cinemaMap.get(cinema.id)!.times.push(...times)
-            }
+            cinemas.sort((a, b) => b.times[0].start_time.localeCompare(a.times[0].start_time))
           }
         }
 
-        // For past mode sort most-recent-first; otherwise chronological
-        const timeCmp = mode === 'past'
-          ? (a: ShowingTime, b: ShowingTime) => b.start_time.localeCompare(a.start_time)
-          : (a: ShowingTime, b: ShowingTime) => a.start_time.localeCompare(b.start_time)
-
-        const result: FilmShowings[] = Array.from(filmMap.values())
-          .map(({ film, cinemaMap }) => ({
-            film,
-            cinemas: Array.from(cinemaMap.values())
-              .map(({ cinema, times }) => ({
-                cinema,
-                times: times.sort(timeCmp),
-              }))
-              .sort((a, b) => timeCmp(a.times[0], b.times[0])),
-          }))
-          .sort((a, b) => a.film.title.localeCompare(b.film.title))
-
-        setFilms(result)
+        setFilms(data)
         setLoading(false)
       })
       .catch(() => { if (!cancelled) setLoading(false) })
 
     return () => { cancelled = true }
-  }, [director, city, mode])
+  }, [director, city, excludeFilmId, mode])
 
   // Group a flat list of times by date label
   const groupByDate = (times: ShowingTime[]): { label: string; times: ShowingTime[] }[] => {
