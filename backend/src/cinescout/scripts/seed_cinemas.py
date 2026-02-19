@@ -25,6 +25,7 @@ async def seed_cinemas() -> None:
             "scraper_config": {"theater_id": "X0712"},
             "has_online_booking": True,
             "supports_availability_check": False,
+            "pricing": {"default": 17.50, "matinee": 14.00, "matinee_cutoff_hour": 17},
         },
         {
             "id": "everyman-screen-on-the-green",
@@ -39,6 +40,7 @@ async def seed_cinemas() -> None:
             "scraper_config": {"theater_id": "X077O"},
             "has_online_booking": True,
             "supports_availability_check": False,
+            "pricing": {"default": 17.50, "matinee": 14.00, "matinee_cutoff_hour": 17},
         },
         {
             "id": "everyman-belsize-park",
@@ -51,6 +53,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.everymancinema.com",
             "scraper_type": "everyman",
             "scraper_config": {"theater_id": "X077P"},
+            
+            "pricing": {"default": 17.50, "matinee": 14.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -65,6 +69,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.everymancinema.com",
             "scraper_type": "everyman",
             "scraper_config": {"theater_id": "X078X"},
+            
+            "pricing": {"default": 17.50, "matinee": 14.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -79,6 +85,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.everymancinema.com",
             "scraper_type": "everyman",
             "scraper_config": {"theater_id": "X0LWI"},
+            
+            "pricing": {"default": 17.50, "matinee": 14.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -93,6 +101,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.everymancinema.com",
             "scraper_type": "everyman",
             "scraper_config": {"theater_id": "X0VPB"},
+            
+            "pricing": {"default": 17.50, "matinee": 14.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -107,6 +117,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.everymancinema.com",
             "scraper_type": "everyman",
             "scraper_config": {"theater_id": "X0X5P"},
+            
+            "pricing": {"default": 17.50, "matinee": 14.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -121,6 +133,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.everymancinema.com",
             "scraper_type": "everyman",
             "scraper_config": {"theater_id": "X11DR"},
+            
+            "pricing": {"default": 17.50, "matinee": 14.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -135,6 +149,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.everymancinema.com",
             "scraper_type": "everyman",
             "scraper_config": {"theater_id": "G011I"},
+            
+            "pricing": {"default": 17.50, "matinee": 14.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -149,6 +165,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.everymancinema.com",
             "scraper_type": "everyman",
             "scraper_config": {"theater_id": "G05D7"},
+            
+            "pricing": {"default": 17.50, "matinee": 14.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -163,6 +181,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.everymancinema.com",
             "scraper_type": "everyman",
             "scraper_config": {"theater_id": "G029X"},
+            
+            "pricing": {"default": 17.50, "matinee": 14.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -177,6 +197,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.everymancinema.com",
             "scraper_type": "everyman",
             "scraper_config": {"theater_id": "X06SN"},
+            
+            "pricing": {"default": 17.50, "matinee": 14.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -191,6 +213,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.everymancinema.com",
             "scraper_type": "everyman",
             "scraper_config": {"theater_id": "X06ZW"},
+            
+            "pricing": {"default": 17.50, "matinee": 14.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -205,6 +229,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.everymancinema.com",
             "scraper_type": "everyman",
             "scraper_config": {"theater_id": "X11NT"},
+            
+            "pricing": {"default": 17.50, "matinee": 14.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -222,6 +248,7 @@ async def seed_cinemas() -> None:
             "scraper_config": None,
             "has_online_booking": True,
             "supports_availability_check": False,
+            "pricing": {"default": 5.00},
         },
         {
             "id": "castle",
@@ -236,6 +263,7 @@ async def seed_cinemas() -> None:
             "scraper_config": None,
             "has_online_booking": True,
             "supports_availability_check": False,
+            "pricing": {"default": 11.00, "matinee": 9.00, "matinee_cutoff_hour": 17},
         },
         {
             "id": "genesis",
@@ -248,6 +276,8 @@ async def seed_cinemas() -> None:
             "website": "https://genesiscinema.co.uk/whats-on",
             "scraper_type": "genesis",
             "scraper_config": None,
+            
+            "pricing": {"default": 6.50, "matinee": 5.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -262,6 +292,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.ica.art/whats-on",
             "scraper_type": "ica",
             "scraper_config": None,
+            
+            "pricing": {"default": 11.00, "matinee": 8.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -276,6 +308,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.barbican.org.uk/whats-on/cinema",
             "scraper_type": "barbican",
             "scraper_config": None,
+            
+            "pricing": {"default": 12.00, "matinee": 9.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -292,6 +326,7 @@ async def seed_cinemas() -> None:
             "scraper_config": None,
             "has_online_booking": True,
             "supports_availability_check": False,
+            "pricing": {"default": 13.00, "matinee": 10.00, "matinee_cutoff_hour": 17},
         },
         {
             "id": "curzon-soho",
@@ -304,6 +339,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.curzon.com/venues/soho",
             "scraper_type": "curzon",
             "scraper_config": {"venue_id": "SOH1"},
+            
+            "pricing": {"default": 14.00, "matinee": 11.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -318,6 +355,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.curzon.com/venues/mayfair",
             "scraper_type": "curzon",
             "scraper_config": {"venue_id": "MAY1"},
+            
+            "pricing": {"default": 14.00, "matinee": 11.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -332,6 +371,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.curzon.com/venues/bloomsbury",
             "scraper_type": "curzon",
             "scraper_config": {"venue_id": "BLO1"},
+            
+            "pricing": {"default": 14.00, "matinee": 11.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -346,6 +387,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.curzon.com/venues/aldgate",
             "scraper_type": "curzon",
             "scraper_config": {"venue_id": "ALD1"},
+            
+            "pricing": {"default": 14.00, "matinee": 11.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -360,6 +403,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.curzon.com/venues/camden",
             "scraper_type": "curzon",
             "scraper_config": {"venue_id": "CAM1"},
+            
+            "pricing": {"default": 14.00, "matinee": 11.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -374,6 +419,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.curzon.com/venues/wimbledon",
             "scraper_type": "curzon",
             "scraper_config": {"venue_id": "WIM01"},
+            
+            "pricing": {"default": 14.00, "matinee": 11.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -388,6 +435,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.thegardencinema.co.uk",
             "scraper_type": "garden",
             "scraper_config": None,
+            
+            "pricing": {"default": 12.00, "matinee": 9.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -402,6 +451,8 @@ async def seed_cinemas() -> None:
             "website": "https://princecharlescinema.com",
             "scraper_type": "prince-charles",
             "scraper_config": None,
+            
+            "pricing": {"default": 8.00, "matinee": 6.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -416,6 +467,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.picturehouses.com/cinema/picturehouse-central",
             "scraper_type": "picturehouse",
             "scraper_config": {"cinema_slug": "picturehouse-central"},
+            
+            "pricing": {"default": 13.00, "matinee": 10.50, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -430,6 +483,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.picturehouses.com/cinema/greenwich-picturehouse",
             "scraper_type": "picturehouse",
             "scraper_config": {"cinema_slug": "greenwich-picturehouse"},
+            
+            "pricing": {"default": 13.00, "matinee": 10.50, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -444,6 +499,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.picturehouses.com/cinema/hackney-picturehouse",
             "scraper_type": "picturehouse",
             "scraper_config": {"cinema_slug": "hackney-picturehouse"},
+            
+            "pricing": {"default": 13.00, "matinee": 10.50, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -458,6 +515,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.picturehouses.com/cinema/the-gate",
             "scraper_type": "picturehouse",
             "scraper_config": {"cinema_slug": "the-gate"},
+            
+            "pricing": {"default": 13.00, "matinee": 10.50, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -472,6 +531,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.picturehouses.com/cinema/the-ritzy",
             "scraper_type": "picturehouse",
             "scraper_config": {"cinema_slug": "the-ritzy"},
+            
+            "pricing": {"default": 13.00, "matinee": 10.50, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -486,6 +547,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.picturehouses.com/cinema/clapham-picturehouse",
             "scraper_type": "picturehouse",
             "scraper_config": {"cinema_slug": "clapham-picturehouse"},
+            
+            "pricing": {"default": 13.00, "matinee": 10.50, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -500,6 +563,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.picturehouses.com/cinema/crouch-end-picturehouse",
             "scraper_type": "picturehouse",
             "scraper_config": {"cinema_slug": "crouch-end-picturehouse"},
+            
+            "pricing": {"default": 13.00, "matinee": 10.50, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -514,6 +579,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.picturehouses.com/cinema/east-dulwich",
             "scraper_type": "picturehouse",
             "scraper_config": {"cinema_slug": "east-dulwich"},
+            
+            "pricing": {"default": 13.00, "matinee": 10.50, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -528,6 +595,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.picturehouses.com/cinema/finsbury-park",
             "scraper_type": "picturehouse",
             "scraper_config": {"cinema_slug": "finsbury-park"},
+            
+            "pricing": {"default": 13.00, "matinee": 10.50, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -542,6 +611,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.picturehouses.com/cinema/ealing-picturehouse",
             "scraper_type": "picturehouse",
             "scraper_config": {"cinema_slug": "ealing-picturehouse"},
+            
+            "pricing": {"default": 13.00, "matinee": 10.50, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -556,6 +627,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.picturehouses.com/cinema/west-norwood-picturehouse",
             "scraper_type": "picturehouse",
             "scraper_config": {"cinema_slug": "west-norwood-picturehouse"},
+            
+            "pricing": {"default": 13.00, "matinee": 10.50, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -570,6 +643,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.riocinema.org.uk",
             "scraper_type": "rio",
             "scraper_config": None,
+            
+            "pricing": {"default": 11.00, "matinee": 7.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -584,6 +659,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.regentstreetcinema.com",
             "scraper_type": "regent-street",
             "scraper_config": None,
+            
+            "pricing": {"default": 11.00, "matinee": 8.50, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -598,6 +675,8 @@ async def seed_cinemas() -> None:
             "website": "https://thenickel.co.uk",
             "scraper_type": "nickel",
             "scraper_config": None,
+            
+            "pricing": {"default": 10.00, "matinee": 8.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -612,6 +691,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.cinemamuseum.org.uk",
             "scraper_type": "cinema-museum",
             "scraper_config": None,
+            
+            "pricing": {"default": 10.00, "matinee": 8.00, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -627,6 +708,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.picturehouses.com/cinema/duke-of-york-s-picturehouse",
             "scraper_type": "picturehouse",
             "scraper_config": {"cinema_slug": "duke-of-york-s-picturehouse"},
+            
+            "pricing": {"default": 13.00, "matinee": 10.50, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -641,6 +724,8 @@ async def seed_cinemas() -> None:
             "website": "https://www.picturehouses.com/cinema/duke-s-at-komedia",
             "scraper_type": "picturehouse",
             "scraper_config": {"cinema_slug": "duke-s-at-komedia"},
+            
+            "pricing": {"default": 13.00, "matinee": 10.50, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -655,6 +740,8 @@ async def seed_cinemas() -> None:
             "website": "https://lewesdepot.org",
             "scraper_type": "depot-lewes",
             "scraper_config": None,
+            
+            "pricing": {"default": 10.50, "matinee": 8.50, "matinee_cutoff_hour": 17},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -669,6 +756,8 @@ async def seed_cinemas() -> None:
             "website": "https://screen-shot.co.uk",
             "scraper_type": "screen-shot",
             "scraper_config": None,
+            
+            "pricing": {"default": 10.00},
             "has_online_booking": True,
             "supports_availability_check": False,
         },
@@ -682,13 +771,16 @@ async def seed_cinemas() -> None:
             existing = result.scalar_one_or_none()
 
             if existing:
-                print(f"Cinema {cinema_data['id']} already exists, skipping")
-                continue
-
-            # Create new cinema
-            cinema = Cinema(**cinema_data)
-            session.add(cinema)
-            print(f"Added cinema: {cinema_data['name']}")
+                # Update existing cinema with new data (e.g., pricing)
+                for key, value in cinema_data.items():
+                    if key != "id":  # Don't update the primary key
+                        setattr(existing, key, value)
+                print(f"Updated cinema: {cinema_data['name']}")
+            else:
+                # Create new cinema
+                cinema = Cinema(**cinema_data)
+                session.add(cinema)
+                print(f"Added cinema: {cinema_data['name']}")
 
         await session.commit()
         print("Cinema seeding complete")

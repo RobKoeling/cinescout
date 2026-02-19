@@ -101,6 +101,7 @@ async def get_showings(
                     format_tags=showing.format_tags,
                     booking_url=showing.booking_url,
                     price=showing.price,
+                    estimated_price=cinema.get_estimated_price(showing.start_time),
                     raw_title=showing.raw_title,
                 )
                 for showing in cinema_showings
@@ -221,6 +222,7 @@ async def get_director_showings(
                     format_tags=s.format_tags,
                     booking_url=s.booking_url,
                     price=s.price,
+                    estimated_price=cinema.get_estimated_price(s.start_time),
                 )
                 for s in cinema_showings
             ]

@@ -19,6 +19,7 @@ class ShowingTimeResponse(BaseModel):
     format_tags: str | None = None
     booking_url: str | None = None
     price: float | None = None
+    estimated_price: float | None = None
     raw_title: str | None = None
 
 
