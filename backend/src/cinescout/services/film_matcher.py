@@ -182,12 +182,23 @@ class FilmMatcher:
             async with self.db.begin_nested():
                 self.db.add(film)
                 await self.db.flush()
-        except IntegrityError:
+        except IntegrityError as e:
             # Savepoint rolled back; outer session (including pending showings) unaffected.
+            # Could be film_id collision OR tmdb_id collision
             existing = await self.db.get(Film, film_id)
             if existing:
                 logger.debug(f"Film {film_id!r} already exists, reusing.")
                 return existing
+
+            # Check if it's a tmdb_id collision
+            if hasattr(film, 'tmdb_id') and film.tmdb_id:
+                query = select(Film).where(Film.tmdb_id == film.tmdb_id)
+                result = await self.db.execute(query)
+                existing = result.scalar_one_or_none()
+                if existing:
+                    logger.debug(f"Film with tmdb_id={film.tmdb_id} already exists as {existing.id!r}, reusing.")
+                    return existing
+
             raise
 
         # When we found the film via a stripped title (event-series prefix removed),
@@ -225,12 +236,23 @@ class FilmMatcher:
             async with self.db.begin_nested():
                 self.db.add(film)
                 await self.db.flush()
-        except IntegrityError:
+        except IntegrityError as e:
             # Savepoint rolled back; outer session (including pending showings) unaffected.
+            # Could be film_id collision OR tmdb_id collision
             existing = await self.db.get(Film, film_id)
             if existing:
                 logger.debug(f"Film {film_id!r} already exists, reusing.")
                 return existing
+
+            # Check if it's a tmdb_id collision
+            if hasattr(film, 'tmdb_id') and film.tmdb_id:
+                query = select(Film).where(Film.tmdb_id == film.tmdb_id)
+                result = await self.db.execute(query)
+                existing = result.scalar_one_or_none()
+                if existing:
+                    logger.debug(f"Film with tmdb_id={film.tmdb_id} already exists as {existing.id!r}, reusing.")
+                    return existing
+
             raise
 
         return film
