@@ -210,6 +210,20 @@ async def seed_cinemas() -> None:
         },
         # --- End Everyman venues ---
         {
+            "id": "peckhamplex",
+            "name": "Peckhamplex",
+            "city": "london",
+            "address": "95A Rye Lane",
+            "postcode": "SE15 4ST",
+            "latitude": 51.4733,
+            "longitude": -0.0693,
+            "website": "https://www.peckhamplex.london",
+            "scraper_type": "peckhamplex",
+            "scraper_config": None,
+            "has_online_booking": True,
+            "supports_availability_check": False,
+        },
+        {
             "id": "castle",
             "name": "The Castle Cinema",
             "city": "london",
