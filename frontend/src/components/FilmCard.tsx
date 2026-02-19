@@ -172,9 +172,9 @@ function FilmCard({ filmWithCinemas, onCinemaClick, onDirectorClick }: FilmCardP
                         </span>
                       )}
 
-                      {showing.price !== null && (
-                        <span className="ml-2 text-xs text-gray-500">
-                          {formatPrice(showing.price)}
+                      {(showing.estimated_price !== null || showing.price !== null) && (
+                        <span className="ml-2 text-xs text-green-700 font-medium">
+                          {formatPrice(showing.estimated_price ?? showing.price)}
                         </span>
                       )}
                     </div>

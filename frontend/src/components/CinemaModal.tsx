@@ -28,6 +28,11 @@ function CinemaModal({ cinema, date, city, allFilms, onClose }: CinemaModalProps
       timeZone: 'Europe/London',
     })
 
+  const formatPrice = (price: number | null) => {
+    if (price === null) return null
+    return `£${price.toFixed(2)}`
+  }
+
   const extractCinemaFilms = (films: FilmWithCinemas[]) =>
     films
       .flatMap(({ film, cinemas }) => {
@@ -111,8 +116,13 @@ function CinemaModal({ cinema, date, city, allFilms, onClose }: CinemaModalProps
                   )}
                 </div>
                 <div className="flex flex-wrap gap-1.5 justify-end flex-shrink-0">
-                  {times.map((showing) =>
-                    showing.booking_url ? (
+                  {times.map((showing) => {
+                    const price = showing.estimated_price ?? showing.price
+                    const timeText = formatTime(showing.start_time)
+                    const priceText = formatPrice(price)
+                    const displayText = priceText ? `${timeText} • ${priceText}` : timeText
+
+                    return showing.booking_url ? (
                       <a
                         key={showing.id}
                         href={showing.booking_url}
@@ -120,17 +130,17 @@ function CinemaModal({ cinema, date, city, allFilms, onClose }: CinemaModalProps
                         rel="noopener noreferrer"
                         className="bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100 rounded px-2 py-1 text-sm font-medium transition-colors"
                       >
-                        {formatTime(showing.start_time)}
+                        {displayText}
                       </a>
                     ) : (
                       <span
                         key={showing.id}
                         className="bg-gray-100 border border-gray-200 text-gray-700 rounded px-2 py-1 text-sm font-medium"
                       >
-                        {formatTime(showing.start_time)}
+                        {displayText}
                       </span>
                     )
-                  )}
+                  })}
                 </div>
               </div>
             ))

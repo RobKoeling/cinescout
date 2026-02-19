@@ -37,6 +37,7 @@ export interface ShowingTime {
   format_tags: string | null
   booking_url: string | null
   price: number | null
+  estimated_price: number | null
   raw_title: string | null
 }
 
