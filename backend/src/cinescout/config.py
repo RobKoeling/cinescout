@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     # TMDb API
     tmdb_api_key: str = ""
 
+    # TfL API (optional - works without key, but key increases rate limits)
+    tfl_app_key: str | None = None
+
     # Scraping settings
     scrape_timeout: int = 30
     scrape_max_retries: int = 3

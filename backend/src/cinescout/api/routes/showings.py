@@ -28,12 +28,85 @@ router = APIRouter()
 LONDON_TZ = ZoneInfo("Europe/London")
 
 
+async def enrich_cinemas_with_distance(
+    cinemas: list[Cinema],
+    user_lat: float,
+    user_lng: float,
+    use_tfl: bool,
+    transport_mode: str,
+) -> None:
+    """
+    Add distance/travel time to cinema objects in-place.
+
+    Args:
+        cinemas: List of Cinema objects to enrich
+        user_lat: User's latitude
+        user_lng: User's longitude
+        use_tfl: Whether to use TfL API for London cinemas
+        transport_mode: Transport mode for TfL ("public", "walking", "cycling")
+    """
+    from cinescout.utils.geo import calculate_haversine_distance
+    from cinescout.services.tfl_client import TfLClient
+    from cinescout.config import settings
+
+    # Initialize TfL client if needed
+    tfl_client = None
+    if use_tfl:
+        tfl_client = TfLClient(app_key=settings.tfl_app_key)
+
+    # Always calculate straight-line distance for all cinemas
+    for cinema in cinemas:
+        if cinema.latitude is None or cinema.longitude is None:
+            logger.warning(f"Cinema {cinema.id} ({cinema.name}) missing coordinates, skipping distance calculation")
+            continue
+
+        # Calculate Haversine distance
+        distance_km = calculate_haversine_distance(
+            user_lat, user_lng, cinema.latitude, cinema.longitude
+        )
+        cinema.distance_km = round(distance_km, 2)
+        cinema.distance_miles = round(distance_km * 0.621371, 2)
+
+    # Optionally get TfL journey times for London cinemas
+    if tfl_client:
+        # Collect London cinemas with valid coordinates
+        london_cinemas = [
+            c for c in cinemas
+            if c.city == "london" and c.latitude is not None and c.longitude is not None
+        ]
+
+        # Parallelize TfL API calls
+        import asyncio
+
+        async def fetch_journey_time(cinema: Cinema) -> None:
+            """Fetch and attach journey time for a single cinema."""
+            try:
+                result = await tfl_client.get_journey_time(
+                    user_lat, user_lng,
+                    cinema.latitude, cinema.longitude,
+                    mode=transport_mode
+                )
+                if result and result.get("status") == "ok":
+                    cinema.travel_time_minutes = result["duration_minutes"]
+                    cinema.travel_mode = transport_mode
+            except Exception as e:
+                logger.error(f"Failed to get TfL journey time for cinema {cinema.id}: {e}")
+
+        # Execute all TfL API calls in parallel
+        if london_cinemas:
+            await asyncio.gather(*[fetch_journey_time(c) for c in london_cinemas])
+
+
 @router.get("/showings", response_model=ShowingsResponse)
 async def get_showings(
     date_param: date = Query(..., alias="date", description="Date to search (YYYY-MM-DD)"),
     city: str = Query("london", description="City to search in"),
     time_from: time = Query(time(0, 0), description="Earliest start time (HH:MM)"),
     time_to: time = Query(time(23, 59), description="Latest start time (HH:MM)"),
+    user_lat: float | None = Query(None, description="User latitude for distance calculation"),
+    user_lng: float | None = Query(None, description="User longitude for distance calculation"),
+    use_tfl: bool = Query(False, description="Use TfL API for travel time (London only)"),
+    transport_mode: str = Query("public", description="Transport mode: public, walking, cycling"),
     db: AsyncSession = Depends(get_db),
 ) -> ShowingsResponse:
     """
@@ -79,6 +152,16 @@ async def get_showings(
         film_groups[film_id][cinema_id].append(showing)
         film_objects[film_id] = showing.film
         cinema_objects[cinema_id] = showing.cinema
+
+    # Enrich cinemas with distance/travel time if user location provided
+    if user_lat is not None and user_lng is not None:
+        await enrich_cinemas_with_distance(
+            list(cinema_objects.values()),
+            user_lat,
+            user_lng,
+            use_tfl,
+            transport_mode,
+        )
 
     # Build response structure
     films_with_cinemas: list[FilmWithCinemas] = []
@@ -134,6 +217,13 @@ async def get_showings(
                 cinemas=cinemas_with_showings,
             )
         )
+
+    # Sort cinemas by distance if user location provided
+    if user_lat is not None and user_lng is not None:
+        for film_with_cinemas in films_with_cinemas:
+            film_with_cinemas.cinemas.sort(
+                key=lambda c: c.cinema.distance_km if c.cinema.distance_km is not None else float('inf')
+            )
 
     # Sort films by showing count (descending)
     films_with_cinemas.sort(key=lambda f: f.film.showing_count, reverse=True)

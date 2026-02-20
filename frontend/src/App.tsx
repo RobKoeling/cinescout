@@ -130,6 +130,18 @@ function App() {
       const timeTo   = params.mode === 'time' ? params.timeTo   : '23:59'
 
       const apiParams = new URLSearchParams({ date: params.date, city, time_from: timeFrom, time_to: timeTo })
+
+      // Add location parameters if available
+      if (params.userLocation) {
+        apiParams.set('user_lat', params.userLocation.lat.toString())
+        apiParams.set('user_lng', params.userLocation.lng.toString())
+
+        if (params.useTfL) {
+          apiParams.set('use_tfl', 'true')
+          apiParams.set('transport_mode', params.transportMode || 'public')
+        }
+      }
+
       const response = await fetch(`http://localhost:8000/api/showings?${apiParams}`)
       if (!response.ok) throw new Error('Failed to fetch showings')
 

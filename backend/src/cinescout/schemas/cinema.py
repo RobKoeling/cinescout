@@ -18,3 +18,9 @@ class CinemaResponse(BaseModel):
     website: str | None = None
     has_online_booking: bool
     supports_availability_check: bool
+
+    # Distance/travel time fields (computed when user location provided)
+    distance_km: float | None = None
+    distance_miles: float | None = None
+    travel_time_minutes: int | None = None
+    travel_mode: str | None = None  # "public", "walking", "cycling"

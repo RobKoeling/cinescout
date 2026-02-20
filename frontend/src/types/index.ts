@@ -28,6 +28,11 @@ export interface Cinema {
   website: string | null
   has_online_booking: boolean
   supports_availability_check: boolean
+  // Distance/travel time fields (populated when user location provided)
+  distance_km?: number
+  distance_miles?: number
+  travel_time_minutes?: number
+  travel_mode?: 'public'
 }
 
 export interface ShowingTime {
@@ -63,4 +68,19 @@ export interface ShowingsResponse {
   total_films: number
   total_showings: number
   query: ShowingsQuery
+}
+
+export interface UserLocation {
+  lat: number
+  lng: number
+}
+
+export interface SearchParams {
+  date: string
+  city: string
+  timeFrom: string
+  timeTo: string
+  userLocation?: UserLocation
+  useTfL?: boolean
+  transportMode?: 'public'
 }

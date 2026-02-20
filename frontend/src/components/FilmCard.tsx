@@ -40,6 +40,18 @@ function FilmCard({ filmWithCinemas, onCinemaClick, onDirectorClick }: FilmCardP
     return `£${price.toFixed(2)}`
   }
 
+  const formatDistance = (cinema: Cinema) => {
+    if (!cinema.distance_miles) return null
+
+    const distanceStr = `${cinema.distance_miles} mi`
+
+    if (cinema.travel_time_minutes) {
+      return `${distanceStr} • 🚇 ${cinema.travel_time_minutes} min`
+    }
+
+    return distanceStr
+  }
+
   return (
     <div className="bg-white shadow-sm rounded-lg overflow-hidden border border-gray-200">
       {/* Film Header - Always Visible */}
@@ -130,12 +142,19 @@ function FilmCard({ filmWithCinemas, onCinemaClick, onDirectorClick }: FilmCardP
               >
                 {/* Cinema name — indented 5cm from the left */}
                 <div className="pl-[3cm]">
-                  <button
-                    onClick={() => onCinemaClick(cinemaWithShowings.cinema)}
-                    className="font-medium text-gray-900 hover:text-blue-600 hover:underline transition-colors text-left"
-                  >
-                    {cinemaWithShowings.cinema.name}
-                  </button>
+                  <div>
+                    <button
+                      onClick={() => onCinemaClick(cinemaWithShowings.cinema)}
+                      className="font-medium text-gray-900 hover:text-blue-600 hover:underline transition-colors text-left"
+                    >
+                      {cinemaWithShowings.cinema.name}
+                    </button>
+                    {formatDistance(cinemaWithShowings.cinema) && (
+                      <div className="text-sm text-gray-600 mt-1">
+                        {formatDistance(cinemaWithShowings.cinema)}
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Showing times — start at the 40% mark */}

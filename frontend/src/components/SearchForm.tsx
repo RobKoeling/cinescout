@@ -1,5 +1,5 @@
 import { useState, FormEvent, useEffect, useRef } from 'react'
-import type { Cinema } from '../types'
+import type { Cinema, UserLocation } from '../types'
 
 export type SearchMode = 'time' | 'film' | 'cinema' | 'format'
 
@@ -11,6 +11,9 @@ export interface SearchParams {
   filmTitle: string | null
   cinemaId: string | null
   format: string | null
+  userLocation?: UserLocation
+  useTfL?: boolean
+  transportMode?: 'public'
 }
 
 interface SearchFormProps {
@@ -54,6 +57,14 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
   const [format, setFormat] = useState<string>('')
   const [period, setPeriod] = useState<'today' | 'week'>('today')
 
+  // Geolocation
+  const [userLocation, setUserLocation] = useState<UserLocation | null>(null)
+  const [locationLoading, setLocationLoading] = useState(false)
+  const [locationError, setLocationError] = useState<string | null>(null)
+  const [useTfL, setUseTfL] = useState(false)
+  const [useManualAddress, setUseManualAddress] = useState(false)
+  const [manualAddress, setManualAddress] = useState('125 London Wall')
+
   // Fetch cinemas when city changes
   useEffect(() => {
     setCinemas([])
@@ -91,6 +102,82 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
     c.name.toLowerCase().includes(cinemaInput.toLowerCase())
   )
 
+  const handleGetLocation = () => {
+    setLocationLoading(true)
+    setLocationError(null)
+
+    if (!navigator.geolocation) {
+      setLocationError('Geolocation is not supported by your browser')
+      setLocationLoading(false)
+      return
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUserLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        })
+        setLocationLoading(false)
+      },
+      (error) => {
+        let message = 'Failed to get your location'
+        if (error.code === error.PERMISSION_DENIED) {
+          message = 'Location permission denied'
+        } else if (error.code === error.TIMEOUT) {
+          message = 'Location request timed out'
+        }
+        setLocationError(message)
+        setLocationLoading(false)
+      },
+      { timeout: 10000, enableHighAccuracy: true }
+    )
+  }
+
+  const handleGeocodeAddress = async () => {
+    if (!manualAddress.trim()) {
+      setLocationError('Please enter an address')
+      return
+    }
+
+    setLocationLoading(true)
+    setLocationError(null)
+
+    try {
+      // Use Nominatim (OpenStreetMap) geocoding service
+      const query = encodeURIComponent(manualAddress)
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=1`,
+        {
+          headers: {
+            'User-Agent': 'CineScout/1.0'
+          }
+        }
+      )
+
+      if (!response.ok) {
+        throw new Error('Geocoding failed')
+      }
+
+      const data = await response.json()
+
+      if (data.length === 0) {
+        setLocationError('Address not found. Try a more specific address.')
+        setLocationLoading(false)
+        return
+      }
+
+      setUserLocation({
+        lat: parseFloat(data[0].lat),
+        lng: parseFloat(data[0].lon),
+      })
+      setLocationLoading(false)
+    } catch (error) {
+      setLocationError('Failed to geocode address. Please try again.')
+      setLocationLoading(false)
+    }
+  }
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     onSearch({
@@ -101,6 +188,9 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
       filmTitle: mode === 'film' ? (selectedFilmTitle ?? (filmInput || null)) : null,
       cinemaId: mode === 'cinema' ? selectedCinemaId : null,
       format: mode === 'format' ? (format || null) : null,
+      userLocation: userLocation ?? undefined,
+      useTfL: useTfL && userLocation !== null ? useTfL : undefined,
+      transportMode: useTfL && userLocation !== null ? 'public' : undefined,
     })
   }
 
@@ -284,6 +374,130 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
             ))}
           </div>
         </div>
+      </div>
+
+      {/* Distance & Travel Time Controls */}
+      <div className="mt-4 pt-4 border-t border-gray-200">
+        <div className="flex flex-wrap items-center gap-4 mb-3">
+          {/* Toggle between browser location and manual address */}
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => setUseManualAddress(false)}
+              className={`text-xs px-3 py-1.5 rounded-md border transition-colors ${
+                !useManualAddress
+                  ? 'bg-gray-100 border-gray-400 text-gray-900'
+                  : 'border-gray-300 text-gray-600 hover:border-gray-400'
+              }`}
+            >
+              Use my location
+            </button>
+            <button
+              type="button"
+              onClick={() => setUseManualAddress(true)}
+              className={`text-xs px-3 py-1.5 rounded-md border transition-colors ${
+                useManualAddress
+                  ? 'bg-gray-100 border-gray-400 text-gray-900'
+                  : 'border-gray-300 text-gray-600 hover:border-gray-400'
+              }`}
+            >
+              Enter address
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-4">
+          {/* Browser location button */}
+          {!useManualAddress && (
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleGetLocation}
+                disabled={locationLoading}
+                className="px-4 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                {locationLoading ? 'Getting location...' : userLocation ? '📍 Location enabled' : '📍 Get location'}
+              </button>
+              {userLocation && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUserLocation(null)
+                    setUseTfL(false)
+                    setLocationError(null)
+                  }}
+                  className="text-xs text-gray-500 hover:text-gray-700"
+                  title="Clear location"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* Manual address input */}
+          {useManualAddress && (
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                value={manualAddress}
+                onChange={(e) => setManualAddress(e.target.value)}
+                placeholder="Enter address (e.g., 125 London Wall)"
+                className="px-3 py-2 text-sm border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                style={{ width: '280px' }}
+              />
+              <button
+                type="button"
+                onClick={handleGeocodeAddress}
+                disabled={locationLoading}
+                className="px-4 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                {locationLoading ? 'Finding...' : userLocation ? '📍 Address set' : '📍 Set location'}
+              </button>
+              {userLocation && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUserLocation(null)
+                    setUseTfL(false)
+                    setLocationError(null)
+                  }}
+                  className="text-xs text-gray-500 hover:text-gray-700"
+                  title="Clear location"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* TfL toggle (only show when location available and city is London) */}
+          {userLocation && city === 'london' && (
+            <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={useTfL}
+                onChange={(e) => setUseTfL(e.target.checked)}
+                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              />
+              <span>Show travel time (TfL) 🚇</span>
+            </label>
+          )}
+        </div>
+
+        {/* Location error message */}
+        {locationError && (
+          <p className="mt-2 text-sm text-red-600">{locationError}</p>
+        )}
+
+        {/* Info text when location is enabled */}
+        {userLocation && (
+          <p className="mt-2 text-xs text-gray-500">
+            {city === 'london' && useTfL
+              ? 'Cinemas will show distance and Tube/Bus travel time'
+              : 'Cinemas will show straight-line distance'}
+          </p>
+        )}
       </div>
 
       <div className="mt-5">
