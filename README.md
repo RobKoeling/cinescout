@@ -1,15 +1,17 @@
 # CineScout
 
-Find films showing in London cinemas within your time window.
+Find films showing in London and Brighton cinemas within your time window.
 
 ## Overview
 
-CineScout aggregates film showings from independent and arthouse cinemas in London, allowing you to search by date and time window. When you find a film you're interested in, expand it to see all venues and showtimes, check availability, and book tickets.
+CineScout aggregates film showings from independent and arthouse cinemas in London and Brighton, allowing you to search by date and time window. When you find a film you're interested in, expand it to see all venues and showtimes, check availability, and book tickets. For London cinemas, get real-time travel times via public transport using TfL (Transport for London) integration.
 
 ## Features
 
 - Search for films by date and time window
 - View aggregated listings from multiple cinemas
+- **Distance and travel time**: See how far each cinema is and get public transport travel times (London only, via TfL API)
+- **Browser geolocation** or manual address input for personalized distance calculations
 - Expand films to see all showings grouped by cinema with director, year, country, and cast
 - Direct links to booking pages
 - Film metadata from TMDb (director, year, country, cast, overview, runtime)
@@ -35,6 +37,8 @@ CineScout aggregates film showings from independent and arthouse cinemas in Lond
 | Scraping | Playwright (Python) |
 | Cache | Redis |
 | Film Data | TMDb API |
+| Travel Times | TfL (Transport for London) API |
+| Geocoding | Nominatim (OpenStreetMap) |
 
 ## Project Structure
 
@@ -123,11 +127,11 @@ cinescout/
 ## Future Features
 
 - [ ] User accounts and preferences
-- [ ] Travel time integration (TfL API)
 - [ ] Ticket purchasing passthrough
 - [ ] Custom data sources (RSS, newsletters)
 - [ ] Watch history tracking
-- [ ] Multi-city support
+- [ ] Expanded multi-city support (beyond London & Brighton)
+- [ ] Walking/cycling travel time estimates
 
 ## License
 

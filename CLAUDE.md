@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-CineScout aggregates film showings from independent and arthouse cinemas in London. Users search by date and time window to find what's playing across multiple venues. The backend scrapes cinema websites, matches film titles to TMDb metadata, and serves this via a FastAPI REST API. The frontend is a React + TypeScript SPA.
+CineScout aggregates film showings from independent and arthouse cinemas in London and Brighton. Users search by date and time window to find what's playing across multiple venues. The backend scrapes cinema websites, matches film titles to TMDb metadata, and serves this via a FastAPI REST API. The frontend is a React + TypeScript SPA with distance calculations and TfL (Transport for London) public transport travel times for London cinemas.
 
 ## Architecture
 
@@ -169,6 +169,12 @@ The `FilmMatcher` service then:
 
 Main endpoint: `GET /api/showings?date=YYYY-MM-DD&time_from=HH:MM&time_to=HH:MM`
 
+Optional distance/travel time parameters:
+- `user_lat` - User's latitude for distance calculation
+- `user_lng` - User's longitude for distance calculation
+- `use_tfl=true` - Enable TfL API for public transport travel times (London only)
+- `transport_mode=public` - Transport mode (currently only "public" supported)
+
 Response groups showings by film, then by cinema:
 ```json
 {
@@ -177,7 +183,15 @@ Response groups showings by film, then by cinema:
       "film": { "id": "...", "title": "...", "directors": [...], "year": 2024 },
       "cinemas": [
         {
-          "cinema": { "id": "...", "name": "...", "address": "..." },
+          "cinema": {
+            "id": "...",
+            "name": "...",
+            "address": "...",
+            "distance_km": 2.5,
+            "distance_miles": 1.55,
+            "travel_time_minutes": 15,
+            "travel_mode": "public"
+          },
           "times": [
             { "start_time": "2024-01-25T18:30:00", "booking_url": "...", ... }
           ]
@@ -197,6 +211,7 @@ See `docs/04-api-reference.md` for full API documentation.
 | Film metadata | 7 days | Database |
 | Showings list | 15 minutes | Redis |
 | Availability | 5 minutes | Redis |
+| TfL journey times | 24 hours | Redis |
 
 ## Important Patterns
 
@@ -222,6 +237,7 @@ Copy `.env.example` to `.env` and configure:
 - `DATABASE_URL` - PostgreSQL connection (docker-compose provides default)
 - `REDIS_URL` - Redis connection (optional for MVP)
 - `TMDB_API_KEY` - Required for film metadata (get from https://www.themoviedb.org/settings/api)
+- `TFL_APP_KEY` - Optional TfL API key for higher rate limits (get from https://api-portal.tfl.gov.uk/). API works without key (50 req/min), with key increases to 500 req/min
 - `SCRAPE_TIMEOUT` - Timeout in seconds for scraper HTTP requests
 - `SCRAPE_MAX_RETRIES` - Number of retry attempts for failed scrapes
 - `ADMIN_USERNAME` / `ADMIN_PASSWORD` - Credentials for the SQLAdmin panel (default: admin / changeme)
@@ -264,7 +280,8 @@ Mark tests that make real HTTP requests with `@pytest.mark.live` to exclude from
 - `src/cinescout/models/` - SQLAlchemy ORM models
 - `src/cinescout/schemas/` - Pydantic request/response schemas
 - `src/cinescout/scrapers/` - Cinema-specific scrapers
-- `src/cinescout/services/` - Business logic (FilmMatcher, TMDb client, etc.)
+- `src/cinescout/services/` - Business logic (FilmMatcher, TMDb client, TfL client, etc.)
+- `src/cinescout/utils/` - Utility functions (Haversine distance calculation, etc.)
 - `src/cinescout/tasks/` - Background jobs (scheduled scraping)
 - `src/cinescout/scripts/` - One-off scripts (TMDb backfill, seed data, etc.)
 
@@ -274,6 +291,34 @@ Mark tests that make real HTTP requests with `@pytest.mark.live` to exclude from
 - `src/hooks/` - Custom hooks (useShowings, etc.)
 - `src/types/` - TypeScript type definitions
 
+## Distance & Travel Time Feature
+
+The distance feature helps users find nearby cinemas and plan their journey:
+
+**Backend Implementation:**
+- `utils/geo.py` - Haversine formula for straight-line distance calculation
+- `services/tfl_client.py` - TfL Journey Planner API client with Redis caching
+- Distance enrichment happens in `api/routes/showings.py` via `enrich_cinemas_with_distance()`
+- All cinemas have latitude/longitude in the database
+
+**How it works:**
+1. User provides location (browser geolocation or manual address via Nominatim geocoding)
+2. Frontend sends `user_lat`, `user_lng` to API
+3. Backend calculates straight-line distance (Haversine) for all cinemas
+4. If `use_tfl=true` for London cinemas: call TfL API for public transport travel time
+5. Response includes `distance_km`, `distance_miles`, `travel_time_minutes` for each cinema
+6. Frontend displays: "2.5 mi • 🚇 15 min" or just "2.5 mi" if no TfL data
+
+**TfL API limitations:**
+- Only works reliably for public transport mode (tube/bus)
+- Walking/cycling modes have limited coverage (often return 404/400 errors)
+- Falls back gracefully to showing only straight-line distance when TfL fails
+
+**Caching:**
+- TfL API responses cached in Redis for 24 hours
+- Cache key: `tfl:{dest_lat}:{dest_lng}:{origin_lat}:{origin_lng}:{mode}`
+- Coordinates rounded to 4 decimals (~11m precision) for better cache hit rates
+
 ## Common Pitfalls
 
 1. **Scraper timezones**: Cinema websites often use local time without timezone info. Assume London timezone (UTC/BST).
@@ -281,11 +326,12 @@ Mark tests that make real HTTP requests with `@pytest.mark.live` to exclude from
 3. **Unique constraints**: `showings` table has unique constraint on `(cinema_id, film_id, start_time)`. Handle conflicts on scraper re-runs.
 4. **Playwright cleanup**: Always close pages in `finally` blocks to avoid browser memory leaks.
 5. **SQLAlchemy sessions**: Always `await session.commit()` to persist changes.
+6. **TfL API SSL**: The TfL client has SSL verification disabled for development (`verify=False` in httpx). This is a workaround for macOS certificate issues.
 
 ## Future Enhancements
 
 See README.md for roadmap, including:
 - User accounts and watch history
-- Travel time integration (TfL API)
-- Multi-city support
+- Expanded multi-city support (beyond London & Brighton)
 - Custom data sources (RSS feeds)
+- Walking/cycling travel time estimates
