@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import type { Cinema, Film, ShowingTime } from '../types'
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+
 interface DirectorModalProps {
   director: string
   city: string
@@ -55,7 +57,7 @@ async function fetchDirectorShowings(
     date_to: dateTo,
     exclude_film_id: excludeFilmId,
   })
-  const res = await fetch(`http://localhost:8000/api/director-showings?${params}`)
+  const res = await fetch(`${API_URL}/api/director-showings?${params}`)
   if (!res.ok) throw new Error('Failed to fetch')
   return res.json()
 }

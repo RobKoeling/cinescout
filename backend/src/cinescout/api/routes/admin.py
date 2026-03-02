@@ -241,3 +241,21 @@ async def trigger_scrape_all(background_tasks: BackgroundTasks) -> dict[str, str
     """
     background_tasks.add_task(run_scrape_all)
     return {"status": "started"}
+
+
+@router.post("/admin/seed-cinemas")
+async def seed_cinemas_endpoint(db: AsyncSession = Depends(get_db)) -> dict[str, str]:
+    """
+    Seed the database with initial cinema data.
+
+    This endpoint populates the database with 41 cinemas (37 London, 4 Brighton)
+    including coordinates, scraper configuration, and pricing information.
+    """
+    from cinescout.scripts.seed_cinemas import seed_cinemas
+
+    try:
+        await seed_cinemas()
+        return {"status": "success", "message": "Cinemas seeded successfully"}
+    except Exception as e:
+        logger.error(f"Error seeding cinemas: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Failed to seed cinemas: {str(e)}")

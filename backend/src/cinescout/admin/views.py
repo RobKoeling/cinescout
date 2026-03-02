@@ -13,6 +13,7 @@ from cinescout.models.film_alias import FilmAlias
 from cinescout.models.showing import Showing
 from cinescout.scripts.backfill_tmdb import backfill
 from cinescout.scripts.smoke_test import run_smoke_test, SmokeTestReport
+from cinescout.config import settings
 from cinescout.tasks.scrape_job import run_scrape_all
 
 
@@ -143,5 +144,86 @@ class ScrapeToolsView(BaseView):
             message=message,
             smoke_report=smoke_report,
             today=str(date.today()),
+        )
+        return HTMLResponse(content)
+
+
+_PASSWORD_CHANGE_TEMPLATE = """\
+{% extends "sqladmin/layout.html" %}
+{% block content %}
+<div class="container-fluid p-4">
+  <h2>Change Admin Password</h2>
+
+  <div class="alert alert-warning mt-3">
+    <strong>Note:</strong> Password changes are temporary and only apply to the current session.
+    <br>For persistent changes:
+    <ul class="mb-0 mt-2">
+      <li><strong>Local:</strong> Update <code>ADMIN_PASSWORD</code> in <code>backend/.env</code></li>
+      <li><strong>Fly.io:</strong> Run <code>flyctl secrets set ADMIN_PASSWORD=new_password</code></li>
+    </ul>
+  </div>
+
+  <form method="post" class="mt-4" style="max-width: 400px;">
+    <div class="mb-3">
+      <label for="current_password" class="form-label">Current Password</label>
+      <input type="password" class="form-control" id="current_password" name="current_password" required>
+    </div>
+    <div class="mb-3">
+      <label for="new_password" class="form-label">New Password</label>
+      <input type="password" class="form-control" id="new_password" name="new_password" required minlength="8">
+      <div class="form-text">Minimum 8 characters</div>
+    </div>
+    <div class="mb-3">
+      <label for="confirm_password" class="form-label">Confirm New Password</label>
+      <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Change Password</button>
+  </form>
+
+  {% if error %}
+  <div class="alert alert-danger mt-3">{{ error }}</div>
+  {% endif %}
+  {% if success %}
+  <div class="alert alert-success mt-3">{{ success }}</div>
+  {% endif %}
+</div>
+{% endblock %}
+"""
+
+
+class PasswordChangeView(BaseView):
+    name = "Change Password"
+    icon = "fa-key"
+
+    @expose("/password", methods=["GET", "POST"])
+    async def change_password(self, request: Request) -> HTMLResponse:
+        error: str | None = None
+        success: str | None = None
+
+        if request.method == "POST":
+            form = await request.form()
+            current_password = form.get("current_password")
+            new_password = form.get("new_password")
+            confirm_password = form.get("confirm_password")
+
+            # Validate current password
+            if current_password != settings.admin_password:
+                error = "Current password is incorrect"
+            # Validate new password
+            elif not new_password or len(str(new_password)) < 8:
+                error = "New password must be at least 8 characters long"
+            # Validate confirmation
+            elif new_password != confirm_password:
+                error = "New passwords do not match"
+            else:
+                # Update password in settings (runtime only)
+                settings.admin_password = str(new_password)
+                success = "Password changed successfully (current session only)"
+
+        tmpl = self.templates.env.from_string(_PASSWORD_CHANGE_TEMPLATE)
+        content = await tmpl.render_async(
+            request=request,
+            error=error,
+            success=success,
         )
         return HTMLResponse(content)

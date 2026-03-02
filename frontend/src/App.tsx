@@ -22,9 +22,11 @@ function addDays(dateStr: string, n: number): string {
   return d.toISOString().split('T')[0]
 }
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+
 async function fetchAllDay(date: string, city: string): Promise<FilmWithCinemas[]> {
   const p = new URLSearchParams({ date, city, time_from: '00:00', time_to: '23:59' })
-  const res = await fetch(`http://localhost:8000/api/showings?${p}`)
+  const res = await fetch(`${API_URL}/api/showings?${p}`)
   if (!res.ok) throw new Error('Failed to fetch showings')
   const data: ShowingsResponse = await res.json()
   return data.films
@@ -142,7 +144,7 @@ function App() {
         }
       }
 
-      const response = await fetch(`http://localhost:8000/api/showings?${apiParams}`)
+      const response = await fetch(`${API_URL}/api/showings?${apiParams}`)
       if (!response.ok) throw new Error('Failed to fetch showings')
 
       const data: ShowingsResponse = await response.json()

@@ -32,6 +32,8 @@ const MODE_LABELS: { mode: SearchMode; label: string }[] = [
 
 const FORMAT_OPTIONS = ['16mm', '35mm', '70mm']
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+
 function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormProps) {
   const today = new Date().toISOString().split('T')[0]
 
@@ -70,7 +72,7 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
     setCinemas([])
     setCinemaInput('')
     setSelectedCinemaId(null)
-    fetch(`http://localhost:8000/api/cinemas?city=${city}`)
+    fetch(`${API_URL}/api/cinemas?city=${city}`)
       .then(r => r.json())
       .then((data: Cinema[]) => setCinemas(data))
       .catch(() => {})
@@ -88,7 +90,7 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
     filmDebounce.current = setTimeout(async () => {
       try {
         const params = new URLSearchParams({ q: filmInput, city })
-        const res = await fetch(`http://localhost:8000/api/films/search?${params}`)
+        const res = await fetch(`${API_URL}/api/films/search?${params}`)
         const data = await res.json()
         setFilmSuggestions(data)
         setShowSuggestions(data.length > 0)

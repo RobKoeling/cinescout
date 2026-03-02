@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import type { Cinema, FilmWithCinemas } from '../types'
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+
 interface CinemaModalProps {
   cinema: Cinema
   date: string
@@ -44,7 +46,7 @@ function CinemaModal({ cinema, date, city, allFilms, onClose }: CinemaModalProps
     setFullDayLoading(true)
     try {
       const params = new URLSearchParams({ date, city, time_from: '00:00', time_to: '23:59' })
-      const res = await fetch(`http://localhost:8000/api/showings?${params}`)
+      const res = await fetch(`${API_URL}/api/showings?${params}`)
       if (!res.ok) throw new Error('Failed to fetch')
       const data = await res.json()
       setFullDayFilms(data.films)
