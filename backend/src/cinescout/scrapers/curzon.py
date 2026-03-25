@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 LONDON_TZ = ZoneInfo("Europe/London")
 
 CURZON_BASE_URL = "https://www.curzon.com"
-OCAPI_BASE = "https://vwc.curzon.com/WSVistaWebClient/ocapi/v1"
+OCAPI_BASE = "https://digital-api.curzon.com/ocapi/v1"
 
 # Vista site IDs for London venues (verified from /ocapi/v1/sites response)
 # Map each site ID to the venue page slug used to fetch the auth token
@@ -42,10 +42,13 @@ class CurzonScraper(BaseScraper):
 
     Flow:
     1. Fetch a venue page and extract the JWT from ``window.initialData``.
-    2. Call ``GET /ocapi/v1/sites/{venue_id}/films`` to build a filmId→title map.
+    2. Call ``GET /ocapi/v1/sites/{venue_id}/films`` to seed an initial filmId→title map.
     3. For each date in the requested range call
-       ``GET /ocapi/v1/showtimes/by-business-date/{date}?siteIds={venue_id}``
-       and merge with the title map.
+       ``GET /ocapi/v1/showtimes/by-business-date/{date}?siteIds={venue_id}``.
+       Each response includes ``relatedData.films`` with titles for that day's
+       programme, which are merged into the film map automatically.
+    4. Any remaining unresolved filmIds are looked up individually via
+       ``GET /ocapi/v1/films/{filmId}``.
     """
 
     def __init__(self, venue_id: str = "SOH1") -> None:
@@ -183,7 +186,17 @@ class CurzonScraper(BaseScraper):
             )
             return []
 
-        showtimes = r.json().get("showtimes", [])
+        data = r.json()
+        showtimes = data.get("showtimes", [])
+
+        # The response includes relatedData.films with titles for all films in
+        # this day's programme — merge them into the shared film_map.
+        for film in data.get("relatedData", {}).get("films", []):
+            film_id = film.get("id")
+            title_raw = film.get("title", {}).get("text", "")
+            if film_id and title_raw and film_id not in film_map:
+                film_map[film_id] = self.normalise_title(title_raw)
+
         showings: list[RawShowing] = []
 
         for st in showtimes:
