@@ -14,7 +14,7 @@ from cinescout.models.showing import Showing
 from cinescout.scripts.backfill_tmdb import backfill
 from cinescout.scripts.smoke_test import run_smoke_test, SmokeTestReport
 from cinescout.config import settings
-from cinescout.tasks.scrape_job import run_scrape_all
+from cinescout.tasks.scrape_job import run_scrape_all, run_scrape_selected
 
 
 class CinemaAdmin(ModelView, model=Cinema):
@@ -95,20 +95,43 @@ _TOOLS_TEMPLATE = """\
         <span class="badge bg-danger ms-2">Issues found</span>
       {% endif %}
     </h5>
-    <table class="table table-sm table-bordered mt-2" style="max-width:520px">
-      <thead><tr><th></th><th>Cinema</th><th class="text-end">Showings</th></tr></thead>
-      <tbody>
-      {% for r in smoke_report.results %}
-        <tr class="{{ 'table-danger' if not r.ok else '' }}">
-          <td>{{ '✓' if r.ok else '✗' }}</td>
-          <td>{{ r.name }}</td>
-          <td class="text-end">{{ r.count }}</td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
+    <form method="post">
+      <table class="table table-sm table-bordered mt-2" style="max-width:580px">
+        <thead>
+          <tr>
+            <th style="width:36px">
+              <input type="checkbox" id="select-all" title="Select all" checked>
+            </th>
+            <th></th>
+            <th>Cinema</th>
+            <th class="text-end">Showings</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for r in smoke_report.results %}
+          <tr class="{{ 'table-danger' if not r.ok else '' }}">
+            <td>
+              <input type="checkbox" name="cinema_ids" value="{{ r.id }}"
+                     {{ 'checked' if not r.ok else '' }}>
+            </td>
+            <td>{{ '✓' if r.ok else '✗' }}</td>
+            <td>{{ r.name }}</td>
+            <td class="text-end">{{ r.count }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      <button name="action" value="scrape_selected" class="btn btn-warning">
+        Scrape Selected
+      </button>
+    </form>
   </div>
   {% endif %}
+  <script>
+    document.getElementById('select-all')?.addEventListener('change', function() {
+      document.querySelectorAll('input[name="cinema_ids"]').forEach(cb => cb.checked = this.checked);
+    });
+  </script>
 </div>
 {% endblock %}
 """
@@ -132,6 +155,14 @@ class ScrapeToolsView(BaseView):
             elif action == "backfill":
                 asyncio.create_task(backfill())
                 message = "Backfill started in background."
+            elif action == "scrape_selected":
+                raw_ids = form.getlist("cinema_ids")
+                cinema_ids = [int(i) for i in raw_ids if i.isdigit()]
+                if cinema_ids:
+                    asyncio.create_task(run_scrape_selected(cinema_ids))
+                    message = f"Scraping {len(cinema_ids)} cinema(s) in background."
+                else:
+                    message = "No cinemas selected."
             elif action == "smoke_test":
                 raw_date = form.get("smoke_date") or str(date.today())
                 min_showings = int(form.get("min_showings") or 1)

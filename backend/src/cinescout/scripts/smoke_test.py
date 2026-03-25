@@ -18,6 +18,7 @@ DEFAULT_MIN_SHOWINGS = 1
 
 
 class CinemaResult(TypedDict):
+    id: int
     name: str
     count: int
     ok: bool
@@ -52,7 +53,7 @@ async def run_smoke_test(check_date: date, min_showings: int = DEFAULT_MIN_SHOWI
                 )
             )
             count = count_result.scalar_one()
-            results.append({"name": cinema.name, "count": count, "ok": count >= min_showings})
+            results.append({"id": cinema.id, "name": cinema.name, "count": count, "ok": count >= min_showings})
 
     all_ok = all(r["ok"] for r in results)
     return {"check_date": check_date, "min_showings": min_showings, "results": results, "all_ok": all_ok}
