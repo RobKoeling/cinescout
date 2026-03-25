@@ -137,6 +137,9 @@ class CurzonScraper(BaseScraper):
                 showings.extend(day_showings)
                 current += timedelta(days=1)
 
+            # Resolve any filmIds that weren't in the venue's /films list
+            await self._resolve_unknown_film_ids(client, headers, film_map, showings)
+
         return showings
 
     async def _fetch_film_map(
@@ -194,6 +197,51 @@ class CurzonScraper(BaseScraper):
                 )
 
         return showings
+
+    async def _resolve_unknown_film_ids(
+        self,
+        client: httpx.AsyncClient,
+        headers: dict,
+        film_map: dict[str, str],
+        showings: list[RawShowing],
+    ) -> None:
+        """Look up titles for filmIds that were not in the /sites/{venue}/films list.
+
+        The /sites/{venue}/films endpoint only returns a subset of films (typically
+        curated/featured). Showings may reference filmIds not in that list; for those
+        we fall back to using the filmId as the title. This method fetches the real
+        title from /films/{filmId} and patches the showing in place.
+        """
+        # Curzon filmIds look like "HO00006736" — collect any showing whose title is
+        # still the raw filmId (i.e. was not resolved via film_map).
+        unknown_ids: set[str] = {
+            s.title for s in showings if re.fullmatch(r"[A-Z]{2}\d+", s.title)
+        }
+        if not unknown_ids:
+            return
+
+        logger.debug(
+            f"Curzon ({self.venue_id}): resolving {len(unknown_ids)} unknown filmId(s)"
+        )
+        for film_id in unknown_ids:
+            try:
+                r = await client.get(
+                    f"{OCAPI_BASE}/films/{film_id}", headers=headers
+                )
+                if r.status_code != 200:
+                    continue
+                title_raw = r.json().get("film", {}).get("title", {}).get("text", "")
+                if title_raw:
+                    film_map[film_id] = self.normalise_title(title_raw)
+            except Exception as e:
+                logger.warning(
+                    f"Curzon ({self.venue_id}): failed to resolve filmId {film_id}: {e}"
+                )
+
+        # Patch any showings that still have a raw filmId as their title
+        for showing in showings:
+            if showing.title in film_map:
+                showing.title = film_map[showing.title]
 
     def _parse_showtime(
         self,

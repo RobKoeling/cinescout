@@ -135,6 +135,10 @@ class TestNickelParseDate:
         result = self.scraper._parse_date("Sunday 1.2", self.ref)
         assert result == date(2026, 2, 1)
 
+    def test_parses_slash_separator(self) -> None:
+        # The Nickel switched from DD.MM to DD/MM format
+        assert self.scraper._parse_date("Wednesday 25/3", date(2026, 3, 25)) == date(2026, 3, 25)
+
 
 # ---------------------------------------------------------------------------
 # _parse_time — pure, no HTTP

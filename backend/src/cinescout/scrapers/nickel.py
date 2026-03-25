@@ -79,12 +79,12 @@ class NickelScraper(BaseScraper):
         if not title:
             return None
 
-        # Date: the leaf <div> (no child divs) containing the "DD.MM" pattern
+        # Date: the leaf <div> (no child divs) containing the "DD.MM" or "DD/MM" pattern
         date_div: Tag | None = None
         for d in card.find_all("div"):
             if d.find("div"):  # skip container divs
                 continue
-            if re.search(r"\d{1,2}\.\d{1,2}", self._get_text(d)):
+            if re.search(r"\d{1,2}[./]\d{1,2}", self._get_text(d)):
                 date_div = d
                 break
 
@@ -134,7 +134,7 @@ class NickelScraper(BaseScraper):
         Uses reference_date.year, rolling forward one year if the parsed
         date is more than 30 days before the reference (handles Dec → Jan).
         """
-        m = re.search(r"(\d{1,2})\.(\d{1,2})", text)
+        m = re.search(r"(\d{1,2})[./](\d{1,2})", text)
         if not m:
             return None
         day, month = int(m.group(1)), int(m.group(2))
