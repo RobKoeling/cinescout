@@ -72,7 +72,18 @@ class PrinceCharlesScraper(BaseScraper):
                 if not title or len(title) < 2:
                     continue
 
-                logger.debug(f"Processing film: {title}")
+                # Extract release year from the first span in .running-time
+                # e.g. <div class="running-time"><span>2003</span><span>120mins</span>...
+                film_year: int | None = None
+                running_time_div = event.find("div", class_="running-time")
+                if running_time_div:
+                    first_span = running_time_div.find("span")
+                    if first_span:
+                        year_text = first_span.get_text(strip=True)
+                        if re.fullmatch(r"\d{4}", year_text):
+                            film_year = int(year_text)
+
+                logger.debug(f"Processing film: {title} ({film_year})")
 
                 # Find performance list containers
                 perf_lists = event.find_all("ul", class_="performance-list-items")
@@ -170,6 +181,7 @@ class PrinceCharlesScraper(BaseScraper):
                                             start_time=start_time,
                                             booking_url=booking_url,
                                             format_tags=format_tags,
+                                            year=film_year,
                                         )
                                         showings.append(showing)
                                         logger.debug(f"  Added: {title} at {start_time} format={format_tags}")
