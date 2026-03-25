@@ -123,7 +123,7 @@ async def _scrape_cinemas(
             showings_created = 0
             for raw_showing in raw_showings:
                 try:
-                    film = await film_matcher.match_or_create_film(raw_showing.title)
+                    film = await film_matcher.match_or_create_film(raw_showing.title, year=raw_showing.year)
 
                     existing_stmt = select(Showing).where(
                         Showing.cinema_id == cinema_id,

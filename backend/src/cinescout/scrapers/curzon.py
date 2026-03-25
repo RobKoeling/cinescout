@@ -131,11 +131,13 @@ class CurzonScraper(BaseScraper):
                 )
                 # Don't abort; showtimes endpoint still works independently
 
+            # year_map is built incrementally from relatedData.films in each day's response
+            year_map: dict[str, int] = {}
             showings: list[RawShowing] = []
             current = date_from
             while current <= date_to:
                 day_showings = await self._fetch_day(
-                    client, headers, current, film_map
+                    client, headers, current, film_map, year_map
                 )
                 showings.extend(day_showings)
                 current += timedelta(days=1)
@@ -173,6 +175,7 @@ class CurzonScraper(BaseScraper):
         headers: dict,
         day: date,
         film_map: dict[str, str],
+        year_map: dict[str, int],
     ) -> list[RawShowing]:
         r = await client.get(
             f"{OCAPI_BASE}/showtimes/by-business-date/{day.isoformat()}",
@@ -189,19 +192,25 @@ class CurzonScraper(BaseScraper):
         data = r.json()
         showtimes = data.get("showtimes", [])
 
-        # The response includes relatedData.films with titles for all films in
-        # this day's programme — merge them into the shared film_map.
+        # The response includes relatedData.films with titles and release dates for
+        # all films in this day's programme — merge them into the shared maps.
         for film in data.get("relatedData", {}).get("films", []):
             film_id = film.get("id")
             title_raw = film.get("title", {}).get("text", "")
             if film_id and title_raw and film_id not in film_map:
                 film_map[film_id] = self.normalise_title(title_raw)
+            release_date = film.get("releaseDate", "")
+            if film_id and release_date and film_id not in year_map:
+                try:
+                    year_map[film_id] = int(release_date[:4])
+                except (ValueError, IndexError):
+                    pass
 
         showings: list[RawShowing] = []
 
         for st in showtimes:
             try:
-                showing = self._parse_showtime(st, film_map, day)
+                showing = self._parse_showtime(st, film_map, year_map, day)
                 if showing:
                     showings.append(showing)
             except Exception as e:
@@ -260,6 +269,7 @@ class CurzonScraper(BaseScraper):
         self,
         st: dict,
         film_map: dict[str, str],
+        year_map: dict[str, int],
         day: date,
     ) -> RawShowing | None:
         film_id = st.get("filmId", "")
@@ -297,4 +307,5 @@ class CurzonScraper(BaseScraper):
             title=title,
             start_time=start_time,
             booking_url=booking_url,
+            year=year_map.get(film_id),
         )

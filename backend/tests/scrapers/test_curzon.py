@@ -46,6 +46,7 @@ class TestCurzonParseShowtime:
             "FILM001": "The Grand Budapest Hotel",
             "FILM002": "Nosferatu",
         }
+        self.year_map: dict[str, int] = {}
         self.day = date(2026, 2, 20)
 
     def test_parses_basic_showtime(self) -> None:
@@ -54,7 +55,7 @@ class TestCurzonParseShowtime:
             "filmId": "FILM001",
             "schedule": {"startsAt": "2026-02-20T14:30:00"},
         }
-        showing = self.scraper._parse_showtime(st, self.film_map, self.day)
+        showing = self.scraper._parse_showtime(st, self.film_map, self.year_map, self.day)
         assert showing is not None
         assert showing.title == "The Grand Budapest Hotel"
         assert showing.start_time == datetime(2026, 2, 20, 14, 30, tzinfo=LONDON_TZ)
@@ -65,7 +66,7 @@ class TestCurzonParseShowtime:
             "filmId": "FILM001",
             "schedule": {"startsAt": "2026-02-20T18:30:00"},
         }
-        showing = self.scraper._parse_showtime(st, self.film_map, self.day)
+        showing = self.scraper._parse_showtime(st, self.film_map, self.year_map, self.day)
         assert showing is not None
         assert showing.start_time.tzinfo is not None
 
@@ -75,7 +76,7 @@ class TestCurzonParseShowtime:
             "filmId": "FILM001",
             "schedule": {"startsAt": "2026-02-20T18:30:00"},
         }
-        showing = self.scraper._parse_showtime(st, self.film_map, self.day)
+        showing = self.scraper._parse_showtime(st, self.film_map, self.year_map, self.day)
         assert showing is not None
         assert showing.booking_url == "https://www.curzon.com/ticketing/seats/SHOW999/"
 
@@ -85,18 +86,18 @@ class TestCurzonParseShowtime:
             "filmId": "UNKNOWN_FILM",
             "schedule": {"startsAt": "2026-02-20T21:00:00"},
         }
-        showing = self.scraper._parse_showtime(st, self.film_map, self.day)
+        showing = self.scraper._parse_showtime(st, self.film_map, self.year_map, self.day)
         assert showing is not None
         assert showing.title == "UNKNOWN_FILM"
 
     def test_returns_none_when_film_id_missing(self) -> None:
         st = {"id": "SHOW001", "filmId": "", "schedule": {"startsAt": "2026-02-20T18:30:00"}}
-        showing = self.scraper._parse_showtime(st, self.film_map, self.day)
+        showing = self.scraper._parse_showtime(st, self.film_map, self.year_map, self.day)
         assert showing is None
 
     def test_returns_none_when_starts_at_missing(self) -> None:
         st = {"id": "SHOW001", "filmId": "FILM001", "schedule": {}}
-        showing = self.scraper._parse_showtime(st, self.film_map, self.day)
+        showing = self.scraper._parse_showtime(st, self.film_map, self.year_map, self.day)
         assert showing is None
 
     def test_returns_none_when_date_does_not_match_requested_day(self) -> None:
@@ -106,8 +107,29 @@ class TestCurzonParseShowtime:
             "filmId": "FILM001",
             "schedule": {"startsAt": "2026-02-21T00:30:00"},  # 00:30 on Feb 21
         }
-        showing = self.scraper._parse_showtime(st, self.film_map, self.day)  # day is Feb 20
+        showing = self.scraper._parse_showtime(st, self.film_map, self.year_map, self.day)  # day is Feb 20
         assert showing is None
+
+    def test_year_populated_from_year_map(self) -> None:
+        year_map = {"FILM001": 2003}
+        st = {
+            "id": "SHOW001",
+            "filmId": "FILM001",
+            "schedule": {"startsAt": "2026-02-20T14:30:00"},
+        }
+        showing = self.scraper._parse_showtime(st, self.film_map, year_map, self.day)
+        assert showing is not None
+        assert showing.year == 2003
+
+    def test_year_is_none_when_film_id_not_in_year_map(self) -> None:
+        st = {
+            "id": "SHOW001",
+            "filmId": "FILM001",
+            "schedule": {"startsAt": "2026-02-20T14:30:00"},
+        }
+        showing = self.scraper._parse_showtime(st, self.film_map, self.year_map, self.day)
+        assert showing is not None
+        assert showing.year is None
 
 
 # ---------------------------------------------------------------------------

@@ -19,6 +19,7 @@ class RawShowing:
     screen_name: str | None = None  # Screen/auditorium name
     format_tags: str | None = None  # e.g., "35mm", "IMAX", "Subtitled"
     price: float | None = None  # Ticket price in GBP
+    year: int | None = None  # Release year hint for disambiguation (e.g. Oldboy 2003 vs 2013)
 
     def __post_init__(self) -> None:
         """Validate that start_time is timezone-aware."""

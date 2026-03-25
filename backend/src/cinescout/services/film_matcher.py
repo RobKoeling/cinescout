@@ -42,35 +42,37 @@ class FilmMatcher:
         self.db = db
         self.tmdb_client = tmdb_client or TMDbClient()
 
-    async def match_or_create_film(self, raw_title: str) -> Film:
+    async def match_or_create_film(self, raw_title: str, year: int | None = None) -> Film:
         """
         Match a raw cinema title to an existing film or create a new one.
 
         Args:
             raw_title: Film title as it appears on cinema website
+            year: Release year hint from the scraper, used to disambiguate titles
+                  that belong to multiple films (e.g. Oldboy 2003 vs 2013).
 
         Returns:
             Matched or newly created Film object
         """
         # Normalize the title
         normalized_title = normalise_title(raw_title)
-        logger.info(f"Matching film: '{raw_title}' -> '{normalized_title}'")
+        logger.info(f"Matching film: '{raw_title}' -> '{normalized_title}'" + (f" (year hint: {year})" if year else ""))
 
         # Stage 1: Check film_aliases for exact match
-        film = await self._check_alias(normalized_title)
+        film = await self._check_alias(normalized_title, year)
         if film:
             logger.info(f"Found via alias: {film.title}")
             return film
 
         # Stage 2: Fuzzy match against existing films
-        film = await self._fuzzy_match(normalized_title)
+        film = await self._fuzzy_match(normalized_title, year)
         if film:
             logger.info(f"Found via fuzzy match: {film.title}")
             await self._store_alias(normalized_title, film.id)
             return film
 
         # Stage 3 & 4: Search TMDb and create new film
-        film = await self._create_from_tmdb(normalized_title)
+        film = await self._create_from_tmdb(normalized_title, year)
         if film:
             logger.info(f"Created from TMDb: {film.title}")
             await self._store_alias(normalized_title, film.id)
@@ -82,18 +84,34 @@ class FilmMatcher:
         await self._store_alias(normalized_title, film.id)
         return film
 
-    async def _check_alias(self, normalized_title: str) -> Film | None:
-        """Check if normalized title exists in film_aliases table."""
+    async def _check_alias(self, normalized_title: str, year: int | None = None) -> Film | None:
+        """Check if normalized title exists in film_aliases table.
+
+        If a year hint is provided and the aliased film has a known year that
+        doesn't match, the alias is skipped so disambiguation can proceed.
+        """
         query = (
             select(Film)
             .join(FilmAlias)
             .where(FilmAlias.normalized_title == normalized_title)
         )
         result = await self.db.execute(query)
-        return result.scalar_one_or_none()
+        film = result.scalar_one_or_none()
+        if film and year is not None and film.year is not None:
+            if abs(film.year - year) > 1:
+                logger.debug(
+                    f"Alias '{normalized_title}' → '{film.title}' ({film.year}) "
+                    f"skipped: year hint {year} doesn't match"
+                )
+                return None
+        return film
 
-    async def _fuzzy_match(self, normalized_title: str) -> Film | None:
-        """Fuzzy match normalized title against existing films."""
+    async def _fuzzy_match(self, normalized_title: str, year: int | None = None) -> Film | None:
+        """Fuzzy match normalized title against existing films.
+
+        If a year hint is provided, films whose year differs by more than 1 are
+        excluded so an ambiguous title (e.g. Oldboy) resolves to the correct version.
+        """
         # Get all existing films
         query = select(Film)
         result = await self.db.execute(query)
@@ -107,6 +125,11 @@ class FilmMatcher:
         best_film = None
 
         for film in films:
+            # Skip year-incompatible films when a year hint is provided
+            if year is not None and film.year is not None:
+                if abs(film.year - year) > 1:
+                    continue
+
             score = fuzz.ratio(normalized_title.lower(), film.title.lower())
             if score > best_score:
                 best_score = score
@@ -119,11 +142,12 @@ class FilmMatcher:
 
         return None
 
-    async def _create_from_tmdb(self, normalized_title: str) -> Film | None:
+    async def _create_from_tmdb(self, normalized_title: str, year: int | None = None) -> Film | None:
         """Create film from TMDb data."""
-        # Extract year from title if present
-        year_match = re.search(r"\((\d{4})\)", normalized_title)
-        year = int(year_match.group(1)) if year_match else None
+        # Year hint from scraper takes priority; fall back to year embedded in title
+        if year is None:
+            year_match = re.search(r"\((\d{4})\)", normalized_title)
+            year = int(year_match.group(1)) if year_match else None
 
         # Search TMDb
         search_result = await self.tmdb_client.search_film(normalized_title, year)
