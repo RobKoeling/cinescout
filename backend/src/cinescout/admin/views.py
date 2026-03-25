@@ -156,8 +156,7 @@ class ScrapeToolsView(BaseView):
                 asyncio.create_task(backfill())
                 message = "Backfill started in background."
             elif action == "scrape_selected":
-                raw_ids = form.getlist("cinema_ids")
-                cinema_ids = [int(i) for i in raw_ids if i.isdigit()]
+                cinema_ids = list(form.getlist("cinema_ids"))
                 if cinema_ids:
                     asyncio.create_task(run_scrape_selected(cinema_ids))
                     message = f"Scraping {len(cinema_ids)} cinema(s) in background."

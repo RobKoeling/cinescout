@@ -50,7 +50,7 @@ async def run_scrape_all() -> None:
         await _scrape_cinemas(db, cinema_rows, date_from, date_to)
 
 
-async def run_scrape_selected(cinema_ids: list[int]) -> None:
+async def run_scrape_selected(cinema_ids: list[str]) -> None:
     """Scrape showings only for the specified cinema IDs.
 
     Intended for ad-hoc re-scrapes of individual cinemas from the admin UI.
