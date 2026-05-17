@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     # TMDb API
     tmdb_api_key: str = ""
 
+    # Anthropic API (for LLM-powered title extraction)
+    anthropic_api_key: str = ""
+
     # TfL API (optional - works without key, but key increases rate limits)
     tfl_app_key: str | None = None
 
