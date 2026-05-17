@@ -26,14 +26,14 @@ VENUE_SLUGS: dict[str, str] = {
     "BLO1": "bloomsbury",
     "ALD1": "aldgate",
     "CAM1": "camden",
-    "WIM01": "wimbledon",
+    "WIM1": "wimbledon",
     "HOX1": "hoxton",
     "VIC1": "victoria",
     "RIC1": "richmond",
     "KIN1": "kingston",
 }
 
-_UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+_UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 
 class CurzonScraper(BaseScraper):
@@ -54,7 +54,7 @@ class CurzonScraper(BaseScraper):
     def __init__(self, venue_id: str = "SOH1") -> None:
         """
         Args:
-            venue_id: Vista site ID (e.g. ``"SOH1"``, ``"MAY1"``, ``"WIM01"``).
+            venue_id: Vista site ID (e.g. ``"SOH1"``, ``"MAY1"``, ``"WIM1"``).
         """
         self.venue_id = venue_id
 
