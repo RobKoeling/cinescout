@@ -108,19 +108,13 @@ class CineLumiereScraper(BaseScraper):
         )
 
     def _find_title(self, link: Tag) -> str | None:
-        """Walk up the DOM to find the nearest film-title heading above this link."""
-        node: Tag | None = link.parent
-        for _ in range(8):
-            if not isinstance(node, Tag) or node.name in ("html", "body", "main"):
-                break
-            # Search for ANY heading within this ancestor (not just direct children)
-            for heading in node.find_all(["h1", "h2", "h3", "h4", "h5"]):
-                if not isinstance(heading, Tag):
-                    continue
-                text = heading.get_text(strip=True)
-                # Skip empty or date-like headings
-                if not text or len(text) < 2 or _DATE_PREFIXES.match(text):
-                    continue
-                return self.normalise_title(text)
-            node = node.parent
-        return None
+        """Find the nearest film-title heading that precedes this booking link."""
+        # Pass a list so find_previous returns the single closest preceding element
+        # of any heading level — the film h3 is nearer than the page-title h1.
+        heading = link.find_previous(["h1", "h2", "h3", "h4", "h5"])
+        if not isinstance(heading, Tag):
+            return None
+        text = heading.get_text(strip=True)
+        if not text or len(text) < 2 or _DATE_PREFIXES.match(text):
+            return None
+        return self.normalise_title(text)
