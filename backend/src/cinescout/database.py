@@ -11,6 +11,8 @@ engine = create_async_engine(
     settings.database_url,
     echo=False,  # Set to True for SQL query logging
     future=True,
+    pool_pre_ping=True,   # Test connections before use to avoid stale-connection errors
+    pool_recycle=300,     # Recycle connections after 5 min to prevent server-side timeouts
 )
 
 # Create async session factory
