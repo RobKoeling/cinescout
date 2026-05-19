@@ -38,6 +38,10 @@ class Settings(BaseSettings):
     admin_password: str = "changeme"
     admin_secret_key: str = "change-this-secret"
 
+    # Curzon auth token (JWT, 12h TTL). When set, the scraper uses this instead
+    # of fetching it from the Curzon website (which is blocked on cloud IPs).
+    curzon_auth_token: str = ""
+
 
 # Global settings instance
 settings = Settings()

@@ -82,7 +82,16 @@ class CurzonScraper(BaseScraper):
     # ------------------------------------------------------------------
 
     async def _get_auth_token(self) -> str | None:
-        """Fetch a Curzon venue page and extract the JWT from window.initialData."""
+        """Return a Curzon JWT auth token.
+
+        Tries, in order:
+        1. ``CURZON_AUTH_TOKEN`` env var / settings — use when cloud IPs are blocked.
+        2. Fetch live from the venue HTML page (works on residential/local IPs).
+        """
+        if settings.curzon_auth_token:
+            logger.debug(f"Curzon ({self.venue_id}): using cached auth token from env")
+            return settings.curzon_auth_token
+
         slug = VENUE_SLUGS.get(self.venue_id, "soho")
         url = f"{CURZON_BASE_URL}/venues/{slug}/"
 
@@ -98,7 +107,6 @@ class CurzonScraper(BaseScraper):
             r.raise_for_status()
             html = r.text
 
-        # Fast path: key exists somewhere in the HTML
         m = re.search(r'"authToken"\s*:\s*"([^"]+)"', html)
         if m:
             return m.group(1)
