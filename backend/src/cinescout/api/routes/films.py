@@ -135,8 +135,8 @@ async def check_rt_url(
     # 3. Year known: verify the bare-slug page is actually the right film.
     if year:
         page_year = await _rt_page_year(base_slug)
-        if page_year is not None and abs(page_year - year) > 2:
-            logger.debug(f"RT year mismatch for {base_slug!r}: page={page_year}, film={year} — suppressing link")
+        if page_year is None or abs(page_year - year) > 2:
+            logger.debug(f"RT year check for {base_slug!r}: page={page_year}, film={year} — suppressing link")
             return RTCheckResponse(valid=False, url=f"https://www.rottentomatoes.com/m/{base_slug}")
 
     return RTCheckResponse(valid=True, url=f"https://www.rottentomatoes.com/m/{base_slug}")

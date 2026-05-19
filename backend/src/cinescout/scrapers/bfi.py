@@ -243,8 +243,7 @@ class BFIScraper(BaseScraper):
         soup = BeautifulSoup(html, "html.parser")
         showings: list[RawShowing] = []
 
-        # Build format lookup from the JS data embedded in the page
-        format_lookup = self._extract_format_lookup(html)
+        format_lookup, year_lookup = self._parse_search_results(html)
 
         items = soup.find_all("div", class_="result-box-item")
         if not items:
@@ -253,7 +252,7 @@ class BFIScraper(BaseScraper):
 
         for item in items:
             try:
-                showing = self._parse_result_item(item, format_lookup)
+                showing = self._parse_result_item(item, format_lookup, year_lookup)
                 if showing:
                     showings.append(showing)
             except Exception as e:
@@ -261,18 +260,23 @@ class BFIScraper(BaseScraper):
 
         return showings
 
-    def _extract_format_lookup(self, html: str) -> dict[tuple[str, str], str]:
-        """Extract format tags from the articleContext.searchResults JS data.
+    def _parse_search_results(self, html: str) -> tuple[
+        dict[tuple[str, str], str],
+        dict[tuple[str, str], int],
+    ]:
+        """Parse the articleContext.searchResults JS array embedded in the page.
 
         The page embeds a JS object with searchResults: an array of arrays.
         Index 5 = title (description), index 7 = full date string, index 17 = keywords
-        (comma-separated, e.g. "35mm,Kathryn Bigelow").
+        (comma-separated, e.g. "1952,UK,35mm,Kathryn Bigelow").
 
-        Returns a dict mapping (title, date_string) → format_tag.
+        Returns:
+            format_lookup: (title, date_str) → format tag (e.g. "35mm")
+            year_lookup:   (title, date_str) → release year (e.g. 1952)
         """
         m = re.search(r'"?searchResults"?\s*:\s*(\[)', html)
         if not m:
-            return {}
+            return {}, {}
 
         start = m.start(1)
         depth = 0
@@ -290,28 +294,46 @@ class BFIScraper(BaseScraper):
             results = json.loads(html[start:end])
         except (json.JSONDecodeError, ValueError):
             logger.debug("BFI: Could not parse searchResults JS data")
-            return {}
+            return {}, {}
 
         known_formats = {'35mm', '70mm', '4k', 'imax'}
-        lookup: dict[tuple[str, str], str] = {}
+        format_lookup: dict[tuple[str, str], str] = {}
+        year_lookup: dict[tuple[str, str], int] = {}
+
         for record in results:
             if not isinstance(record, list) or len(record) <= 17:
                 continue
             title = str(record[5])
             date_str = str(record[7])
             keywords_str = str(record[17])
-            tags = [t.strip().lower() for t in keywords_str.split(',')]
-            format_tag = next((t for t in tags if t in known_formats), None)
-            if format_tag:
-                lookup[(title, date_str)] = format_tag
+            tags = [t.strip() for t in keywords_str.split(',')]
+            tags_lower = [t.lower() for t in tags]
 
-        logger.debug(f"BFI: format lookup has {len(lookup)} 35mm/format entries")
-        return lookup
+            format_tag = next((t for t in tags_lower if t in known_formats), None)
+            if format_tag:
+                format_lookup[(title, date_str)] = format_tag
+
+            # Release year: a standalone 4-digit number in the keywords
+            for tag in tags:
+                if re.fullmatch(r'(?:19|20)\d{2}', tag):
+                    year_lookup[(title, date_str)] = int(tag)
+                    break
+
+        logger.debug(
+            f"BFI: searchResults → {len(format_lookup)} format entries, "
+            f"{len(year_lookup)} year entries"
+        )
+        return format_lookup, year_lookup
+
+    def _extract_format_lookup(self, html: str) -> dict[tuple[str, str], str]:
+        format_lookup, _ = self._parse_search_results(html)
+        return format_lookup
 
     def _parse_result_item(
         self,
         item: Tag,
         format_lookup: dict[tuple[str, str], str] | None = None,
+        year_lookup: dict[tuple[str, str], int] | None = None,
     ) -> RawShowing | None:
         """Parse a single .result-box-item into a RawShowing."""
         # Title
@@ -344,8 +366,10 @@ class BFIScraper(BaseScraper):
         venue_elem = item.select_one(".item-venue")
         screen_name = venue_elem.get_text(strip=True) if venue_elem else None
 
-        # Format tags from JS data lookup (keyed by raw title + full date string)
+        # Format tags and release year from JS searchResults data
+        # Both are keyed by (raw_title, full_date_string)
         format_tags = format_lookup.get((title_raw, start_text)) if format_lookup else None
+        year = year_lookup.get((title_raw, start_text)) if year_lookup else None
 
         return RawShowing(
             title=title,
@@ -353,6 +377,7 @@ class BFIScraper(BaseScraper):
             booking_url=booking_url,
             screen_name=screen_name,
             format_tags=format_tags,
+            year=year,
         )
 
     def _parse_start_date(self, text: str) -> datetime | None:
