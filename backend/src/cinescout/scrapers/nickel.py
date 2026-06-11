@@ -34,7 +34,9 @@ class NickelScraper(BaseScraper):
         """Fetch showings from The Nickel Cinema homepage."""
         try:
             async with httpx.AsyncClient(
-                timeout=settings.scrape_timeout, verify=False, follow_redirects=True
+                timeout=httpx.Timeout(settings.scrape_timeout, connect=15.0),
+                verify=False,
+                follow_redirects=True,
             ) as client:
                 response = await client.get(self.HOMEPAGE_URL)
                 response.raise_for_status()
