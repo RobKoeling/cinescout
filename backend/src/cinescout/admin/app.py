@@ -10,6 +10,7 @@ from cinescout.admin.views import (
     FilmAliasAdmin,
     ShowingAdmin,
     ScrapeToolsView,
+    PasswordChangeView,
 )
 from cinescout.config import settings
 from cinescout.database import engine
@@ -19,7 +20,7 @@ def create_admin_app() -> FastAPI:
     app = FastAPI(title="CineScout Admin")
     auth = AdminAuth(secret_key=settings.admin_secret_key)
     admin = Admin(app, engine, authentication_backend=auth, title="CineScout Admin")
-    for view in [CinemaAdmin, FilmAdmin, ShowingAdmin, FilmAliasAdmin, ScrapeToolsView]:
+    for view in [CinemaAdmin, FilmAdmin, ShowingAdmin, FilmAliasAdmin, ScrapeToolsView, PasswordChangeView]:
         admin.add_view(view)
     return app
 

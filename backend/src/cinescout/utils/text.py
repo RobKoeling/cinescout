@@ -30,6 +30,10 @@ def normalise_title(title: str) -> str:
     # Examples: "Film — Restoration", "Film - Subtitled", "Film – Director's Cut"
     title = re.sub(r"\s+[-–—]\s+\S.*$", "", title)
 
+    # Remove " + Event suffix" patterns used by some cinemas (e.g. Riverside Studios).
+    # Examples: "Adabana + Director Q&A" → "Adabana"
+    title = re.sub(r"\s+\+\s+(Director\b|Q&A\b|Panel\b|Talk\b|Discussion\b|Intro\b).*$", "", title, flags=re.IGNORECASE)
+
     # Remove year suffixes: "Title (2024)" or "Title (2024-25)"
     title = re.sub(r"\s*\(\d{4}(?:-\d{2,4})?\)\s*$", "", title)
 

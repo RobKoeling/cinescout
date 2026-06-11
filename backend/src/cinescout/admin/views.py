@@ -72,6 +72,11 @@ _TOOLS_TEMPLATE = """\
     <button name="action" value="scrape" class="btn btn-primary">Trigger Scrape</button>
     <button name="action" value="backfill" class="btn btn-secondary">Trigger Backfill</button>
   </form>
+
+  <hr class="my-4">
+
+  <h2>Admin</h2>
+  <a href="/admin/password" class="btn btn-outline-secondary mt-2">Change Password</a>
   {% if message %}
   <div class="alert alert-success mt-3">{{ message }}</div>
   {% endif %}

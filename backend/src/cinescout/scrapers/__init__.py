@@ -2,43 +2,61 @@
 
 from typing import Type
 
+from cinescout.scrapers.arthouse_crouch_end import ArtHouseCrouchEndScraper
+from cinescout.scrapers.arzner import ArznerScraper
 from cinescout.scrapers.barbican import BarbicanScraper
 from cinescout.scrapers.base import BaseScraper
 from cinescout.scrapers.castle import CastleScraper
 from cinescout.scrapers.bfi import BFIScraper
+from cinescout.scrapers.cine_lumiere import CineLumiereScraper
 from cinescout.scrapers.cinema_museum import CinemaMuseumScraper
+from cinescout.scrapers.close_up import CloseUpScraper
+from cinescout.scrapers.coldharbour_blue import ColdharbourBlueScraper
 from cinescout.scrapers.curzon import CurzonScraper
 from cinescout.scrapers.depot_lewes import DepotLewesScraper
+from cinescout.scrapers.electric import ElectricCinemaScraper
 from cinescout.scrapers.everyman import EverymanScraper
 from cinescout.scrapers.garden import GardenScraper
 from cinescout.scrapers.genesis import GenesisScraper
 from cinescout.scrapers.ica import ICAScraper
+from cinescout.scrapers.lexi import LexiScraper
 from cinescout.scrapers.nickel import NickelScraper
 from cinescout.scrapers.peckhamplex import PeckhamplexScraper
+from cinescout.scrapers.phoenix import PhoenixScraper
 from cinescout.scrapers.picturehouse import PicturehouseScraper
 from cinescout.scrapers.prince_charles import PrinceCharlesScraper
 from cinescout.scrapers.regent_street import RegentStreetScraper
 from cinescout.scrapers.rio import RioScraper
+from cinescout.scrapers.riverside import RiversideScraper
 from cinescout.scrapers.screen_shot import ScreenShotScraper
 
 # Registry mapping scraper type names to scraper classes
 SCRAPER_REGISTRY: dict[str, Type[BaseScraper]] = {
+    "arthouse-crouch-end": ArtHouseCrouchEndScraper,
+    "arzner": ArznerScraper,
     "barbican": BarbicanScraper,
     "castle": CastleScraper,
     "bfi": BFIScraper,
+    "cine-lumiere": CineLumiereScraper,
     "cinema-museum": CinemaMuseumScraper,
+    "close-up": CloseUpScraper,
+    "coldharbour-blue": ColdharbourBlueScraper,
     "curzon": CurzonScraper,
+    "electric": ElectricCinemaScraper,
     "depot-lewes": DepotLewesScraper,
     "everyman": EverymanScraper,
     "garden": GardenScraper,
     "genesis": GenesisScraper,
     "ica": ICAScraper,
+    "lexi": LexiScraper,
     "nickel": NickelScraper,
     "peckhamplex": PeckhamplexScraper,
+    "phoenix": PhoenixScraper,
     "picturehouse": PicturehouseScraper,
     "prince-charles": PrinceCharlesScraper,
     "regent-street": RegentStreetScraper,
     "rio": RioScraper,
+    "riverside": RiversideScraper,
     "screen-shot": ScreenShotScraper,
 }
 
@@ -56,6 +74,9 @@ def get_scraper(scraper_type: str, scraper_config: dict | None = None) -> BaseSc
     """
     scraper_class = SCRAPER_REGISTRY.get(scraper_type)
     if scraper_class:
+        if scraper_config and scraper_type == "electric":
+            location = scraper_config.get("location", "portobello")
+            return scraper_class(location=location)
         if scraper_config and scraper_type == "picturehouse":
             cinema_slug = scraper_config.get("cinema_slug", "picturehouse-central")
             return scraper_class(cinema_slug=cinema_slug)
@@ -72,22 +93,31 @@ def get_scraper(scraper_type: str, scraper_config: dict | None = None) -> BaseSc
 __all__ = [
     "SCRAPER_REGISTRY",
     "get_scraper",
+    "ArtHouseCrouchEndScraper",
+    "ArznerScraper",
     "BarbicanScraper",
     "BaseScraper",
     "CastleScraper",
     "BFIScraper",
+    "CineLumiereScraper",
     "CinemaMuseumScraper",
+    "ElectricCinemaScraper",
+    "CloseUpScraper",
+    "ColdharbourBlueScraper",
     "CurzonScraper",
     "DepotLewesScraper",
     "EverymanScraper",
     "GardenScraper",
     "GenesisScraper",
     "ICAScraper",
+    "LexiScraper",
     "NickelScraper",
     "PeckhamplexScraper",
+    "PhoenixScraper",
     "PicturehouseScraper",
     "PrinceCharlesScraper",
     "RegentStreetScraper",
     "RioScraper",
+    "RiversideScraper",
     "ScreenShotScraper",
 ]

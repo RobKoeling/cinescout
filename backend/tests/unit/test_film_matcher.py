@@ -1,12 +1,21 @@
 """Unit tests for the FilmMatcher service."""
 
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from sqlalchemy.exc import IntegrityError
 
 from cinescout.models.film import Film
 from cinescout.services.film_matcher import FilmMatcher
+
+
+@pytest.fixture(autouse=True)
+def no_ollama(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Prevent unit tests from calling the local Ollama instance."""
+    async def _passthrough(title: str) -> str:
+        return title
+
+    monkeypatch.setattr("cinescout.services.film_matcher.extract_film_title", _passthrough)
 
 
 # ---------------------------------------------------------------------------

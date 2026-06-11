@@ -11,6 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from cinescout.models.film import Film
 from cinescout.models.film_alias import FilmAlias
+from cinescout.services.title_extractor import extract_film_title
 from cinescout.services.tmdb_client import TMDbClient
 from cinescout.utils.text import normalise_title, slugify
 
@@ -54,8 +55,10 @@ class FilmMatcher:
         Returns:
             Matched or newly created Film object
         """
-        # Normalize the title
+        # Normalize the title: regex pass first, then LLM for event-branding patterns
+        # the regex can't reliably strip (e.g. "Jewish Culture Month: Menashe").
         normalized_title = normalise_title(raw_title)
+        normalized_title = await extract_film_title(normalized_title)
         logger.info(f"Matching film: '{raw_title}' -> '{normalized_title}'" + (f" (year hint: {year})" if year else ""))
 
         # Stage 1: Check film_aliases for exact match
@@ -282,14 +285,25 @@ class FilmMatcher:
         return film
 
     async def _store_alias(self, normalized_title: str, film_id: str) -> None:
-        """Store a film alias for faster future lookups."""
-        # Check if alias already exists
+        """Store or update a film alias for faster future lookups.
+
+        If an alias already exists pointing to a different film (e.g. a stale
+        entry from before year-based disambiguation was introduced), it is
+        updated in-place so future lookups resolve to the correct film.
+        """
         query = select(FilmAlias).where(FilmAlias.normalized_title == normalized_title)
         result = await self.db.execute(query)
         existing = result.scalar_one_or_none()
 
         if existing:
-            return  # Alias already exists
+            if existing.film_id == film_id:
+                return  # Already correct
+            logger.info(
+                f"Updating stale alias '{normalized_title}': "
+                f"{existing.film_id!r} → {film_id!r}"
+            )
+            existing.film_id = film_id
+            return
 
         alias = FilmAlias(
             normalized_title=normalized_title,
