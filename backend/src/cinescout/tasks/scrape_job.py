@@ -3,7 +3,8 @@
 import logging
 from datetime import date, timedelta
 
-from sqlalchemy import select
+from sqlalchemy import func, select
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.exc import IntegrityError
 
 from cinescout.database import AsyncSessionLocal
@@ -125,22 +126,9 @@ async def _scrape_cinemas(
                 try:
                     film = await film_matcher.match_or_create_film(raw_showing.title, year=raw_showing.year)
 
-                    existing_stmt = select(Showing).where(
-                        Showing.cinema_id == cinema_id,
-                        Showing.film_id == film.id,
-                        Showing.start_time == raw_showing.start_time,
-                    )
-                    existing_result = await db.execute(existing_stmt)
-                    existing_showing = existing_result.scalar_one_or_none()
-
-                    if existing_showing:
-                        existing_showing.booking_url = raw_showing.booking_url
-                        existing_showing.screen_name = raw_showing.screen_name
-                        existing_showing.format_tags = raw_showing.format_tags
-                        existing_showing.price = raw_showing.price
-                        existing_showing.raw_title = raw_showing.title
-                    else:
-                        showing = Showing(
+                    stmt = (
+                        pg_insert(Showing)
+                        .values(
                             cinema_id=cinema_id,
                             film_id=film.id,
                             start_time=raw_showing.start_time,
@@ -150,7 +138,20 @@ async def _scrape_cinemas(
                             price=raw_showing.price,
                             raw_title=raw_showing.title,
                         )
-                        db.add(showing)
+                        .on_conflict_do_update(
+                            constraint="uq_cinema_film_time",
+                            set_=dict(
+                                booking_url=raw_showing.booking_url,
+                                screen_name=raw_showing.screen_name,
+                                format_tags=raw_showing.format_tags,
+                                price=raw_showing.price,
+                                raw_title=raw_showing.title,
+                                updated_at=func.now(),
+                            ),
+                        )
+                    )
+                    result = await db.execute(stmt)
+                    if result.rowcount == 1:
                         showings_created += 1
 
                 except Exception as e:
