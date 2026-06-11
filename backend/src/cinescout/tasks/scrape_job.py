@@ -159,6 +159,10 @@ async def _scrape_cinemas(
                         f"at {cinema_name}: {e}",
                         exc_info=True,
                     )
+                    try:
+                        await db.rollback()
+                    except Exception:
+                        pass
 
             try:
                 await db.commit()
