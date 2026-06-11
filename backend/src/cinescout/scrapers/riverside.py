@@ -107,6 +107,10 @@ class RiversideScraper(BaseScraper):
             except ValueError:
                 continue
 
+            # Spektrix API doesn't reliably respect startUntil — filter explicitly
+            if not (date_from <= start_time.date() <= date_to):
+                continue
+
             event = event_map[event_id]
             showings.append(
                 RawShowing(
