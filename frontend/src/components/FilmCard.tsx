@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Cinema, FilmWithCinemas } from '../types'
+import RTLink from './RTLink'
 
 interface FilmCardProps {
   filmWithCinemas: FilmWithCinemas
@@ -65,6 +66,7 @@ function FilmCard({ filmWithCinemas, onCinemaClick, onDirectorClick }: FilmCardP
             {film.year && (
               <span className="text-gray-500 font-normal ml-2">({film.year})</span>
             )}
+            <RTLink title={film.title} year={film.year} />
           </h2>
 
           <span className="flex-1 text-sm text-gray-500">
