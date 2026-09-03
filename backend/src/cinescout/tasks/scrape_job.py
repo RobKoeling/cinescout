@@ -1,5 +1,6 @@
 """Scheduled scrape job that fetches showings for all cinemas."""
 
+import asyncio
 import logging
 from datetime import date, timedelta
 
@@ -16,6 +17,11 @@ from cinescout.services.tmdb_client import TMDbClient
 logger = logging.getLogger(__name__)
 
 SCRAPE_DAYS_AHEAD = 14
+
+# Hard ceiling per cinema so one hung scraper (e.g. a Playwright launch that
+# never returns under Fly's memory-constrained containers) can't starve every
+# cinema later in the batch.
+SCRAPER_TIMEOUT_SECONDS = 120
 
 
 async def run_scrape_all() -> None:
@@ -109,7 +115,19 @@ async def _scrape_cinemas(
             continue
 
         try:
-            raw_showings = await scraper.get_showings(date_from, date_to)
+            try:
+                raw_showings = await asyncio.wait_for(
+                    scraper.get_showings(date_from, date_to),
+                    timeout=SCRAPER_TIMEOUT_SECONDS,
+                )
+            except asyncio.TimeoutError:
+                logger.error(
+                    f"Scraper for {cinema_name} timed out after "
+                    f"{SCRAPER_TIMEOUT_SECONDS}s — skipping"
+                )
+                failures += 1
+                continue
+
             if raw_showings:
                 logger.info(f"Found {len(raw_showings)} raw showings for {cinema_name}")
             else:
