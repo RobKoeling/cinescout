@@ -60,4 +60,9 @@ RUN pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -e
 EXPOSE 8000
 
 # Start server (migrations are run via fly.toml release_command)
-CMD uvicorn cinescout.main:app --host 0.0.0.0 --port 8000
+# --proxy-headers trusts X-Forwarded-Proto from Fly's edge, so generated URLs
+# use https:// instead of http:// (without it, forms like the admin login
+# redirect on every submit). --forwarded-allow-ips is needed because Fly's
+# edge doesn't forward from 127.0.0.1 (uvicorn's default trusted source) —
+# safe here since this internal port is only reachable via Fly's own proxy.
+CMD uvicorn cinescout.main:app --host 0.0.0.0 --port 8000 --proxy-headers --forwarded-allow-ips='*'
