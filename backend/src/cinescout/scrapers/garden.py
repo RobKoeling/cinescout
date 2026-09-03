@@ -89,13 +89,13 @@ class GardenScraper(BaseScraper):
                 if not screening_times:
                     continue
 
-                # Find all screening panels
-                screening_panels = screening_times.find_all("div", class_="screening-panel")
+                # Find all day groups (date title + that day's screening panels)
+                day_groups = screening_times.find_all("div", class_="screening-panel__day")
 
-                for panel in screening_panels:
+                for day_group in day_groups:
                     try:
                         # Extract date from the date title
-                        date_elem = panel.find("div", class_="screening-panel__date-title")
+                        date_elem = day_group.find("div", class_="screening-panel__date-title")
                         if not date_elem:
                             continue
 
@@ -123,50 +123,52 @@ class GardenScraper(BaseScraper):
                         if not (date_from <= showing_date <= date_to):
                             continue
 
-                        # Find all time links in this panel
-                        time_links = panel.find_all("a", href=re.compile(r"bookings\.thegardencinema\.co\.uk"))
+                        # Each screening panel within the day group is one showtime
+                        screening_panels = day_group.find_all("div", class_="screening-panel")
 
-                        for time_link in time_links:
+                        for panel in screening_panels:
                             try:
-                                time_text = time_link.get_text(strip=True)
-                                booking_url = time_link.get("href")
-
-                                # Parse time (format: "17:30")
-                                time_match = re.match(r'^(\d{1,2}):(\d{2})$', time_text)
-                                if not time_match:
-                                    continue
-
-                                hour = int(time_match.group(1))
-                                minute = int(time_match.group(2))
-
-                                start_time = datetime(
-                                    showing_date.year,
-                                    showing_date.month,
-                                    showing_date.day,
-                                    hour,
-                                    minute,
-                                    tzinfo=LONDON_TZ,
+                                # Find all time links in this panel
+                                time_links = panel.find_all(
+                                    "a", href=re.compile(r"bookings\.thegardencinema\.co\.uk")
                                 )
 
-                                # Extract screen name if available
-                                screen_elem = panel.find("div", class_="screening-panel__day")
-                                screen_name = screen_elem.get_text(strip=True) if screen_elem else None
+                                for time_link in time_links:
+                                    time_text = time_link.get_text(strip=True)
+                                    booking_url = time_link.get("href")
 
-                                showing = RawShowing(
-                                    title=title,
-                                    start_time=start_time,
-                                    booking_url=booking_url,
-                                    screen_name=screen_name,
-                                )
-                                showings.append(showing)
-                                logger.debug(f"Added: {title} at {start_time}")
+                                    # Parse time (format: "17:30")
+                                    time_match = re.match(r'^(\d{1,2}):(\d{2})$', time_text)
+                                    if not time_match:
+                                        continue
+
+                                    hour = int(time_match.group(1))
+                                    minute = int(time_match.group(2))
+
+                                    start_time = datetime(
+                                        showing_date.year,
+                                        showing_date.month,
+                                        showing_date.day,
+                                        hour,
+                                        minute,
+                                        tzinfo=LONDON_TZ,
+                                    )
+
+                                    showing = RawShowing(
+                                        title=title,
+                                        start_time=start_time,
+                                        booking_url=booking_url,
+                                        screen_name=None,
+                                    )
+                                    showings.append(showing)
+                                    logger.debug(f"Added: {title} at {start_time}")
 
                             except Exception as e:
-                                logger.warning(f"Failed to parse time link '{time_text}': {e}")
+                                logger.warning(f"Failed to parse screening panel: {e}")
                                 continue
 
                     except Exception as e:
-                        logger.warning(f"Failed to parse screening panel: {e}")
+                        logger.warning(f"Failed to parse day group: {e}")
                         continue
 
             except Exception as e:
