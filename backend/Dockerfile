@@ -40,8 +40,14 @@ COPY requirements.txt .
 # Install Python dependencies (with trusted-host for macOS Docker SSL issues)
 RUN pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org --no-cache-dir -r requirements.txt
 
-# Install Playwright browsers
-RUN playwright install chromium
+# Trust the corporate TLS-inspecting proxy (Zscaler) some devs build behind,
+# so the Playwright CDN download below doesn't fail with an untrusted cert.
+COPY certs/zscaler-bundle.crt /usr/local/share/ca-certificates/zscaler-bundle.crt
+RUN update-ca-certificates
+
+# Install Playwright browsers (--use-system-ca points Node at the system CA
+# store above, since Node otherwise uses its own bundled cert list)
+RUN NODE_OPTIONS="--use-system-ca" playwright install chromium
 RUN playwright install-deps chromium
 
 # Copy application code
