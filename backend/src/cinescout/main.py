@@ -19,7 +19,16 @@ from cinescout.admin.views import (
     ScrapeToolsView,
     ShowingAdmin,
 )
-from cinescout.api.routes import admin, auth, cinemas, films, health, showings, watch_logs
+from cinescout.api.routes import (
+    admin,
+    auth,
+    cinemas,
+    films,
+    health,
+    letterboxd,
+    showings,
+    watch_logs,
+)
 from cinescout.config import settings
 from cinescout.database import engine
 from cinescout.tasks.scrape_job import run_scrape_all
@@ -82,6 +91,7 @@ app.include_router(showings.router, prefix="/api", tags=["showings"])
 app.include_router(admin.router, prefix="/api", tags=["admin"])
 app.include_router(auth.router, prefix="/api", tags=["auth"])
 app.include_router(watch_logs.router, prefix="/api", tags=["watch-logs"])
+app.include_router(letterboxd.router, prefix="/api", tags=["letterboxd"])
 
 # Setup SQLAdmin
 auth_backend = AdminAuth(secret_key=settings.admin_secret_key)

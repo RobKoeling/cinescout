@@ -23,6 +23,7 @@ export function renderWithAuth(ui: ReactElement, options: RenderWithAuthOptions 
     login: vi.fn(),
     register: vi.fn(),
     logout: vi.fn(),
+    updateUser: vi.fn(),
   }
 
   const result = render(<AuthContext.Provider value={value}>{ui}</AuthContext.Provider>)

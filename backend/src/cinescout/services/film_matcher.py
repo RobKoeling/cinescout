@@ -87,6 +87,65 @@ class FilmMatcher:
         await self._store_alias(normalized_title, film.id)
         return film
 
+    async def match_by_tmdb_id(self, tmdb_id: int) -> Film | None:
+        """
+        Look up (or create) a Film by a known TMDb id.
+
+        Unlike `match_or_create_film`, this never falls back to a placeholder:
+        a known tmdb_id is high-confidence, so either we find/create the real
+        film, or we return None (caller decides how to handle "not found").
+        Used by the Letterboxd import, where each diary entry already carries
+        a tmdb_id rather than a raw scraped title needing fuzzy matching.
+        """
+        query = select(Film).where(Film.tmdb_id == tmdb_id)
+        result = await self.db.execute(query)
+        film = result.scalar_one_or_none()
+        if film:
+            return film
+
+        details = await self.tmdb_client.get_film_details(tmdb_id)
+        if not details:
+            return None
+
+        title = details.get("title", "")
+        if not title:
+            return None
+        year = self._extract_year(details.get("release_date"))
+        directors = self.tmdb_client.extract_directors(details.get("credits", {}))
+        countries = self.tmdb_client.extract_countries(details)
+        cast = self.tmdb_client.extract_cast(details.get("credits", {}))
+        film_id = self._generate_film_id(title, year)
+
+        film = Film(
+            id=film_id,
+            title=title,
+            year=year,
+            tmdb_id=tmdb_id,
+            directors=directors if directors else None,
+            countries=countries if countries else None,
+            cast=cast if cast else None,
+            overview=details.get("overview"),
+            poster_path=details.get("poster_path"),
+            runtime=details.get("runtime"),
+        )
+
+        try:
+            async with self.db.begin_nested():
+                self.db.add(film)
+                await self.db.flush()
+        except IntegrityError:
+            # Collision: another concurrent request already created this row.
+            existing = await self.db.get(Film, film_id)
+            if existing:
+                return existing
+            result = await self.db.execute(select(Film).where(Film.tmdb_id == tmdb_id))
+            existing = result.scalar_one_or_none()
+            if existing:
+                return existing
+            raise
+
+        return film
+
     async def _check_alias(self, normalized_title: str, year: int | None = None) -> Film | None:
         """Check if normalized title exists in film_aliases table.
 

@@ -15,15 +15,17 @@ function mockResponse(body: unknown, status = 200) {
 const USER = { id: 1, username: 'alice', letterboxd_username: null, letterboxd_last_synced_at: null }
 
 function Probe() {
-  const { user, isLoading, error, login, register, logout } = useAuth()
+  const { user, isLoading, error, login, register, logout, updateUser } = useAuth()
   return (
     <div>
       <div data-testid="loading">{String(isLoading)}</div>
       <div data-testid="user">{user ? user.username : 'none'}</div>
+      <div data-testid="letterboxd">{user?.letterboxd_username ?? 'none'}</div>
       <div data-testid="error">{error ?? 'none'}</div>
       <button onClick={() => login('alice', 'password123').catch(() => {})}>do-login</button>
       <button onClick={() => register('alice', 'password123').catch(() => {})}>do-register</button>
       <button onClick={logout}>do-logout</button>
+      <button onClick={() => updateUser({ ...USER, letterboxd_username: 'scottn' })}>do-update</button>
     </div>
   )
 }
@@ -163,5 +165,22 @@ describe('AuthProvider', () => {
 
     await waitFor(() => expect(screen.getByTestId('user')).toHaveTextContent('none'))
     expect(localStorage.getItem(TOKEN_STORAGE_KEY)).toBeNull()
+  })
+
+  it('updateUser patches the current user in place', async () => {
+    localStorage.setItem(TOKEN_STORAGE_KEY, 'stored-token')
+    mockFetch.mockResolvedValueOnce(mockResponse(USER))
+
+    render(
+      <AuthProvider>
+        <Probe />
+      </AuthProvider>
+    )
+    await waitFor(() => expect(screen.getByTestId('user')).toHaveTextContent('alice'))
+    expect(screen.getByTestId('letterboxd')).toHaveTextContent('none')
+
+    fireEvent.click(screen.getByText('do-update'))
+
+    expect(screen.getByTestId('letterboxd')).toHaveTextContent('scottn')
   })
 })

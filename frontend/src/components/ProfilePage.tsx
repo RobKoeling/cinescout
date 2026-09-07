@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
+import LetterboxdPanel from './LetterboxdPanel'
 import ManualLogModal from './ManualLogModal'
 import StarRating from './StarRating'
 import { deleteWatchLog, listWatchLogs } from '../api/watchLogs'
+import { useAuth } from '../hooks/useAuth'
 import type { WatchLogEntry } from '../types'
 
 interface ProfilePageProps {
@@ -9,6 +11,9 @@ interface ProfilePageProps {
 }
 
 function ProfilePage({ onBack }: ProfilePageProps) {
+  // ProfilePage is only ever rendered while logged in (App.tsx bounces back
+  // to search otherwise), so `user` is always non-null here.
+  const { user } = useAuth()
   const [entries, setEntries] = useState<WatchLogEntry[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -52,6 +57,8 @@ function ProfilePage({ onBack }: ProfilePageProps) {
       >
         ← Back to search
       </button>
+
+      {user && <LetterboxdPanel user={user} />}
 
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-bold text-gray-900">My Diary</h2>
