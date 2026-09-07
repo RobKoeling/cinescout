@@ -1,6 +1,7 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import FilmCard from './FilmCard'
+import { renderWithAuth, makeUser } from '../test/authTestUtils'
 import type { FilmWithCinemas } from '../types'
 
 // ---------------------------------------------------------------------------
@@ -68,7 +69,7 @@ function makeFilmWithCinemas(overrides: Partial<FilmWithCinemas> = {}): FilmWith
 
 describe('FilmCard header', () => {
   it('renders the film title and year', () => {
-    render(
+    renderWithAuth(
       <FilmCard
         filmWithCinemas={makeFilmWithCinemas()}
         allFilms={[]}
@@ -83,14 +84,14 @@ describe('FilmCard header', () => {
   it('omits year when null', () => {
     const data = makeFilmWithCinemas()
     data.film.year = null
-    render(
+    renderWithAuth(
       <FilmCard filmWithCinemas={data} allFilms={[]} onCinemaClick={vi.fn()} onDirectorClick={vi.fn()} />
     )
     expect(screen.queryByText(/\(\d{4}\)/)).not.toBeInTheDocument()
   })
 
   it('shows showing count and cinema count', () => {
-    render(
+    renderWithAuth(
       <FilmCard filmWithCinemas={makeFilmWithCinemas()} allFilms={[]} onCinemaClick={vi.fn()} onDirectorClick={vi.fn()} />
     )
     expect(screen.getByText(/2 showings at 1 cinema/)).toBeInTheDocument()
@@ -99,7 +100,7 @@ describe('FilmCard header', () => {
   it('uses singular "showing" and "cinema" for counts of 1', () => {
     const data = makeFilmWithCinemas()
     data.film.showing_count = 1
-    render(
+    renderWithAuth(
       <FilmCard filmWithCinemas={data} allFilms={[]} onCinemaClick={vi.fn()} onDirectorClick={vi.fn()} />
     )
     expect(screen.getByText(/1 showing at 1 cinema/)).toBeInTheDocument()
@@ -112,7 +113,7 @@ describe('FilmCard header', () => {
 
 describe('displayTitle', () => {
   it('uses film.title when raw_title is null', () => {
-    render(
+    renderWithAuth(
       <FilmCard filmWithCinemas={makeFilmWithCinemas()} allFilms={[]} onCinemaClick={vi.fn()} onDirectorClick={vi.fn()} />
     )
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Nosferatu')
@@ -121,7 +122,7 @@ describe('displayTitle', () => {
   it('uses film.title when raw_title matches canonical title (case-insensitive)', () => {
     const data = makeFilmWithCinemas()
     data.cinemas[0].times[0].raw_title = 'NOSFERATU'
-    render(
+    renderWithAuth(
       <FilmCard filmWithCinemas={data} allFilms={[]} onCinemaClick={vi.fn()} onDirectorClick={vi.fn()} />
     )
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Nosferatu')
@@ -131,7 +132,7 @@ describe('displayTitle', () => {
     const data = makeFilmWithCinemas()
     data.film.title = 'Certain Women'
     data.cinemas[0].times[0].raw_title = 'Film Club: Certain Women'
-    render(
+    renderWithAuth(
       <FilmCard filmWithCinemas={data} allFilms={[]} onCinemaClick={vi.fn()} onDirectorClick={vi.fn()} />
     )
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Film Club: Certain Women')
@@ -144,14 +145,14 @@ describe('displayTitle', () => {
 
 describe('expand / collapse', () => {
   it('hides detailed content by default', () => {
-    render(
+    renderWithAuth(
       <FilmCard filmWithCinemas={makeFilmWithCinemas()} allFilms={[]} onCinemaClick={vi.fn()} onDirectorClick={vi.fn()} />
     )
     expect(screen.queryByText('A gothic horror film.')).not.toBeInTheDocument()
   })
 
   it('reveals detailed content when header is clicked', () => {
-    render(
+    renderWithAuth(
       <FilmCard filmWithCinemas={makeFilmWithCinemas()} allFilms={[]} onCinemaClick={vi.fn()} onDirectorClick={vi.fn()} />
     )
     fireEvent.click(screen.getByRole('button', { name: /Nosferatu/ }))
@@ -159,7 +160,7 @@ describe('expand / collapse', () => {
   })
 
   it('hides content again when clicked a second time', () => {
-    render(
+    renderWithAuth(
       <FilmCard filmWithCinemas={makeFilmWithCinemas()} allFilms={[]} onCinemaClick={vi.fn()} onDirectorClick={vi.fn()} />
     )
     const btn = screen.getByRole('button', { name: /Nosferatu/ })
@@ -169,7 +170,7 @@ describe('expand / collapse', () => {
   })
 
   it('shows directors, countries, and overview when expanded', () => {
-    render(
+    renderWithAuth(
       <FilmCard filmWithCinemas={makeFilmWithCinemas()} allFilms={[]} onCinemaClick={vi.fn()} onDirectorClick={vi.fn()} />
     )
     fireEvent.click(screen.getByRole('button', { name: /Nosferatu/ }))
@@ -179,7 +180,7 @@ describe('expand / collapse', () => {
   })
 
   it('shows cinema name and address when expanded', () => {
-    render(
+    renderWithAuth(
       <FilmCard filmWithCinemas={makeFilmWithCinemas()} allFilms={[]} onCinemaClick={vi.fn()} onDirectorClick={vi.fn()} />
     )
     fireEvent.click(screen.getByRole('button', { name: /Nosferatu/ }))
@@ -194,7 +195,7 @@ describe('expand / collapse', () => {
 
 describe('showing times', () => {
   it('renders a booking link when booking_url is set', () => {
-    render(
+    renderWithAuth(
       <FilmCard filmWithCinemas={makeFilmWithCinemas()} allFilms={[]} onCinemaClick={vi.fn()} onDirectorClick={vi.fn()} />
     )
     fireEvent.click(screen.getByRole('button', { name: /Nosferatu/ }))
@@ -207,7 +208,7 @@ describe('showing times', () => {
     const data = makeFilmWithCinemas()
     // Remove booking URL from both times
     data.cinemas[0].times[0].booking_url = null
-    render(
+    renderWithAuth(
       <FilmCard filmWithCinemas={data} allFilms={[]} onCinemaClick={vi.fn()} onDirectorClick={vi.fn()} />
     )
     fireEvent.click(screen.getByRole('button', { name: /Nosferatu/ }))
@@ -215,7 +216,7 @@ describe('showing times', () => {
   })
 
   it('shows screen name when present', () => {
-    render(
+    renderWithAuth(
       <FilmCard filmWithCinemas={makeFilmWithCinemas()} allFilms={[]} onCinemaClick={vi.fn()} onDirectorClick={vi.fn()} />
     )
     fireEvent.click(screen.getByRole('button', { name: /Nosferatu/ }))
@@ -225,7 +226,7 @@ describe('showing times', () => {
   it('shows formatted price when present', () => {
     const data = makeFilmWithCinemas()
     data.cinemas[0].times[0].price = 12.5
-    render(
+    renderWithAuth(
       <FilmCard filmWithCinemas={data} allFilms={[]} onCinemaClick={vi.fn()} onDirectorClick={vi.fn()} />
     )
     fireEvent.click(screen.getByRole('button', { name: /Nosferatu/ }))
@@ -240,7 +241,7 @@ describe('showing times', () => {
 describe('callbacks', () => {
   it('calls onCinemaClick with the cinema when cinema name is clicked', () => {
     const onCinemaClick = vi.fn()
-    render(
+    renderWithAuth(
       <FilmCard filmWithCinemas={makeFilmWithCinemas()} allFilms={[]} onCinemaClick={onCinemaClick} onDirectorClick={vi.fn()} />
     )
     fireEvent.click(screen.getByRole('button', { name: /Nosferatu/ }))
@@ -252,11 +253,56 @@ describe('callbacks', () => {
 
   it('calls onDirectorClick with director name and film id', () => {
     const onDirectorClick = vi.fn()
-    render(
+    renderWithAuth(
       <FilmCard filmWithCinemas={makeFilmWithCinemas()} allFilms={[]} onCinemaClick={vi.fn()} onDirectorClick={onDirectorClick} />
     )
     fireEvent.click(screen.getByRole('button', { name: /Nosferatu/ }))
     fireEvent.click(screen.getByText('Robert Eggers'))
     expect(onDirectorClick).toHaveBeenCalledWith('Robert Eggers', 'nosferatu-2024')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// Log as watched
+// ---------------------------------------------------------------------------
+
+describe('log as watched', () => {
+  it('does not render the Log button when logged out', () => {
+    renderWithAuth(
+      <FilmCard
+        filmWithCinemas={makeFilmWithCinemas()}
+        allFilms={[]}
+        onCinemaClick={vi.fn()}
+        onDirectorClick={vi.fn()}
+        onLogShowing={vi.fn()}
+      />,
+      { user: null }
+    )
+    fireEvent.click(screen.getByRole('button', { name: /Nosferatu/ }))
+    expect(screen.queryByTitle('Log as watched')).not.toBeInTheDocument()
+  })
+
+  it('renders the Log button and calls onLogShowing with film, cinema, and showing when logged in', () => {
+    const onLogShowing = vi.fn()
+    const data = makeFilmWithCinemas()
+    renderWithAuth(
+      <FilmCard
+        filmWithCinemas={data}
+        allFilms={[]}
+        onCinemaClick={vi.fn()}
+        onDirectorClick={vi.fn()}
+        onLogShowing={onLogShowing}
+      />,
+      { user: makeUser() }
+    )
+    fireEvent.click(screen.getByRole('button', { name: /Nosferatu/ }))
+    const logButtons = screen.getAllByTitle('Log as watched')
+    fireEvent.click(logButtons[0])
+
+    expect(onLogShowing).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 'nosferatu-2024' }),
+      expect.objectContaining({ id: 'bfi-southbank' }),
+      expect.objectContaining({ id: 1 })
+    )
   })
 })

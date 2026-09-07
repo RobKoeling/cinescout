@@ -1,11 +1,15 @@
 """User model for authentication and profile data."""
 
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Boolean, DateTime, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from cinescout.models.base import Base, TimestampMixin
+
+if TYPE_CHECKING:
+    from cinescout.models.watch_log import WatchLog
 
 
 class User(Base, TimestampMixin):
@@ -24,8 +28,10 @@ class User(Base, TimestampMixin):
         DateTime(timezone=True), nullable=True
     )
 
-    # NOTE: a `watch_logs` relationship is added to this model on the
-    # feature/watch-logging branch once the WatchLog model exists.
+    watch_logs: Mapped[list["WatchLog"]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
 
     def __repr__(self) -> str:
         return f"<User(id={self.id!r}, username={self.username!r})>"

@@ -81,29 +81,44 @@ class FilmSearchResult(BaseModel):
 @router.get("/films/search", response_model=list[FilmSearchResult])
 async def search_films(
     q: str = Query(..., min_length=1, description="Title search string"),
-    city: str = Query("london", description="City to search in"),
+    city: str | None = Query(
+        None, description="Restrict to films with showings in this city. Omit to search all films."
+    ),
     limit: int = Query(10, le=50),
     db: AsyncSession = Depends(get_db),
 ) -> list[FilmSearchResult]:
     """
-    Search films by title that have showings in the given city.
+    Search films by title.
+
+    If `city` is given, only films with tracked showings in that city are
+    returned (used by the main search flow). If omitted, searches every film
+    in the database regardless of tracked showings (used by manual watch-log
+    entry, where a user may want to log a film with no tracked screening).
 
     Returns up to `limit` matching films ordered alphabetically.
     """
-    stmt = (
-        select(Film.id, Film.title, Film.year)
-        .join(Showing, Showing.film_id == Film.id)
-        .join(Cinema, Cinema.id == Showing.cinema_id)
-        .where(
-            and_(
-                Cinema.city == city,
-                Film.title.ilike(f"%{q}%"),
+    if city is not None:
+        stmt = (
+            select(Film.id, Film.title, Film.year)
+            .join(Showing, Showing.film_id == Film.id)
+            .join(Cinema, Cinema.id == Showing.cinema_id)
+            .where(
+                and_(
+                    Cinema.city == city,
+                    Film.title.ilike(f"%{q}%"),
+                )
             )
+            .distinct()
+            .order_by(Film.title)
+            .limit(limit)
         )
-        .distinct()
-        .order_by(Film.title)
-        .limit(limit)
-    )
+    else:
+        stmt = (
+            select(Film.id, Film.title, Film.year)
+            .where(Film.title.ilike(f"%{q}%"))
+            .order_by(Film.title)
+            .limit(limit)
+        )
 
     result = await db.execute(stmt)
     rows = result.all()

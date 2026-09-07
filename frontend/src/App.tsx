@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import SearchForm from './components/SearchForm'
 import type { SearchParams } from './components/SearchForm'
 import FilmList from './components/FilmList'
@@ -7,7 +7,10 @@ import CinemaModal from './components/CinemaModal'
 import DirectorModal from './components/DirectorModal'
 import AuthNav from './components/AuthNav'
 import AuthModal from './components/AuthModal'
-import type { Cinema, FilmWithCinemas, ShowingTime, FilmWithShowingCount, ShowingsResponse } from './types'
+import LogViewingModal from './components/LogViewingModal'
+import ProfilePage from './components/ProfilePage'
+import { useAuth } from './hooks/useAuth'
+import type { Cinema, Film, FilmWithCinemas, ShowingTime, FilmWithShowingCount, ShowingsResponse } from './types'
 
 type City = 'london' | 'brighton'
 
@@ -99,7 +102,9 @@ function applyFilter(films: FilmWithCinemas[], params: SearchParams): FilmWithCi
 // ── component ─────────────────────────────────────────────────────────────────
 
 function App() {
+  const { user } = useAuth()
   const [city, setCity] = useState<City>('london')
+  const [view, setView] = useState<'search' | 'profile'>('search')
 
   const [showings, setShowings]           = useState<ShowingsResponse | null>(null)
   const [filteredFilms, setFilteredFilms] = useState<FilmWithCinemas[]>([])
@@ -115,6 +120,12 @@ function App() {
   const [selectedCinema, setSelectedCinema]     = useState<Cinema | null>(null)
   const [selectedDirector, setSelectedDirector] = useState<{ name: string; filmId: string } | null>(null)
   const [authModalMode, setAuthModalMode]       = useState<'login' | 'signup' | null>(null)
+  const [loggingShowing, setLoggingShowing] = useState<{ film: Film; cinema: Cinema; showing: ShowingTime } | null>(null)
+
+  // If the user logs out while viewing their diary, bounce back to search.
+  useEffect(() => {
+    if (view === 'profile' && !user) setView('search')
+  }, [view, user])
 
   // Reset results when city changes
   const handleCityChange = (c: City) => {
@@ -217,57 +228,64 @@ function App() {
                   </button>
                 ))}
               </div>
-              <AuthNav onOpenAuth={setAuthModalMode} />
+              <AuthNav onOpenAuth={setAuthModalMode} onOpenProfile={() => setView('profile')} />
             </div>
           </div>
         </div>
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <SearchForm
-          city={city}
-          onSearch={handleSearch}
-          onLiveFormatChange={handleLiveFormatChange}
-          loading={loading}
-        />
+        {view === 'profile' ? (
+          <ProfilePage onBack={() => setView('search')} />
+        ) : (
+          <>
+            <SearchForm
+              city={city}
+              onSearch={handleSearch}
+              onLiveFormatChange={handleLiveFormatChange}
+              loading={loading}
+            />
 
-        {error && (
-          <div className="mt-4 bg-red-50 border border-red-200 rounded-md p-4">
-            <p className="text-sm text-red-800">{error}</p>
-          </div>
-        )}
-
-        {loading && (
-          <div className="mt-8 text-center">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-            <p className="mt-2 text-sm text-gray-600">Searching for films...</p>
-          </div>
-        )}
-
-        {!loading && showings && (
-          <div className="mt-8">
-            <div className="mb-4 text-sm text-gray-600">
-              Found {filteredFilms.length} film{filteredFilms.length !== 1 ? 's' : ''}
-            </div>
-            {activeMode === 'cinema' ? (
-              <CinemaSchedule
-                films={filteredFilms}
-                onDirectorClick={(name, filmId) => setSelectedDirector({ name, filmId })}
-              />
-            ) : (
-              <FilmList
-                films={filteredFilms}
-                onCinemaClick={setSelectedCinema}
-                onDirectorClick={(name, filmId) => setSelectedDirector({ name, filmId })}
-              />
+            {error && (
+              <div className="mt-4 bg-red-50 border border-red-200 rounded-md p-4">
+                <p className="text-sm text-red-800">{error}</p>
+              </div>
             )}
-          </div>
-        )}
 
-        {!loading && !showings && !error && (
-          <div className="mt-8 text-center text-gray-600">
-            <p>Select a city and enter a date to search for films</p>
-          </div>
+            {loading && (
+              <div className="mt-8 text-center">
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                <p className="mt-2 text-sm text-gray-600">Searching for films...</p>
+              </div>
+            )}
+
+            {!loading && showings && (
+              <div className="mt-8">
+                <div className="mb-4 text-sm text-gray-600">
+                  Found {filteredFilms.length} film{filteredFilms.length !== 1 ? 's' : ''}
+                </div>
+                {activeMode === 'cinema' ? (
+                  <CinemaSchedule
+                    films={filteredFilms}
+                    onDirectorClick={(name, filmId) => setSelectedDirector({ name, filmId })}
+                  />
+                ) : (
+                  <FilmList
+                    films={filteredFilms}
+                    onCinemaClick={setSelectedCinema}
+                    onDirectorClick={(name, filmId) => setSelectedDirector({ name, filmId })}
+                    onLogShowing={(film, cinema, showing) => setLoggingShowing({ film, cinema, showing })}
+                  />
+                )}
+              </div>
+            )}
+
+            {!loading && !showings && !error && (
+              <div className="mt-8 text-center text-gray-600">
+                <p>Select a city and enter a date to search for films</p>
+              </div>
+            )}
+          </>
         )}
       </main>
 
@@ -290,6 +308,14 @@ function App() {
       )}
       {authModalMode && (
         <AuthModal mode={authModalMode} onClose={() => setAuthModalMode(null)} />
+      )}
+      {loggingShowing && (
+        <LogViewingModal
+          film={loggingShowing.film}
+          cinema={loggingShowing.cinema}
+          showing={loggingShowing.showing}
+          onClose={() => setLoggingShowing(null)}
+        />
       )}
     </div>
   )

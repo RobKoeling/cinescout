@@ -1,13 +1,14 @@
 import FilmCard from './FilmCard'
-import type { Cinema, FilmWithCinemas } from '../types'
+import type { Cinema, FilmWithCinemas, ShowingTime } from '../types'
 
 interface FilmListProps {
   films: FilmWithCinemas[]
   onCinemaClick: (cinema: Cinema) => void
   onDirectorClick: (director: string, filmId: string) => void
+  onLogShowing?: (film: FilmWithCinemas['film'], cinema: Cinema, showing: ShowingTime) => void
 }
 
-function FilmList({ films, onCinemaClick, onDirectorClick }: FilmListProps) {
+function FilmList({ films, onCinemaClick, onDirectorClick, onLogShowing }: FilmListProps) {
   if (films.length === 0) {
     return (
       <div className="text-center py-12">
@@ -25,6 +26,7 @@ function FilmList({ films, onCinemaClick, onDirectorClick }: FilmListProps) {
           allFilms={films}
           onCinemaClick={onCinemaClick}
           onDirectorClick={onDirectorClick}
+          onLogShowing={onLogShowing}
         />
       ))}
     </div>

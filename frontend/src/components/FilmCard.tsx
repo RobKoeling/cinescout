@@ -1,15 +1,18 @@
 import { useState } from 'react'
-import type { Cinema, FilmWithCinemas } from '../types'
+import type { Cinema, FilmWithCinemas, ShowingTime } from '../types'
 import RTLink from './RTLink'
+import { useAuth } from '../hooks/useAuth'
 
 interface FilmCardProps {
   filmWithCinemas: FilmWithCinemas
   allFilms: FilmWithCinemas[]
   onCinemaClick: (cinema: Cinema) => void
   onDirectorClick: (director: string, filmId: string) => void
+  onLogShowing?: (film: FilmWithCinemas['film'], cinema: Cinema, showing: ShowingTime) => void
 }
 
-function FilmCard({ filmWithCinemas, onCinemaClick, onDirectorClick }: FilmCardProps) {
+function FilmCard({ filmWithCinemas, onCinemaClick, onDirectorClick, onLogShowing }: FilmCardProps) {
+  const { user } = useAuth()
   const [expanded, setExpanded] = useState(false)
   const { film, cinemas } = filmWithCinemas
 
@@ -197,6 +200,16 @@ function FilmCard({ filmWithCinemas, onCinemaClick, onDirectorClick }: FilmCardP
                         <span className="ml-2 text-xs text-gray-500">
                           {formatPrice(showing.price)}
                         </span>
+                      )}
+
+                      {user && onLogShowing && (
+                        <button
+                          onClick={() => onLogShowing(film, cinemaWithShowings.cinema, showing)}
+                          className="ml-2 text-xs text-gray-400 hover:text-blue-600 transition-colors"
+                          title="Log as watched"
+                        >
+                          ✓ Log
+                        </button>
                       )}
                     </div>
                   ))}
