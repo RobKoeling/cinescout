@@ -5,5 +5,6 @@ from cinescout.models.cinema import Cinema
 from cinescout.models.film import Film
 from cinescout.models.film_alias import FilmAlias
 from cinescout.models.showing import Showing
+from cinescout.models.user import User
 
-__all__ = ["Base", "Cinema", "Film", "FilmAlias", "Showing"]
+__all__ = ["Base", "Cinema", "Film", "FilmAlias", "Showing", "User"]

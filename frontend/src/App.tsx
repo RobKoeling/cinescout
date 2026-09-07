@@ -5,6 +5,8 @@ import FilmList from './components/FilmList'
 import CinemaSchedule from './components/CinemaSchedule'
 import CinemaModal from './components/CinemaModal'
 import DirectorModal from './components/DirectorModal'
+import AuthNav from './components/AuthNav'
+import AuthModal from './components/AuthModal'
 import type { Cinema, FilmWithCinemas, ShowingTime, FilmWithShowingCount, ShowingsResponse } from './types'
 
 type City = 'london' | 'brighton'
@@ -112,6 +114,7 @@ function App() {
   const [error, setError]     = useState<string | null>(null)
   const [selectedCinema, setSelectedCinema]     = useState<Cinema | null>(null)
   const [selectedDirector, setSelectedDirector] = useState<{ name: string; filmId: string } | null>(null)
+  const [authModalMode, setAuthModalMode]       = useState<'login' | 'signup' | null>(null)
 
   // Reset results when city changes
   const handleCityChange = (c: City) => {
@@ -197,21 +200,24 @@ function App() {
                 Find films showing in independent cinemas
               </p>
             </div>
-            {/* City selector */}
-            <div className="flex gap-1">
-              {(Object.keys(CITY_LABELS) as City[]).map(c => (
-                <button
-                  key={c}
-                  onClick={() => handleCityChange(c)}
-                  className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-colors ${
-                    city === c
-                      ? 'bg-gray-900 text-white border-gray-900'
-                      : 'text-gray-500 border-gray-300 hover:border-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  {CITY_LABELS[c]}
-                </button>
-              ))}
+            <div className="flex items-center gap-4">
+              {/* City selector */}
+              <div className="flex gap-1">
+                {(Object.keys(CITY_LABELS) as City[]).map(c => (
+                  <button
+                    key={c}
+                    onClick={() => handleCityChange(c)}
+                    className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-colors ${
+                      city === c
+                        ? 'bg-gray-900 text-white border-gray-900'
+                        : 'text-gray-500 border-gray-300 hover:border-gray-500 hover:text-gray-700'
+                    }`}
+                  >
+                    {CITY_LABELS[c]}
+                  </button>
+                ))}
+              </div>
+              <AuthNav onOpenAuth={setAuthModalMode} />
             </div>
           </div>
         </div>
@@ -281,6 +287,9 @@ function App() {
           allFilms={showings.films}
           onClose={() => setSelectedCinema(null)}
         />
+      )}
+      {authModalMode && (
+        <AuthModal mode={authModalMode} onClose={() => setAuthModalMode(null)} />
       )}
     </div>
   )

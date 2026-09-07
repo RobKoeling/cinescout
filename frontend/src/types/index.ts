@@ -84,3 +84,18 @@ export interface SearchParams {
   useTfL?: boolean
   transportMode?: 'public'
 }
+
+// ── Auth ─────────────────────────────────────────────────────────────────────
+
+export interface User {
+  id: number
+  username: string
+  letterboxd_username: string | null
+  letterboxd_last_synced_at: string | null
+}
+
+export interface AuthResponse {
+  access_token: string
+  token_type: string
+  user: User
+}
