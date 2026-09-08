@@ -42,6 +42,9 @@ class Settings(BaseSettings):
     # of fetching it from the Curzon website (which is blocked on cloud IPs).
     curzon_auth_token: str = ""
 
+    # JWT auth (user accounts) — secret used to sign/verify auth tokens.
+    jwt_secret_key: str = "change-this-jwt-secret"
+
 
 # Global settings instance
 settings = Settings()

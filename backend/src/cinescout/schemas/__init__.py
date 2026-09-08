@@ -9,6 +9,7 @@ from cinescout.schemas.showing import (
     ShowingsResponse,
     ShowingTimeResponse,
 )
+from cinescout.schemas.user import TokenResponse, UserCreate, UserLogin, UserResponse
 
 __all__ = [
     "CinemaResponse",
@@ -19,4 +20,8 @@ __all__ = [
     "FilmWithCinemas",
     "ShowingsQuery",
     "ShowingsResponse",
+    "TokenResponse",
+    "UserCreate",
+    "UserLogin",
+    "UserResponse",
 ]

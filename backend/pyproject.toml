@@ -19,6 +19,8 @@ dependencies = [
     "apscheduler>=3.10.0",
     "playwright-stealth>=1.0.6",
     "sqladmin[full]>=0.20.0",
+    "pyjwt>=2.10.0",
+    "bcrypt>=4.2.0",
 ]
 
 [project.optional-dependencies]

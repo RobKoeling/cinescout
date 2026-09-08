@@ -98,6 +98,7 @@ keywords field). Year hints improve film disambiguation.
 | `CURZON_AUTH_TOKEN` | prod | JWT, 12 h TTL — set via `fly secrets set` |
 | `ADMIN_USERNAME` / `ADMIN_PASSWORD` | yes (prod) | default: admin / changeme |
 | `ADMIN_SECRET_KEY` | yes (prod) | signs session cookie |
+| `JWT_SECRET_KEY` | yes (prod) | signs/verifies user-account auth tokens; must differ from `ADMIN_SECRET_KEY` |
 
 ## Caching TTLs
 
