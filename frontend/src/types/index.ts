@@ -126,3 +126,13 @@ export interface CreateManualWatchLogRequest {
   rating?: number | null
   comment?: string | null
 }
+
+// ── Letterboxd ───────────────────────────────────────────────────────────────
+
+export interface LetterboxdImportResult {
+  status: string
+  entries_found: number
+  entries_imported: number
+  entries_skipped_duplicate: number
+  entries_unmatched: number
+}

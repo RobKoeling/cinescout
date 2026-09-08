@@ -69,6 +69,7 @@ def make_tmdb(search_result: dict | None = None, details: dict | None = None) ->
     tmdb.get_film_details = AsyncMock(return_value=details)
     tmdb.extract_directors = MagicMock(return_value=["Robert Eggers"])
     tmdb.extract_countries = MagicMock(return_value=["United States"])
+    tmdb.extract_cast = MagicMock(return_value=["Bill Skarsgård"])
     return tmdb
 
 
@@ -357,3 +358,81 @@ class TestMatchOrCreateFilm:
         assert tmdb.search_film.call_args_list[1][0][0] == "Certain Women"
         # film + alias for stripped + alias for full = 3 adds
         assert db.add.call_count == 3
+
+
+class TestMatchByTmdbId:
+    async def test_returns_existing_local_film_without_calling_tmdb(self) -> None:
+        db = make_db()
+        existing = make_film()
+        existing.tmdb_id = 784524
+        db.execute = AsyncMock(return_value=make_execute_result(scalar_one_or_none=existing))
+        tmdb = make_tmdb()
+
+        matcher = FilmMatcher(db, tmdb_client=tmdb)
+        result = await matcher.match_by_tmdb_id(784524)
+
+        assert result is existing
+        tmdb.get_film_details.assert_not_called()
+
+    async def test_fetches_and_creates_film_from_tmdb_when_not_in_local_db(self) -> None:
+        db = make_db()
+        db.execute = AsyncMock(return_value=make_execute_result(scalar_one_or_none=None))
+        tmdb = make_tmdb(
+            details={
+                "title": "Magazine Dreams",
+                "release_date": "2023-01-01",
+                "credits": {"crew": [{"name": "Elijah Bynum", "job": "Director"}]},
+                "production_countries": [{"name": "United States"}],
+                "overview": "A bodybuilder.",
+                "poster_path": "/md.jpg",
+                "runtime": 124,
+            }
+        )
+
+        matcher = FilmMatcher(db, tmdb_client=tmdb)
+        result = await matcher.match_by_tmdb_id(784524)
+
+        assert result is not None
+        assert result.title == "Magazine Dreams"
+        assert result.tmdb_id == 784524
+        assert result.year == 2023
+        db.add.assert_called_once()
+
+    async def test_returns_none_when_tmdb_details_fetch_fails(self) -> None:
+        db = make_db()
+        db.execute = AsyncMock(return_value=make_execute_result(scalar_one_or_none=None))
+        tmdb = make_tmdb(details=None)
+
+        matcher = FilmMatcher(db, tmdb_client=tmdb)
+        result = await matcher.match_by_tmdb_id(999999)
+
+        assert result is None
+        db.add.assert_not_called()
+
+    async def test_returns_existing_film_on_integrity_error_collision(self) -> None:
+        db = make_db()
+        existing = make_film()
+        existing.tmdb_id = 784524
+        db.execute = AsyncMock(
+            side_effect=[
+                make_execute_result(scalar_one_or_none=None),  # initial tmdb_id lookup: miss
+                make_execute_result(scalar_one_or_none=existing),  # collision re-check: found
+            ]
+        )
+        db.flush = AsyncMock(side_effect=IntegrityError("duplicate", {}, Exception()))
+        tmdb = make_tmdb(
+            details={
+                "title": "Magazine Dreams",
+                "release_date": "2023-01-01",
+                "credits": {},
+                "production_countries": [],
+                "overview": None,
+                "poster_path": None,
+                "runtime": None,
+            }
+        )
+
+        matcher = FilmMatcher(db, tmdb_client=tmdb)
+        result = await matcher.match_by_tmdb_id(784524)
+
+        assert result is existing

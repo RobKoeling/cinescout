@@ -1,6 +1,7 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import ProfilePage from './ProfilePage'
+import { renderWithAuth, makeUser } from '../test/authTestUtils'
 import type { WatchLogEntry } from '../types'
 
 const mockFetch = vi.fn()
@@ -54,7 +55,7 @@ function makeEntry(overrides: Partial<WatchLogEntry> = {}): WatchLogEntry {
 describe('ProfilePage', () => {
   it('fetches and renders entries on mount', async () => {
     mockFetch.mockResolvedValueOnce(mockResponse([makeEntry()]))
-    render(<ProfilePage onBack={vi.fn()} />)
+    renderWithAuth(<ProfilePage onBack={vi.fn()} />, { user: makeUser() })
 
     expect(await screen.findByText('Nosferatu')).toBeInTheDocument()
     expect(screen.getByText(/BFI Southbank/)).toBeInTheDocument()
@@ -63,21 +64,21 @@ describe('ProfilePage', () => {
 
   it('shows an empty state when there are no entries', async () => {
     mockFetch.mockResolvedValueOnce(mockResponse([]))
-    render(<ProfilePage onBack={vi.fn()} />)
+    renderWithAuth(<ProfilePage onBack={vi.fn()} />, { user: makeUser() })
 
     expect(await screen.findByText(/haven't logged any films yet/)).toBeInTheDocument()
   })
 
   it('shows an error message when the fetch fails', async () => {
     mockFetch.mockResolvedValueOnce(mockResponse({ detail: 'Not authenticated' }, 401))
-    render(<ProfilePage onBack={vi.fn()} />)
+    renderWithAuth(<ProfilePage onBack={vi.fn()} />, { user: makeUser() })
 
     expect(await screen.findByText('Not authenticated')).toBeInTheDocument()
   })
 
   it('removes an entry after a successful delete', async () => {
     mockFetch.mockResolvedValueOnce(mockResponse([makeEntry()]))
-    render(<ProfilePage onBack={vi.fn()} />)
+    renderWithAuth(<ProfilePage onBack={vi.fn()} />, { user: makeUser() })
     await screen.findByText('Nosferatu')
 
     mockFetch.mockResolvedValueOnce({ ok: true, status: 204, json: async () => undefined })
@@ -89,7 +90,7 @@ describe('ProfilePage', () => {
   it('calls onBack when Back to search is clicked', async () => {
     mockFetch.mockResolvedValueOnce(mockResponse([]))
     const onBack = vi.fn()
-    render(<ProfilePage onBack={onBack} />)
+    renderWithAuth(<ProfilePage onBack={onBack} />, { user: makeUser() })
     await screen.findByText(/haven't logged any films yet/)
 
     fireEvent.click(screen.getByRole('button', { name: /Back to search/ }))
@@ -98,7 +99,7 @@ describe('ProfilePage', () => {
 
   it('opens ManualLogModal when + Log a film is clicked', async () => {
     mockFetch.mockResolvedValueOnce(mockResponse([]))
-    render(<ProfilePage onBack={vi.fn()} />)
+    renderWithAuth(<ProfilePage onBack={vi.fn()} />, { user: makeUser() })
     await screen.findByText(/haven't logged any films yet/)
 
     fireEvent.click(screen.getByRole('button', { name: '+ Log a film' }))
