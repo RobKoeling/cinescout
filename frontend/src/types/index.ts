@@ -99,3 +99,30 @@ export interface AuthResponse {
   token_type: string
   user: User
 }
+
+// ── Watch logs ───────────────────────────────────────────────────────────────
+
+export interface WatchLogEntry {
+  id: number
+  film_id: string
+  showing_id: number | null
+  watched_date: string
+  rating: number | null
+  comment: string | null
+  created_at: string
+  film: Film
+  cinema: Cinema | null
+}
+
+export interface CreateWatchLogFromShowingRequest {
+  showing_id: number
+  rating?: number | null
+  comment?: string | null
+}
+
+export interface CreateManualWatchLogRequest {
+  film_id: string
+  watched_date: string
+  rating?: number | null
+  comment?: string | null
+}

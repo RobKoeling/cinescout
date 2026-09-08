@@ -10,6 +10,7 @@ from cinescout.schemas.showing import (
     ShowingTimeResponse,
 )
 from cinescout.schemas.user import TokenResponse, UserCreate, UserLogin, UserResponse
+from cinescout.schemas.watch_log import WatchLogCreate, WatchLogResponse, WatchLogWithFilmResponse
 
 __all__ = [
     "CinemaResponse",
@@ -24,4 +25,7 @@ __all__ = [
     "UserCreate",
     "UserLogin",
     "UserResponse",
+    "WatchLogCreate",
+    "WatchLogResponse",
+    "WatchLogWithFilmResponse",
 ]
