@@ -4,10 +4,12 @@ import asyncio
 from datetime import date
 
 from sqladmin import BaseView, ModelView, expose
+from sqlalchemy import select
 from starlette.requests import Request
 from starlette.responses import HTMLResponse
 
 from cinescout.config import settings
+from cinescout.database import AsyncSessionLocal
 from cinescout.models.cinema import Cinema
 from cinescout.models.film import Film
 from cinescout.models.film_alias import FilmAlias
@@ -17,12 +19,24 @@ from cinescout.models.watch_log import WatchLog
 from cinescout.scripts.backfill_tmdb import backfill
 from cinescout.scripts.seed_cinemas import seed_cinemas
 from cinescout.scripts.smoke_test import SmokeTestReport, run_smoke_test
+from cinescout.services.auth_service import hash_password
 from cinescout.tasks.scrape_job import (
     get_scrape_progress,
     mark_scrape_pending,
     run_scrape_all,
     run_scrape_selected,
 )
+
+
+async def _reset_user_password(username: str, new_password: str) -> bool:
+    """Set a user account's password directly. Returns False if no such user."""
+    async with AsyncSessionLocal() as db:
+        user = (await db.execute(select(User).where(User.username == username))).scalar_one_or_none()
+        if user is None:
+            return False
+        user.password_hash = hash_password(new_password)
+        await db.commit()
+        return True
 
 
 class CinemaAdmin(ModelView, model=Cinema):
@@ -121,6 +135,18 @@ _TOOLS_TEMPLATE = """\
   {% if message %}
   <div class="alert alert-success mt-3">{{ message }}</div>
   {% endif %}
+  {% if error %}
+  <div class="alert alert-danger mt-3">{{ error }}</div>
+  {% endif %}
+
+  <hr class="my-4">
+
+  <h2>User Accounts</h2>
+  <form method="post" class="mt-3 d-flex align-items-center gap-2 flex-wrap" style="max-width:600px">
+    <input type="text" name="reset_username" placeholder="Username" required class="form-control" style="width:auto">
+    <input type="password" name="reset_new_password" placeholder="New password" required minlength="8" class="form-control" style="width:auto">
+    <button name="action" value="reset_password" class="btn btn-warning">Reset Password</button>
+  </form>
 
   <hr class="my-4">
 
@@ -233,12 +259,22 @@ class ScrapeToolsView(BaseView):
     @expose("/tools", methods=["GET", "POST"])
     async def tools(self, request: Request) -> HTMLResponse:
         message: str | None = None
+        error: str | None = None
         smoke_report: SmokeTestReport | None = None
 
         if request.method == "POST":
             form = await request.form()
             action = form.get("action")
-            if action == "scrape":
+            if action == "reset_password":
+                username = str(form.get("reset_username") or "").strip()
+                new_password = str(form.get("reset_new_password") or "")
+                if len(new_password) < 8:
+                    error = "New password must be at least 8 characters long"
+                elif await _reset_user_password(username, new_password):
+                    message = f"Password reset for user {username!r}."
+                else:
+                    error = f"No user found with username {username!r}."
+            elif action == "scrape":
                 mark_scrape_pending()
                 asyncio.create_task(run_scrape_all())
                 message = "Scrape started in background."
@@ -266,6 +302,7 @@ class ScrapeToolsView(BaseView):
         content = await tmpl.render_async(
             request=request,
             message=message,
+            error=error,
             smoke_report=smoke_report,
             scrape_progress=get_scrape_progress(),
             today=str(date.today()),
