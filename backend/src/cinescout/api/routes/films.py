@@ -4,13 +4,17 @@ import logging
 import re
 
 import httpx
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import and_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from cinescout.api.dependencies import get_current_user
 from cinescout.database import get_db
-from cinescout.models import Cinema, Film, Showing
+from cinescout.models import Cinema, Film, Showing, User
+from cinescout.schemas.film import FilmResponse
+from cinescout.services.film_matcher import FilmMatcher
+from cinescout.services.tmdb_client import TMDbClient
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -123,6 +127,27 @@ async def search_films(
     result = await db.execute(stmt)
     rows = result.all()
     return [FilmSearchResult(id=row.id, title=row.title, year=row.year) for row in rows]
+
+
+@router.post("/films/ensure", response_model=FilmResponse)
+async def ensure_film(
+    tmdb_id: int = Query(..., description="TMDb film id to look up or create locally"),
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> Film:
+    """
+    Look up a film by TMDb id, creating it locally from TMDb metadata if needed.
+
+    Lets a client (e.g. a watch-log migration/import) reference a film that
+    hasn't shown up via scraping yet. Reuses the same matching logic as the
+    Letterboxd import — never falls back to a placeholder.
+    """
+    film_matcher = FilmMatcher(db, TMDbClient())
+    film = await film_matcher.match_by_tmdb_id(tmdb_id)
+    if film is None:
+        raise HTTPException(status_code=404, detail="No TMDb film found for this id")
+    await db.commit()
+    return film
 
 
 class RTCheckResponse(BaseModel):
