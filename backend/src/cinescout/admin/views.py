@@ -15,6 +15,7 @@ from cinescout.models.showing import Showing
 from cinescout.models.user import User
 from cinescout.models.watch_log import WatchLog
 from cinescout.scripts.backfill_tmdb import backfill
+from cinescout.scripts.seed_cinemas import seed_cinemas
 from cinescout.scripts.smoke_test import SmokeTestReport, run_smoke_test
 from cinescout.tasks.scrape_job import run_scrape_all, run_scrape_selected
 
@@ -105,6 +106,7 @@ _TOOLS_TEMPLATE = """\
   <form method="post" class="mt-3 d-flex align-items-center gap-2 flex-wrap">
     <button name="action" value="scrape" class="btn btn-primary">Trigger Scrape</button>
     <button name="action" value="backfill" class="btn btn-secondary">Trigger Backfill</button>
+    <button name="action" value="seed_cinemas" class="btn btn-outline-primary">Seed Cinemas</button>
   </form>
 
   <hr class="my-4">
@@ -194,6 +196,9 @@ class ScrapeToolsView(BaseView):
             elif action == "backfill":
                 asyncio.create_task(backfill())
                 message = "Backfill started in background."
+            elif action == "seed_cinemas":
+                await seed_cinemas()
+                message = "Cinema seed data applied (new cinemas added, existing ones updated)."
             elif action == "scrape_selected":
                 cinema_ids = list(form.getlist("cinema_ids"))
                 if cinema_ids:
