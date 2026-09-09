@@ -1,0 +1,4078 @@
+[
+  {
+    "raw": "10 years of Girls in Film: Global Screening",
+    "expected": "Girls in Film: Global Screening"
+  },
+  {
+    "raw": "11th Amazon Film Festival presents Olhos d’Água: Da Lanterna Mágica ao Cinematographo and Entre as Nuvens",
+    "expected": "Olhos d’Água: Da Lanterna Mágica ao Cinematographo"
+  },
+  {
+    "raw": "2001 : A Space Odyssey",
+    "expected": "2001: A Space Odyssey"
+  },
+  {
+    "raw": "2001: A Space Odyssey",
+    "expected": "2001: A Space Odyssey"
+  },
+  {
+    "raw": "2010: The Year We Make Contact",
+    "expected": "2010: The Year We Make Contact"
+  },
+  {
+    "raw": "25 and Under: An Introduction to Guillermo del Toro",
+    "expected": "An Introduction to Guillermo del Toro"
+  },
+  {
+    "raw": "25th Anniversary: Amelie",
+    "expected": "Amelie"
+  },
+  {
+    "raw": "28 Years Later: The Bone Temple",
+    "expected": "28 Years Later: The Bone Temple"
+  },
+  {
+    "raw": "30th Anniversary: Fly Away Home",
+    "expected": "Fly Away Home"
+  },
+  {
+    "raw": "40th Anniversary: An American Tail",
+    "expected": "An American Tail"
+  },
+  {
+    "raw": "40th anniversary screening: Working Girls + intro by So Mayer",
+    "expected": "Working Girls"
+  },
+  {
+    "raw": "50th anniversary of Aces High",
+    "expected": "Aces High"
+  },
+  {
+    "raw": "8 1/2- Birthday Season",
+    "expected": "8 1/2"
+  },
+  {
+    "raw": "A Brief Affair + intro and Q&A with director Ludovica Rampoldi",
+    "expected": "A Brief Affair"
+  },
+  {
+    "raw": "A Focus on Skin + intro by season curator Xavier Alexandre Pillai",
+    "expected": "A Focus on Skin"
+  },
+  {
+    "raw": "A Friend of Dorothy + director Q&A",
+    "expected": "A Friend of Dorothy"
+  },
+  {
+    "raw": "A Grand Day Out in Liverpool: Adults & Creatives W",
+    "expected": "A Grand Day Out in Liverpool"
+  },
+  {
+    "raw": "A Grand Day Out in Liverpool: Kids & Families Work",
+    "expected": "A Grand Day Out in Liverpool"
+  },
+  {
+    "raw": "A Room With a View + Q&A with Keith Lodwick",
+    "expected": "A Room With a View"
+  },
+  {
+    "raw": "A Year of School + intro and Q&A with director Laura Samani",
+    "expected": "A Year of School"
+  },
+  {
+    "raw": "A Zed and Two Noughts + intro by Justin Johnson, Head of Cinema Programme",
+    "expected": "A Zed and Two Noughts"
+  },
+  {
+    "raw": "ALI: FEAR EATS THE SOUL",
+    "expected": "ALI: FEAR EATS THE SOUL"
+  },
+  {
+    "raw": "AMERICAN MOVIE + COVEN",
+    "expected": "AMERICAN MOVIE"
+  },
+  {
+    "raw": "AURORA: What Happened To The Earth?",
+    "expected": "Aurora: What Happened To The Earth?"
+  },
+  {
+    "raw": "Ada: My Mother the Architect",
+    "expected": "Ada: My Mother the Architect"
+  },
+  {
+    "raw": "Against all Odds: Seattle",
+    "expected": "Against all Odds"
+  },
+  {
+    "raw": "Aguirre, the Wrath of God- Birthday Season",
+    "expected": "Aguirre, the Wrath of God"
+  },
+  {
+    "raw": "Alarm Notes + Q&A",
+    "expected": "Alarm Notes"
+  },
+  {
+    "raw": "Alarm Notes + Q&A with Anthea Kennedy and Ian Wiblin",
+    "expected": "Alarm Notes"
+  },
+  {
+    "raw": "All You Need Is Kill (Japanese with English Subtitles)- Anime Season",
+    "expected": "All You Need Is Kill"
+  },
+  {
+    "raw": "Amadeus: Director's Cut",
+    "expected": "Amadeus: Director's Cut"
+  },
+  {
+    "raw": "Amadeus: Theatrical Cut",
+    "expected": "Amadeus"
+  },
+  {
+    "raw": "Amazon Film Festival: Yanuni",
+    "expected": "Yanuni"
+  },
+  {
+    "raw": "American Psycho- Birthday Season",
+    "expected": "American Psycho"
+  },
+  {
+    "raw": "Animation in Love: Chico and Rita + 20 Anos",
+    "expected": "Chico and Rita"
+  },
+  {
+    "raw": "Anniversary",
+    "expected": "Anniversary"
+  },
+  {
+    "raw": "Another Day, Another Man + Elevator Girls in Bondage",
+    "expected": "Another Day, Another Man"
+  },
+  {
+    "raw": "Another Day, Another Man + Elevator Girls in Bondage + intro by Dr Elena Gorfinkel",
+    "expected": "Another Day, Another Man"
+  },
+  {
+    "raw": "Another Gaze: Suzaki Paradise + Q&A",
+    "expected": "Suzaki Paradise"
+  },
+  {
+    "raw": "Antonia Luxem: Tetralogy On Falling",
+    "expected": "Antonia Luxem: Tetralogy On Falling"
+  },
+  {
+    "raw": "Apocalypse Now : Final Cut",
+    "expected": "Apocalypse Now: Final Cut"
+  },
+  {
+    "raw": "Argentine season launch: Live music + Wild Tales",
+    "expected": "Wild Tales"
+  },
+  {
+    "raw": "Artist's Film Picks: Brazilian Programme",
+    "expected": "Brazilian Programme"
+  },
+  {
+    "raw": "Artist's Film Picks: Deus e o Diabo na Terra do Sol",
+    "expected": "Deus e o Diabo na Terra do Sol"
+  },
+  {
+    "raw": "Audition- Birthday Season",
+    "expected": "Audition"
+  },
+  {
+    "raw": "Aurora: What Happened To The Earth?",
+    "expected": "Aurora: What Happened To The Earth?"
+  },
+  {
+    "raw": "Avala Film at 80: Dušan Makavejev's Man is Not a Bird + Q&A",
+    "expected": "Dušan Makavejev's Man is Not a Bird"
+  },
+  {
+    "raw": "Avant-Drag! + Q&A",
+    "expected": "Avant-Drag!"
+  },
+  {
+    "raw": "Avatar: Fire and Ash",
+    "expected": "Avatar: Fire and Ash"
+  },
+  {
+    "raw": "Awards Lunch: Academy Best Picture Winner 2026",
+    "expected": "Academy Best Picture Winner 2026"
+  },
+  {
+    "raw": "Awards Lunch: Frankenstein",
+    "expected": "Frankenstein"
+  },
+  {
+    "raw": "Awards Lunch: One Battle After Another",
+    "expected": "One Battle After Another"
+  },
+  {
+    "raw": "Awards Lunch: Sentimental Value + Soundtrack",
+    "expected": "Sentimental Value"
+  },
+  {
+    "raw": "BAR TRASH presents LES DIABOLIQUES",
+    "expected": "LES DIABOLIQUES"
+  },
+  {
+    "raw": "BAR TRASH: 976-EVIL",
+    "expected": "976-EVIL"
+  },
+  {
+    "raw": "BAR TRASH: RIVER’S EDGE: 40TH ANNIVERSARY",
+    "expected": "RIVER'S EDGE"
+  },
+  {
+    "raw": "BETTER THAN NOTHING PRESENTS: THE RAPTURE",
+    "expected": "THE RAPTURE"
+  },
+  {
+    "raw": "BETTER THAN NOTHING PRESENTS: THE REFLECTING SKIN",
+    "expected": "The Reflecting Skin"
+  },
+  {
+    "raw": "BFI Member Poll: Lawrence of Arabia",
+    "expected": "Lawrence of Arabia"
+  },
+  {
+    "raw": "BUFF AWARDS 2026: THE BIGGEST NIGHT IN THE BRITISH URBAN FILM FESTIVAL CALENDAR",
+    "expected": "The Biggest Night In The British Urban Film Festival Calendar"
+  },
+  {
+    "raw": "Babe: Pig in the City (1998) + short documentary Elephant Families = A Fundraiser for Latin Elephant",
+    "expected": "Babe: Pig in the City"
+  },
+  {
+    "raw": "Bad Timing + intro by film critic and improviser Tara Judah",
+    "expected": "Bad Timing"
+  },
+  {
+    "raw": "Bait + intro by writer-director Mark Jenkin, and actors Edward Rowe and Mary Woodvine",
+    "expected": "Bait"
+  },
+  {
+    "raw": "Bam Bam: The Sister Nancy Story",
+    "expected": "Bam Bam: The Sister Nancy Story"
+  },
+  {
+    "raw": "Bar Shorts Presents: From Frame to Page- Animators Who Became Graphic Novelists",
+    "expected": "From Frame to Page"
+  },
+  {
+    "raw": "Bar Trash: : B-Movie Women / Double Feature: LIMBO (1999) + ATTACK OF THE 50 FOOT WOMAN",
+    "expected": "Bar Trash: B-Movie Women"
+  },
+  {
+    "raw": "Bar Trash: EMPIRE OF THE ANTS",
+    "expected": "EMPIRE OF THE ANTS"
+  },
+  {
+    "raw": "Bar Trash: FEMALE PRISONER #701: SCORPION",
+    "expected": "FEMALE PRISONER #701: SCORPION"
+  },
+  {
+    "raw": "Bar Trash: Opening Night  13 GHOSTS (1960) with Illusion-O!",
+    "expected": "13 GHOSTS (1960)"
+  },
+  {
+    "raw": "Bar Trash: Red Sonja",
+    "expected": "Red Sonja"
+  },
+  {
+    "raw": "Bar Trash: SCARECROW IN A GARDEN OF CUCUMBERS (1972) with Avery McNeilly",
+    "expected": "SCARECROW IN A GARDEN OF CUCUMBERS"
+  },
+  {
+    "raw": "Bar Trash: TERMINAL ISLAND (1973) with Selina Robertson & Isabel Moir",
+    "expected": "Terminal Island (1973)"
+  },
+  {
+    "raw": "Beauty and the Beast + intro by Disniversity Podcast’s hosts Ben Travis and Dr Sam Summers",
+    "expected": "Beauty and the Beast"
+  },
+  {
+    "raw": "Behind the Scenes: Meet the Projectionists",
+    "expected": "Meet the Projectionists"
+  },
+  {
+    "raw": "Being Ola + ScreenTalk",
+    "expected": "Being Ola"
+  },
+  {
+    "raw": "Belgrade Noir: Vladimir Pogacic's Big and Small",
+    "expected": "Vladimir Pogacic's Big and Small"
+  },
+  {
+    "raw": "Below the Clouds + Q&A",
+    "expected": "Below the Clouds"
+  },
+  {
+    "raw": "Beyond: Arco",
+    "expected": "Beyond: Arco"
+  },
+  {
+    "raw": "Beyond: Father Mother Sister Brother",
+    "expected": "Beyond: Father Mother Sister Brother"
+  },
+  {
+    "raw": "Beyond: If I Had Legs I'd Kick You",
+    "expected": "If I Had Legs I'd Kick You"
+  },
+  {
+    "raw": "Beyond: La Grazia",
+    "expected": "Beyond: La Grazia"
+  },
+  {
+    "raw": "Beyond: Primavera",
+    "expected": "Beyond: Primavera"
+  },
+  {
+    "raw": "Beyond: Rose of Nevada",
+    "expected": "Beyond: Rose of Nevada"
+  },
+  {
+    "raw": "Beyond: Sirât",
+    "expected": "Sirât"
+  },
+  {
+    "raw": "Beyond: The Secret Agent",
+    "expected": "Beyond: The Secret Agent"
+  },
+  {
+    "raw": "Beyond: Wasteman",
+    "expected": "Beyond: Wasteman"
+  },
+  {
+    "raw": "Big Night Out: Moulin Rouge!",
+    "expected": "Moulin Rouge!"
+  },
+  {
+    "raw": "Big Trouble in Little China- Birthday Season",
+    "expected": "Big Trouble in Little China"
+  },
+  {
+    "raw": "Billy Idol Should Be Dead + Q&A with Billy Idol",
+    "expected": "Billy Idol Should Be Dead"
+  },
+  {
+    "raw": "Birthrights: Birth of New Talent",
+    "expected": "Birth of New Talent"
+  },
+  {
+    "raw": "Black Girl + Jemima + Johnny + intro by Ashley Clark",
+    "expected": "Black Girl"
+  },
+  {
+    "raw": "Blade Runner : Double Feature",
+    "expected": "Blade Runner"
+  },
+  {
+    "raw": "Blade Runner : The Final Cut",
+    "expected": "Blade Runner: The Final Cut"
+  },
+  {
+    "raw": "Blades of the Guardians: Wind Rises in the Desert",
+    "expected": "Blades of the Guardians: Wind Rises in the Desert"
+  },
+  {
+    "raw": "Blockhead + Q&A",
+    "expected": "Blockhead"
+  },
+  {
+    "raw": "Blue Has No Borders + Jessi Gutch Q&A",
+    "expected": "Blue Has No Borders"
+  },
+  {
+    "raw": "Bluey At The Cinema: Playdates With Friends",
+    "expected": "Bluey at the Cinema: Playdates with Friends"
+  },
+  {
+    "raw": "Bluey at the Cinema: Playdates with Friends",
+    "expected": "Bluey at the Cinema: Playdates with Friends"
+  },
+  {
+    "raw": "Bluey at the Cinema: Playdates with Friends Collection",
+    "expected": "Bluey"
+  },
+  {
+    "raw": "Book Club: Elizabeth Strout In Conversation",
+    "expected": "Elizabeth Strout In Conversation"
+  },
+  {
+    "raw": "Book Club: Elizabeth Strout In Conversation + Book Signing",
+    "expected": "Elizabeth Strout In Conversation"
+  },
+  {
+    "raw": "Book Club: Perfect Days + introduction with Penguin Classics",
+    "expected": "Perfect Days"
+  },
+  {
+    "raw": "Book Launch: Hard Streets",
+    "expected": "Hard Streets"
+  },
+  {
+    "raw": "Book Talk: Coppola, Lucas, Spielberg",
+    "expected": "Coppola, Lucas, Spielberg"
+  },
+  {
+    "raw": "Brief Encounter & Briefest Encounters + Q&A",
+    "expected": "Brief Encounter"
+  },
+  {
+    "raw": "Bring Me The Horizon: L.I.V.E. in São Paulo",
+    "expected": "Bring Me The Horizon"
+  },
+  {
+    "raw": "Broken English: Screening + Live Performance",
+    "expected": "Broken English"
+  },
+  {
+    "raw": "Broken English: Screening and Live Performance",
+    "expected": "Broken English"
+  },
+  {
+    "raw": "Bulk + Director’s Q&A",
+    "expected": "Bulk"
+  },
+  {
+    "raw": "Bye Bye Brazil + intro by Dr Antonio da Silva, University of Essex",
+    "expected": "Bye Bye Brazil"
+  },
+  {
+    "raw": "C&amp;B: DEVIL WEARS PRADA 2",
+    "expected": "DEVIL WEARS PRADA 2"
+  },
+  {
+    "raw": "C&amp;B: The Christophers",
+    "expected": "The Christophers"
+  },
+  {
+    "raw": "CAMP CLASSICS presents Scooby Doo",
+    "expected": "Scooby Doo"
+  },
+  {
+    "raw": "CAMP CLASSICS presents: Hackers",
+    "expected": "Hackers"
+  },
+  {
+    "raw": "CATEGORY H: LATE NIGHT SOV SPECIAL",
+    "expected": "CATEGORY H: LATE NIGHT SOV SPECIAL"
+  },
+  {
+    "raw": "CLUB ROOM: Aidan Brnard and Atyant Chopra",
+    "expected": "Aidan Brnard and Atyant Chopra"
+  },
+  {
+    "raw": "CLUB ROOM: Eva Lunny Audiovisual Set",
+    "expected": "Eva Lunny Audiovisual Set"
+  },
+  {
+    "raw": "CLUB ROOM: Hutch",
+    "expected": "Hutch"
+  },
+  {
+    "raw": "CLUB ROOM: Jazz Impressions of Richard Rodgers",
+    "expected": "Jazz Impressions of Richard Rodgers"
+  },
+  {
+    "raw": "CLUB ROOM: Let's Swim, Get Swimming",
+    "expected": "Let's Swim"
+  },
+  {
+    "raw": "CLUB ROOM: New German Cinema",
+    "expected": "New German Cinema"
+  },
+  {
+    "raw": "CLUB ROOM: Poetry Night with Cecilia Knapp",
+    "expected": "Poetry Night with Cecilia Knapp"
+  },
+  {
+    "raw": "CLUB ROOM: Raining Blue",
+    "expected": "Raining Blue"
+  },
+  {
+    "raw": "COSMIK DEBRIS PRESENTS: BREATHLESS",
+    "expected": "BREATHLESS"
+  },
+  {
+    "raw": "COSMIK DEBRIS PRESENTS: HEAT",
+    "expected": "HEAT"
+  },
+  {
+    "raw": "COSMIK DEBRIS PRESENTS: ONE FALSE MOVE",
+    "expected": "ONE FALSE MOVE"
+  },
+  {
+    "raw": "COSMIK DEBRIS PRESENTS: THE LAST SEDUCTION",
+    "expected": "The Last Seduction"
+  },
+  {
+    "raw": "COSMIK DEBRIS PRESENTS: TRASH",
+    "expected": "TRASH"
+  },
+  {
+    "raw": "California Schemin' + James McAvoy Q&A",
+    "expected": "California Schemin'"
+  },
+  {
+    "raw": "Candyman + intro by Gabriel Leavey, film curator, presenter and BFI Studio Coordinator",
+    "expected": "Candyman"
+  },
+  {
+    "raw": "Captured Souls: In Conversation with Graham Humphreys",
+    "expected": "Captured Souls"
+  },
+  {
+    "raw": "Carers &amp; Babies: If I Had Legs I'd Kick You",
+    "expected": "If I Had Legs I'd Kick You"
+  },
+  {
+    "raw": "Carers &amp; Babies: THE DRAMA",
+    "expected": "The Drama"
+  },
+  {
+    "raw": "Carers &amp; Babies: The Testament of Ann Lee",
+    "expected": "The Testament of Ann Lee"
+  },
+  {
+    "raw": "Case Closed Season 2 Finale with Nella Rose",
+    "expected": "Case Closed Season 2 Finale with Nella Rose"
+  },
+  {
+    "raw": "Celebrating Peaky Blinders + Q&A with Steven Knight and Cillian Murphy",
+    "expected": "Peaky Blinders"
+  },
+  {
+    "raw": "Chaplin: Spirit of The Tramp",
+    "expected": "Chaplin: Spirit of The Tramp"
+  },
+  {
+    "raw": "Chasing Utopia + Live Q&A",
+    "expected": "Chasing Utopia"
+  },
+  {
+    "raw": "Chasing Utopia + Q&A with Mo Gawdat",
+    "expected": "Chasing Utopia"
+  },
+  {
+    "raw": "Choose What You Pay: The Christophers",
+    "expected": "The Christophers"
+  },
+  {
+    "raw": "Chronic Youth: Afronauts + Superman of Malegaon",
+    "expected": "Afronauts"
+  },
+  {
+    "raw": "Chronic Youth: Fifth Cinema + Panel Discussion",
+    "expected": "Chronic Youth: Fifth Cinema"
+  },
+  {
+    "raw": "Chronic Youth: Go Fish",
+    "expected": "Chronic Youth: Go Fish"
+  },
+  {
+    "raw": "Chronic Youth: Liminal Traces + Q&A",
+    "expected": "Chronic Youth: Liminal Traces"
+  },
+  {
+    "raw": "Chronic Youth: Puppygirl + Q&A",
+    "expected": "Chronic Youth: Puppygirl"
+  },
+  {
+    "raw": "Chronic Youth: With Hasan in Gaza",
+    "expected": "Chronic Youth: With Hasan in Gaza"
+  },
+  {
+    "raw": "Chronically Online: A Personal History of the UK Internet",
+    "expected": "A Personal History of the UK Internet"
+  },
+  {
+    "raw": "Ciao UFO + Livestream Q&A",
+    "expected": "Ciao UFO"
+  },
+  {
+    "raw": "Cine-Real presents: Alien",
+    "expected": "Alien"
+  },
+  {
+    "raw": "Cine-Real presents: High Anxiety",
+    "expected": "High Anxiety"
+  },
+  {
+    "raw": "Cine-Real presents: North by Northwest",
+    "expected": "North by Northwest"
+  },
+  {
+    "raw": "Cine-Real presents: Pulp Fiction + The Last Picture Shop Crowdfunder",
+    "expected": "Pulp Fiction"
+  },
+  {
+    "raw": "Cine-Real presents: When Harry Met Sally",
+    "expected": "When Harry Met Sally"
+  },
+  {
+    "raw": "Cine-real presents: Badlands",
+    "expected": "Badlands"
+  },
+  {
+    "raw": "Cine-real presents: Casablanca",
+    "expected": "Casablanca"
+  },
+  {
+    "raw": "Cine-real presents: Imitation of Life",
+    "expected": "Imitation of Life"
+  },
+  {
+    "raw": "CineMediterra FF 2026: Short Film Programme",
+    "expected": "Short Film Programme"
+  },
+  {
+    "raw": "Cinema Made in Italy Closing Night: Three Goodbyes + intro and Q&A with director Isabel Coixet",
+    "expected": "Three Goodbyes"
+  },
+  {
+    "raw": "Cinema Tehran Presents: The Stranger and The Fog",
+    "expected": "The Stranger and The Fog"
+  },
+  {
+    "raw": "Classic Matinee: HARD TRUTHS",
+    "expected": "HARD TRUTHS"
+  },
+  {
+    "raw": "Classic Matinee: Sunset Boulevard",
+    "expected": "Sunset Boulevard"
+  },
+  {
+    "raw": "Clermont-Ferrand 2026: Short Films for the Family",
+    "expected": "Clermont-Ferrand"
+  },
+  {
+    "raw": "Clermont-Ferrand: Best of French Competition 2026",
+    "expected": "Clermont-Ferrand"
+  },
+  {
+    "raw": "Clermont-Ferrand: International Competition 2026",
+    "expected": "Clermont-Ferrand"
+  },
+  {
+    "raw": "Clermont-Ferrand: UK programme 2026",
+    "expected": "Clermont-Ferrand"
+  },
+  {
+    "raw": "Closing Party + Awards ceremony",
+    "expected": "Closing Party"
+  },
+  {
+    "raw": "Club Room Comedy: Ali Woods, Farhan Solo, Sikisa, and Roman Harris",
+    "expected": "Ali Woods, Farhan Solo, Sikisa, and Roman Harris"
+  },
+  {
+    "raw": "Club Room x Muse: The Chronology of Water",
+    "expected": "The Chronology of Water"
+  },
+  {
+    "raw": "Club Room: Hannah Horton & Sam Leak Duo",
+    "expected": "Hannah Horton & Sam Leak Duo"
+  },
+  {
+    "raw": "Club Room: Joe Pettitt Trio",
+    "expected": "Joe Pettitt Trio"
+  },
+  {
+    "raw": "Club Room: The Lodger (1927) + Live Score by Hugo Max",
+    "expected": "The Lodger"
+  },
+  {
+    "raw": "Cold War Visions: Atomic War Bride",
+    "expected": "Atomic War Bride"
+  },
+  {
+    "raw": "Cold War Visions: Ikarie XB-1",
+    "expected": "Ikarie XB-1"
+  },
+  {
+    "raw": "Cold War Visions: The Sacrifice",
+    "expected": "The Sacrifice"
+  },
+  {
+    "raw": "Cold War Visions: The Sun and the Shadow",
+    "expected": "Cold War Visions: The Sun and the Shadow"
+  },
+  {
+    "raw": "Cold War Visions: We Live Here + Chernobyl 22",
+    "expected": "We Live Here"
+  },
+  {
+    "raw": "Collective Monologue + director Jessica Sarah Rinland in conversation with Erika Balsom",
+    "expected": "Collective Monologue"
+  },
+  {
+    "raw": "Cosy Crafts: AMÉLIE",
+    "expected": "AMÉLIE"
+  },
+  {
+    "raw": "Cowboy Bebop: The Movie",
+    "expected": "Cowboy Bebop: The Movie"
+  },
+  {
+    "raw": "Crash- Birthday Season",
+    "expected": "Crash"
+  },
+  {
+    "raw": "Crime 101 + Live Q&A",
+    "expected": "Crime 101"
+  },
+  {
+    "raw": "Crossroads: Big Stories for Little Ones",
+    "expected": "Crossroads"
+  },
+  {
+    "raw": "Crystal Voyager (1973) + Introduction by series curator Sophia Satchell-Baeza",
+    "expected": "Crystal Voyager"
+  },
+  {
+    "raw": "D is for Distance + Q&A",
+    "expected": "D is for Distance"
+  },
+  {
+    "raw": "DANCE FREAK + VIDEO INTRO",
+    "expected": "DANCE FREAK"
+  },
+  {
+    "raw": "DIAL: HELP",
+    "expected": "DIAL: HELP"
+  },
+  {
+    "raw": "DIONNE EDWARDS: BOUND on 35mm",
+    "expected": "BOUND"
+  },
+  {
+    "raw": "DISCREET CINE PRESENTS: AN UNMARRIED WOMAN",
+    "expected": "AN UNMARRIED WOMAN"
+  },
+  {
+    "raw": "DOA: A RIGHT OF PASSAGE",
+    "expected": "DOA: A Right of Passage"
+  },
+  {
+    "raw": "DOC'N ROLL: SPORTS BANGER X JEREMY DELLER",
+    "expected": "SPORTS BANGER X JEREMY DELLER"
+  },
+  {
+    "raw": "DRINK & DINE: Bohemian Rhapsody Sing-Along",
+    "expected": "Bohemian Rhapsody Sing-Along"
+  },
+  {
+    "raw": "DRINK & DINE: The Greatest Showman Sing-A-Long",
+    "expected": "The Greatest Showman Sing-A-Long"
+  },
+  {
+    "raw": "Dailies Presents: Surviving Earth + Q&A",
+    "expected": "Surviving Earth"
+  },
+  {
+    "raw": "Dancer of the City + Courtship (15*) + intro",
+    "expected": "Dancer of the City"
+  },
+  {
+    "raw": "David Attenborough: A Life on Our Planet",
+    "expected": "David Attenborough: A Life on Our Planet"
+  },
+  {
+    "raw": "Days and Nights in the Forest + intro by Bengal Heritage Foundation",
+    "expected": "Days and Nights in the Forest"
+  },
+  {
+    "raw": "Deaf Festival: Children of a Lesser God",
+    "expected": "Children of a Lesser God"
+  },
+  {
+    "raw": "Dear Mr Manley + Q&amp;A",
+    "expected": "Dear Mr Manley"
+  },
+  {
+    "raw": "Dhurandhar: The Revenge",
+    "expected": "Dhurandhar: The Revenge"
+  },
+  {
+    "raw": "Die Hard: With a Vengeance",
+    "expected": "Die Hard: With a Vengeance"
+  },
+  {
+    "raw": "Diosa (Goddess) + Q&A",
+    "expected": "Diosa"
+  },
+  {
+    "raw": "Distorted Frame: Miami Vice 20th Anniversary Screening",
+    "expected": "Miami Vice"
+  },
+  {
+    "raw": "Di’Anno: Iron Maiden’s Lost Singer",
+    "expected": "Di’Anno: Iron Maiden’s Lost Singer"
+  },
+  {
+    "raw": "Doc 'N Roll: RAVE CULTURE: A NEW ERA",
+    "expected": "RAVE CULTURE: A NEW ERA"
+  },
+  {
+    "raw": "Doc 'N Roll: RAVE CULTURE: A NEW ERA + Q&amp;A",
+    "expected": "RAVE CULTURE: A NEW ERA"
+  },
+  {
+    "raw": "Doc'n Roll 2026: A Century in Sound + Director Q&A",
+    "expected": "A Century in Sound"
+  },
+  {
+    "raw": "Doc'n Roll 2026: Rave Culture: A New Era + Q&A",
+    "expected": "Rave Culture: A New Era"
+  },
+  {
+    "raw": "Doc'n Roll x Rio: A CENTURY IN SOUND + Q&amp;A",
+    "expected": "A Century in Sound"
+  },
+  {
+    "raw": "Doc'n Roll x Rio: PARADISE UK Premiere + Q&amp;A",
+    "expected": "Paradise"
+  },
+  {
+    "raw": "Doc'n Roll: Big Mama Thornton",
+    "expected": "Big Mama Thornton"
+  },
+  {
+    "raw": "DocHouse: BAFTA-nominated Shorts",
+    "expected": "BAFTA-nominated Shorts"
+  },
+  {
+    "raw": "DocHouse: In Memoriam: Marcel Lozinski",
+    "expected": "In Memoriam: Marcel Lozinski"
+  },
+  {
+    "raw": "DocHouse: It's Never Over, Jeff Buckley",
+    "expected": "It's Never Over, Jeff Buckley"
+  },
+  {
+    "raw": "Doctor Who Special Edition: Warriors of the Deep + Q&A with actors Peter Davison and Janet Fielding",
+    "expected": "Warriors of the Deep"
+  },
+  {
+    "raw": "Doctor Who: Projections in Time",
+    "expected": "Doctor Who: Projections in Time"
+  },
+  {
+    "raw": "Doctor Who: The Movie",
+    "expected": "Doctor Who: The Movie"
+  },
+  {
+    "raw": "Dog Friendly Screening: If I Had Legs I'd Kick You",
+    "expected": "If I Had Legs I'd Kick You"
+  },
+  {
+    "raw": "Dog Friendly Screening: The Christophers",
+    "expected": "The Christophers"
+  },
+  {
+    "raw": "Dog Friendly: Star Wars: The Mandalorian and Grogu",
+    "expected": "Star Wars: The Mandalorian and Grogu"
+  },
+  {
+    "raw": "Dog-Friendly Screening: Hoppers",
+    "expected": "Hoppers"
+  },
+  {
+    "raw": "Dog-Friendly Screening: How To Make A Killing",
+    "expected": "How To Make A Killing"
+  },
+  {
+    "raw": "Dog-Friendly Screening: Michael",
+    "expected": "Michael"
+  },
+  {
+    "raw": "Dog-Friendly Screening: Project Hail Mary",
+    "expected": "Project Hail Mary"
+  },
+  {
+    "raw": "Dog-Friendly Screening: The Bride!",
+    "expected": "The Bride"
+  },
+  {
+    "raw": "Dog-Friendly Screening: The Devil Wears Prada 2",
+    "expected": "The Devil Wears Prada 2"
+  },
+  {
+    "raw": "Dog-Friendly Screening: The Magic Faraway Tree",
+    "expected": "The Magic Faraway Tree"
+  },
+  {
+    "raw": "Dog-Friendly Screening: Wuthering Heights",
+    "expected": "Wuthering Heights"
+  },
+  {
+    "raw": "Dog-Friendly: The Super Mario Galaxy Movie",
+    "expected": "The Super Mario Galaxy Movie"
+  },
+  {
+    "raw": "Don't Be Prey + Live Q&A",
+    "expected": "Don't Be Prey"
+  },
+  {
+    "raw": "Don't Be Prey + Tim Denyer & Mark Sowerby Q&A",
+    "expected": "Don't Be Prey"
+  },
+  {
+    "raw": "Drag performance, Scarlett Spritzes + Sylvia Scarlett",
+    "expected": "Sylvia Scarlett"
+  },
+  {
+    "raw": "Dress-up karaoke party + Unknown Pleasures",
+    "expected": "Unknown Pleasures"
+  },
+  {
+    "raw": "Drink & Dine: Billie Eilish",
+    "expected": "Billie Eilish"
+  },
+  {
+    "raw": "Drink & Dine: DANCE CRAZE",
+    "expected": "DANCE CRAZE"
+  },
+  {
+    "raw": "Drink & Dine: Do the Right Thing + Soundtrack",
+    "expected": "Do the Right Thing"
+  },
+  {
+    "raw": "Drink & Dine: Iron Maiden: Burning Ambition",
+    "expected": "Iron Maiden: Burning Ambition"
+  },
+  {
+    "raw": "Drink & Dine: James Acaster: Cinemagoers Welcome",
+    "expected": "James Acaster: Cinemagoers Welcome"
+  },
+  {
+    "raw": "Drink & Dine: Licorice Pizza + Pizza Night",
+    "expected": "Licorice Pizza"
+  },
+  {
+    "raw": "Drink & Dine: Northern Soul: Still Burning",
+    "expected": "Northern Soul: Still Burning"
+  },
+  {
+    "raw": "Drink & Dine: Peaky Blinders: The Immortal Man",
+    "expected": "Peaky Blinders: The Immortal Man"
+  },
+  {
+    "raw": "Drink & Dine: Project Hail Mary + Pizza Night",
+    "expected": "Project Hail Mary"
+  },
+  {
+    "raw": "Drink & Dine: Sinners + Listening Party",
+    "expected": "Sinners"
+  },
+  {
+    "raw": "Drink & Dine: Star Wars: The Mandalorian and Grogu",
+    "expected": "Star Wars: The Mandalorian and Grogu"
+  },
+  {
+    "raw": "Drink & Dine: The Devil Wears Prada 2",
+    "expected": "The Devil Wears Prada 2"
+  },
+  {
+    "raw": "Drink & Dine: The Moment",
+    "expected": "The Moment"
+  },
+  {
+    "raw": "Drink & Dine: The Princess Bride",
+    "expected": "The Princess Bride"
+  },
+  {
+    "raw": "Drink & Dine: Top Gun",
+    "expected": "Top Gun"
+  },
+  {
+    "raw": "Dub Me Always: Vinyl Reggae",
+    "expected": "Dub Me Always"
+  },
+  {
+    "raw": "Duke's After Dark: Death Becomes Her",
+    "expected": "Death Becomes Her"
+  },
+  {
+    "raw": "Dukes After Dark: Surprise Movie",
+    "expected": "Dukes After Dark: Surprise Movie"
+  },
+  {
+    "raw": "Dune : Part One",
+    "expected": "Dune: Part One"
+  },
+  {
+    "raw": "Dune : Part Two",
+    "expected": "Dune: Part Two"
+  },
+  {
+    "raw": "Dyke TV: the early naughties + discussion",
+    "expected": "Dyke TV: the early naughties"
+  },
+  {
+    "raw": "EPiC: Elvis Presley in Concert",
+    "expected": "Elvis Presley in Concert"
+  },
+  {
+    "raw": "EVERYBODY TO KENMURE STREET + Q&amp;A",
+    "expected": "EVERYBODY TO KENMURE STREET"
+  },
+  {
+    "raw": "EXHIBITION ON SCREEN: Caravaggio",
+    "expected": "Caravaggio"
+  },
+  {
+    "raw": "EXHIBITION ON SCREEN: Frida Kahlo",
+    "expected": "Frida Kahlo"
+  },
+  {
+    "raw": "EXHIBITION ON SCREEN: Frida Kahlo 2026 Encore",
+    "expected": "Frida Kahlo"
+  },
+  {
+    "raw": "EXHIBITION ON SCREEN: Turner & Constable",
+    "expected": "Turner & Constable"
+  },
+  {
+    "raw": "Earth Day 2026: Colossal Wreck with Josh Appignanesi",
+    "expected": "Colossal Wreck"
+  },
+  {
+    "raw": "East London Doc Club: My Friend Lanre",
+    "expected": "My Friend Lanre"
+  },
+  {
+    "raw": "East London Doc Club: Red Herring + Q&A",
+    "expected": "Red Herring"
+  },
+  {
+    "raw": "Ego Death: An LSD Dream Emulator Rave",
+    "expected": "Ego Death: An LSD Dream Emulator Rave"
+  },
+  {
+    "raw": "Elisa + intro and Q&A with director Leonardo Di Costanzo",
+    "expected": "Elisa"
+  },
+  {
+    "raw": "Elisa + intro with director Leonardo Di Costanzo",
+    "expected": "Elisa"
+  },
+  {
+    "raw": "Enter The Void- Birthday Season",
+    "expected": "Enter the Void"
+  },
+  {
+    "raw": "Enys Men + intro by writer-director Mark Jenkin, and actors Mary Woodvine and Edward Rowe",
+    "expected": "Enys Men"
+  },
+  {
+    "raw": "Evangelion: Death (True)² + The End of Evangelion : Double Feature",
+    "expected": "Evangelion: Death (True)²"
+  },
+  {
+    "raw": "Exhibition on Screen ENCORE: Frida Kahlo",
+    "expected": "Frida Kahlo"
+  },
+  {
+    "raw": "Exhibition on Screen: \nTurner and Constable",
+    "expected": "Turner and Constable"
+  },
+  {
+    "raw": "Exhibition on Screen: Frida Kahlo",
+    "expected": "Frida Kahlo"
+  },
+  {
+    "raw": "Exhibition on Screen: Frida Kahlo + Intro",
+    "expected": "Frida Kahlo"
+  },
+  {
+    "raw": "FFC: The Old Ways",
+    "expected": "The Old Ways"
+  },
+  {
+    "raw": "FOLIES MEURTRIÈRES + DAWN OF AN EVIL MILLENIUM",
+    "expected": "Folies Meurtrières"
+  },
+  {
+    "raw": "FREEWAY: CONFESSIONS OF A TRICKBABY",
+    "expected": "FREEWAY: CONFESSIONS OF A TRICKBABY"
+  },
+  {
+    "raw": "FRIDAY THE 13TH PART VI: JASON LIVES PRESENTED BY THE EVOLUTION OF HORROR",
+    "expected": "FRIDAY THE 13TH PART VI: JASON LIVES"
+  },
+  {
+    "raw": "Family Film Club: Arco",
+    "expected": "Arco"
+  },
+  {
+    "raw": "Family Film Club: Back to the Future",
+    "expected": "Back to the Future"
+  },
+  {
+    "raw": "Family Film Club: Finding Dory",
+    "expected": "Finding Dory"
+  },
+  {
+    "raw": "Family Film Club: Flow",
+    "expected": "Flow"
+  },
+  {
+    "raw": "Family Film Club: Hola Frida",
+    "expected": "Hola Frida"
+  },
+  {
+    "raw": "Family Film Club: James and the Giant Peach",
+    "expected": "James and the Giant Peach"
+  },
+  {
+    "raw": "Family Film Club: Listen With Your Eyes",
+    "expected": "Listen With Your Eyes"
+  },
+  {
+    "raw": "Family Film Club: Little Amelie",
+    "expected": "Little Amelie"
+  },
+  {
+    "raw": "Family Film Club: Lost & Found, Intro, Shooom's Odyssey",
+    "expected": "Lost & Found"
+  },
+  {
+    "raw": "Family Film Club: Matilda The Musical",
+    "expected": "Matilda The Musical"
+  },
+  {
+    "raw": "Family Film Club: Robot Dreams",
+    "expected": "Robot Dreams"
+  },
+  {
+    "raw": "Family Film Club: Scarecrow's Wedding + The Highway Rat",
+    "expected": "Scarecrow's Wedding"
+  },
+  {
+    "raw": "Family Film Club: Space Cadet",
+    "expected": "Space Cadet"
+  },
+  {
+    "raw": "Family Film Club: The Goonies",
+    "expected": "The Goonies"
+  },
+  {
+    "raw": "Family Film Club: The Magic Faraway Tree",
+    "expected": "The Magic Faraway Tree"
+  },
+  {
+    "raw": "Family Film Club: Wicked: For Good",
+    "expected": "Wicked: For Good"
+  },
+  {
+    "raw": "Family Film Club: Willy Wonka & The Chocolate Factory",
+    "expected": "Willy Wonka & The Chocolate Factory"
+  },
+  {
+    "raw": "Fearless + recorded intro by actor Jeff Bridges",
+    "expected": "Fearless"
+  },
+  {
+    "raw": "Festival of Britain: Through the Eyes of the Archive",
+    "expected": "Through the Eyes of the Archive"
+  },
+  {
+    "raw": "Fighters + Q&A with boxers Jimmy and Mark Tibbs",
+    "expected": "Fighters"
+  },
+  {
+    "raw": "Films For Workers: Dessert For Constance",
+    "expected": "Dessert For Constance"
+  },
+  {
+    "raw": "Films to Die For (Preview screening) + Q&A",
+    "expected": "Films to Die For"
+  },
+  {
+    "raw": "First Graders + Tribute to Teachers",
+    "expected": "First Graders"
+  },
+  {
+    "raw": "Fist of Fury- Birthday Screening",
+    "expected": "Fist of Fury"
+  },
+  {
+    "raw": "Flow- Birthday Season",
+    "expected": "Flow"
+  },
+  {
+    "raw": "Foreign Land + Q&A with co-director Daniela Thomas",
+    "expected": "Foreign Land"
+  },
+  {
+    "raw": "Fractured Horizons: Three stories of migration and the desire for refuge",
+    "expected": "Fractured Horizons"
+  },
+  {
+    "raw": "From Cable Street to Brick Lane + Directors Q&A",
+    "expected": "From Cable Street to Brick Lane"
+  },
+  {
+    "raw": "Frontline Folklore + Director Q&A",
+    "expected": "Frontline Folklore"
+  },
+  {
+    "raw": "Fukushima: A Nuclear Nightmare",
+    "expected": "Fukushima: A Nuclear Nightmare"
+  },
+  {
+    "raw": "Funday: Arco",
+    "expected": "Arco"
+  },
+  {
+    "raw": "Funeral Parade presents \"Caravaggio\"",
+    "expected": "Caravaggio"
+  },
+  {
+    "raw": "Funeral Parade presents \"Theorem \"",
+    "expected": "Theorem"
+  },
+  {
+    "raw": "Funeral Parade presents \"Young Soul Rebels\"",
+    "expected": "Young Soul Rebels"
+  },
+  {
+    "raw": "Fuori + intro and Q&A with actor Valeria Golino",
+    "expected": "Fuori"
+  },
+  {
+    "raw": "Future Present",
+    "expected": "Future Present"
+  },
+  {
+    "raw": "GP Surgery + Soft Limit Cinema Present: Mano Destra (1986) + Shorts",
+    "expected": "Mano Destra (1986)"
+  },
+  {
+    "raw": "GP Surgery Presents \"Blues and The Moon\" Experimental Shorts",
+    "expected": "Blues and The Moon"
+  },
+  {
+    "raw": "GP Surgery and Never Watching Movies present: Alma's Rainbow (1994)+ A Look to Kill",
+    "expected": "Alma's Rainbow"
+  },
+  {
+    "raw": "Gabby’s Dollhouse: The Movie",
+    "expected": "Gabby's Dollhouse: The Movie"
+  },
+  {
+    "raw": "Gallipoli + intro by Dr Stephen Morgan, King’s College London",
+    "expected": "Gallipoli"
+  },
+  {
+    "raw": "Gallivant + Q&A with director Andrew Kotting, hosted by filmmaker Mark Jenkin",
+    "expected": "Gallivant"
+  },
+  {
+    "raw": "Gentle, Angry Women + Director’s Q&A",
+    "expected": "Gentle, Angry Women"
+  },
+  {
+    "raw": "Ghibliotheque presents: Arco + Ugo Bienvenu Short Films & Recorded Q&A",
+    "expected": "Arco + Ugo Bienvenu"
+  },
+  {
+    "raw": "Gioia + intro and Q&A with director Nicolangelo Gelormini and actor Valeria Golino",
+    "expected": "Gioia"
+  },
+  {
+    "raw": "Girls in Film Presents: If I Had Legs I'd Kick You",
+    "expected": "If I Had Legs I'd Kick You"
+  },
+  {
+    "raw": "God Said Give ‘Em Drum Machines + ScreenTalk with Director and Special Guests",
+    "expected": "God Said Give 'Em Drum Machines"
+  },
+  {
+    "raw": "Good Night, and Good Luck. + Live Recording of PPF Podcast with David Runciman, Helen Lewis",
+    "expected": "Good Night, and Good Luck."
+  },
+  {
+    "raw": "Good Time- Birthday Season",
+    "expected": "Good Time"
+  },
+  {
+    "raw": "Goodbye Breasts! + director Q &amp; A",
+    "expected": "Goodbye Breasts!"
+  },
+  {
+    "raw": "Grace Campbell Presents: Best In Show",
+    "expected": "Best In Show"
+  },
+  {
+    "raw": "Green Screen: Jo in the Water + Q&A",
+    "expected": "Jo in the Water"
+  },
+  {
+    "raw": "Green Screen: Power Station + discussion",
+    "expected": "Power Station"
+  },
+  {
+    "raw": "Gwen John: Strange Beauties",
+    "expected": "Strange Beauties"
+  },
+  {
+    "raw": "Hackney History Festival presents: EXPLODERS",
+    "expected": "EXPLODERS"
+  },
+  {
+    "raw": "Hackney History Festival: CAZENOVE WARD STORIES",
+    "expected": "CAZENOVE WARD STORIES"
+  },
+  {
+    "raw": "Happy Birthday Rik Mayall: Drop Dead Fred",
+    "expected": "Drop Dead Fred"
+  },
+  {
+    "raw": "Happy Mother’s Day: Mermaids",
+    "expected": "Mermaids"
+  },
+  {
+    "raw": "Hard Boiled- John Woo Season",
+    "expected": "Hard Boiled"
+  },
+  {
+    "raw": "Heads or Tails? + intro and Q&A with director Alessio Rigo de Righi",
+    "expected": "Heads or Tails"
+  },
+  {
+    "raw": "Hellboy II: The Golden Army",
+    "expected": "Hellboy II: The Golden Army"
+  },
+  {
+    "raw": "Hipish Vintage presents Donnie Darko: The Director's Cut",
+    "expected": "Donnie Darko: The Director's Cut"
+  },
+  {
+    "raw": "His Girl Friday + Live Organ",
+    "expected": "His Girl Friday"
+  },
+  {
+    "raw": "Home Truths: Shorts exploring relationships and private lives",
+    "expected": "Home Truths"
+  },
+  {
+    "raw": "Hot Fuzz • 19th Anniversary",
+    "expected": "Hot Fuzz"
+  },
+  {
+    "raw": "How to Have Sex- Birthday Season",
+    "expected": "How to Have Sex"
+  },
+  {
+    "raw": "Hunted + intro by season curator Ehsan Khoshbakht",
+    "expected": "Hunted"
+  },
+  {
+    "raw": "I Saw the TV Glow + 5:40 Fantasy Music Video",
+    "expected": "I Saw the TV Glow"
+  },
+  {
+    "raw": "I Was a Teenage Serial Killer + A Family Finds Entertainment",
+    "expected": "I Was a Teenage Serial Killer"
+  },
+  {
+    "raw": "ICI London And CinemaItaliaUK Special Screening of The Forbidden City + Q&A With Marco Giallini",
+    "expected": "The Forbidden City"
+  },
+  {
+    "raw": "ICI London and CinemaItaliaUK Special Screening of Illusion + Q&A with Francesca Archibugi",
+    "expected": "Illusion"
+  },
+  {
+    "raw": "IFF 2026: Ocean With David Attenborough",
+    "expected": "Ocean With David Attenborough"
+  },
+  {
+    "raw": "IHF Private Screening: Secrets of the Jinn Valley Treasure",
+    "expected": "Secrets of the Jinn Valley Treasure"
+  },
+  {
+    "raw": "If I Had Legs I'd Kick You + Rose Byrne Q&A",
+    "expected": "If I Had Legs I'd Kick You"
+  },
+  {
+    "raw": "Iggy the Eskimo Girl (1968) + Tonite Let’s All Make Love in London",
+    "expected": "Iggy the Eskimo Girl"
+  },
+  {
+    "raw": "In Focus: Meriem Bennani Programme 1",
+    "expected": "Meriem Bennani"
+  },
+  {
+    "raw": "In Focus: Meriem Bennani Programme 2",
+    "expected": "Meriem Bennani"
+  },
+  {
+    "raw": "In Memoriam: Marcel Lozinski",
+    "expected": "In Memoriam: Marcel Lozinski"
+  },
+  {
+    "raw": "Industry Panel: Intimacy Coordination",
+    "expected": "Intimacy Coordination"
+  },
+  {
+    "raw": "Iris LGBTQ+ Film Festival On the Move: Best Bits + Q&amp;A",
+    "expected": "Best Bits"
+  },
+  {
+    "raw": "Iron Ladies + Q&A",
+    "expected": "Iron Ladies"
+  },
+  {
+    "raw": "Iron Maiden: Burning Ambition",
+    "expected": "Iron Maiden: Burning Ambition"
+  },
+  {
+    "raw": "Isiah Medina: 88:88",
+    "expected": "88:88"
+  },
+  {
+    "raw": "Isiah Medina: He Thought He Died",
+    "expected": "He Thought He Died"
+  },
+  {
+    "raw": "Isiah Medina: Inventing the Future",
+    "expected": "Isiah Medina: Inventing the Future"
+  },
+  {
+    "raw": "Isiah Medina: Night is Limpid",
+    "expected": "Isiah Medina: Night is Limpid"
+  },
+  {
+    "raw": "Isiah Medina: Shorts Programme",
+    "expected": "Isiah Medina"
+  },
+  {
+    "raw": "It Was Just an Accident- Birthday Season",
+    "expected": "It Was Just an Accident"
+  },
+  {
+    "raw": "Italy Through its Cinema: Rome, Open City",
+    "expected": "Rome, Open City"
+  },
+  {
+    "raw": "Im Migrant: Koutaiba al Janabi and Ghani Alani",
+    "expected": "I'm Migrant"
+  },
+  {
+    "raw": "JFTFP 2026: Hakkenden: Fiction and Reality",
+    "expected": "Hakkenden: Fiction and Reality"
+  },
+  {
+    "raw": "JFTFP 2026: Missing Child Videotape",
+    "expected": "Missing Child Videotape"
+  },
+  {
+    "raw": "JFTFP 2026: Sham",
+    "expected": "Sham"
+  },
+  {
+    "raw": "JLG Unmade and Abandoned: New American Revolution",
+    "expected": "New American Revolution"
+  },
+  {
+    "raw": "JLG Unmade and Abandoned: Palestine",
+    "expected": "Palestine"
+  },
+  {
+    "raw": "JLG Unmade and Abandoned: The Audiovisual Script",
+    "expected": "The Audiovisual Script"
+  },
+  {
+    "raw": "JPTFP 2026: The Hotel of My Dream",
+    "expected": "The Hotel of My Dream"
+  },
+  {
+    "raw": "James Acaster: Cinemagoers Welcome",
+    "expected": "James Acaster: Cinemagoers Welcome"
+  },
+  {
+    "raw": "James Acaster: Cinemagoers Welcome + James Acaster & Stuart Laws Q&A",
+    "expected": "James Acaster: Cinemagoers Welcome"
+  },
+  {
+    "raw": "Japanese Film Club: Kamikaze Girls",
+    "expected": "Kamikaze Girls"
+  },
+  {
+    "raw": "Japanese Film Club: Linda Linda Linda",
+    "expected": "Linda Linda Linda"
+  },
+  {
+    "raw": "Jawbone + Q&A with Johnny Harris and Michael Smiley",
+    "expected": "Jawbone"
+  },
+  {
+    "raw": "Jewish Culture Month: Best of British",
+    "expected": "Best of British"
+  },
+  {
+    "raw": "Jewish Culture Month: Hester Street",
+    "expected": "Hester Street"
+  },
+  {
+    "raw": "Jewish Culture Month: Menashe",
+    "expected": "Menashe"
+  },
+  {
+    "raw": "Jewish Culture Month: Shiva Baby",
+    "expected": "Shiva Baby"
+  },
+  {
+    "raw": "Jewish Culture Month: Solomon & Gaenor",
+    "expected": "Solomon & Gaenor"
+  },
+  {
+    "raw": "Jewish Culture Month: Uncut Gems",
+    "expected": "Uncut Gems"
+  },
+  {
+    "raw": "Jewish Culutre Month: A Serious Man",
+    "expected": "A Serious Man"
+  },
+  {
+    "raw": "Johanna d'Arc of Mongolia + conversation",
+    "expected": "Johanna d'Arc of Mongolia"
+  },
+  {
+    "raw": "Jukebox Film Club: UK PREMIERE Komitas",
+    "expected": "Komitas"
+  },
+  {
+    "raw": "K-19: The Widowmaker",
+    "expected": "K-19: The Widowmaker"
+  },
+  {
+    "raw": "KINOTEKA Danton + introduction",
+    "expected": "Danton"
+  },
+  {
+    "raw": "KINOTEKA Home Sweet Home + Q&A",
+    "expected": "Home Sweet Home"
+  },
+  {
+    "raw": "KNEE JERK PRESENTS: A WOMAN'S TORMENT",
+    "expected": "A Woman's Torment"
+  },
+  {
+    "raw": "KNITFLICKS: The Devil Wears Prada 2",
+    "expected": "The Devil Wears Prada 2"
+  },
+  {
+    "raw": "Karaoke, crafts + Harold and Maude",
+    "expected": "Harold and Maude"
+  },
+  {
+    "raw": "Katyn + pre-recorded intro by film critic Carmen Gray",
+    "expected": "Katyn"
+  },
+  {
+    "raw": "Kenneth Anger: The Magick Lantern Cycle",
+    "expected": "Kenneth Anger: The Magick Lantern Cycle"
+  },
+  {
+    "raw": "Kids Club: Arco",
+    "expected": "Arco"
+  },
+  {
+    "raw": "Kids Club: Bluey: Playdates with Friends",
+    "expected": "Bluey: Playdates with Friends"
+  },
+  {
+    "raw": "Kids Club: Finding Dory",
+    "expected": "Finding Dory"
+  },
+  {
+    "raw": "Kids Club: Little Amélie",
+    "expected": "Little Amélie"
+  },
+  {
+    "raw": "Kids Club: My Neighbor Totoro",
+    "expected": "My Neighbor Totoro"
+  },
+  {
+    "raw": "Kids Club: Penguins of Madagascar",
+    "expected": "Penguins of Madagascar"
+  },
+  {
+    "raw": "Kids Club: Peter Rabbit",
+    "expected": "Peter Rabbit"
+  },
+  {
+    "raw": "Kids Club: Spirited Away",
+    "expected": "Spirited Away"
+  },
+  {
+    "raw": "Kids Club: Teenage Mutant Ninja Turtles: Mutant M",
+    "expected": "Teenage Mutant Ninja Turtles: Mutant M"
+  },
+  {
+    "raw": "Kids Club: The Little Mermaid",
+    "expected": "The Little Mermaid"
+  },
+  {
+    "raw": "Kids Club: The Princess and the Frog",
+    "expected": "The Princess and the Frog"
+  },
+  {
+    "raw": "Kids Club: Wonka",
+    "expected": "Wonka"
+  },
+  {
+    "raw": "Kill Bill: The Whole Bloody Affair",
+    "expected": "Kill Bill: The Whole Bloody Affair"
+  },
+  {
+    "raw": "Kinaesthesia + Q&A",
+    "expected": "Kinaesthesia"
+  },
+  {
+    "raw": "Kinaesthesia + Q&A with director Gerald Fox",
+    "expected": "Kinaesthesia"
+  },
+  {
+    "raw": "Kinoteka: The Good Boy (15) + ScreenTalk",
+    "expected": "The Good Boy"
+  },
+  {
+    "raw": "Knitflix screening: Woman Grows Jeans + Director’s Q&A",
+    "expected": "Woman Grows Jeans"
+  },
+  {
+    "raw": "Kokuho: A Kabuki Salon",
+    "expected": "Kokuho"
+  },
+  {
+    "raw": "Koyaanisqatsi : Life Out of Balance",
+    "expected": "Koyaanisqatsi"
+  },
+  {
+    "raw": "Kung Fu Cinema: Blades Of The Guardians",
+    "expected": "Blades Of The Guardians"
+  },
+  {
+    "raw": "Kung Fu Cinema: Legend Of A Fighter",
+    "expected": "Legend Of A Fighter"
+  },
+  {
+    "raw": "LAFS PRESENTS: THE CASTLE",
+    "expected": "The Castle"
+  },
+  {
+    "raw": "LET THE CORPSES TAN + Q&A",
+    "expected": "Let the Corpses Tan"
+  },
+  {
+    "raw": "LGBTQ+ Shorts &amp; Stand-Up",
+    "expected": "LGBTQ+ Shorts & Stand-Up"
+  },
+  {
+    "raw": "LITTLE OTIK + MYSTERY SHORTS",
+    "expected": "LITTLE OTIK"
+  },
+  {
+    "raw": "LMF Presents: The Sandbox Showcase",
+    "expected": "The Sandbox Showcase"
+  },
+  {
+    "raw": "LOCO Presents: Dog With A Movie Camera and Blondi",
+    "expected": "Dog With A Movie Camera"
+  },
+  {
+    "raw": "LOCO Shorts 2026 presents: The Dark Side",
+    "expected": "The Dark Side"
+  },
+  {
+    "raw": "LOCO Shorts 2026 presents: The Near Side",
+    "expected": "The Near Side"
+  },
+  {
+    "raw": "LOCO Shorts 2026 presents: The Other Side",
+    "expected": "The Other Side"
+  },
+  {
+    "raw": "LOCO Shorts 2026 presents: The Wild Side",
+    "expected": "The Wild Side"
+  },
+  {
+    "raw": "LOCO presents: Littermates",
+    "expected": "Littermates"
+  },
+  {
+    "raw": "LOCO presents: Man Baby",
+    "expected": "Man Baby"
+  },
+  {
+    "raw": "LOCO presents: Movie Magic",
+    "expected": "Movie Magic"
+  },
+  {
+    "raw": "LOCO presents: Murder She Said + podcast recording",
+    "expected": "Murder She Said"
+  },
+  {
+    "raw": "LOCO presents: The Titfield Thunderbolt + Q&A",
+    "expected": "The Titfield Thunderbolt"
+  },
+  {
+    "raw": "LRB Screen x MUBI: Law and Order",
+    "expected": "Law and Order"
+  },
+  {
+    "raw": "LSFF: Obsession (12A*) + Intro by Norma Herrmann",
+    "expected": "Obsession"
+  },
+  {
+    "raw": "LUNCH SCREENING: COOL RUNNINGS + WINTER OLYMPICS",
+    "expected": "COOL RUNNINGS"
+  },
+  {
+    "raw": "LUNCH SCREENING: EPiC",
+    "expected": "EPiC"
+  },
+  {
+    "raw": "La Bohème + Q&A",
+    "expected": "La Bohème"
+  },
+  {
+    "raw": "La Bohème + Robin Norton-Hale & Alice Farnham Q&A",
+    "expected": "La Bohème"
+  },
+  {
+    "raw": "La Haine- Birthday Season",
+    "expected": "La Haine"
+  },
+  {
+    "raw": "La Scala, Milan: Così fan tutte",
+    "expected": "Così fan tutte"
+  },
+  {
+    "raw": "Late Nights: A Clockwork Orange",
+    "expected": "A Clockwork Orange"
+  },
+  {
+    "raw": "Le samouraï + intro",
+    "expected": "Le samouraï"
+  },
+  {
+    "raw": "Lexi Seniors' Film Club: My Favourite Cake + Two Black Boys in Paradise",
+    "expected": "My Favourite Cake"
+  },
+  {
+    "raw": "Library Event: Documenting Presence Through Silence",
+    "expected": "Documenting Presence Through Silence"
+  },
+  {
+    "raw": "Library Event: Inferno, Purgatory and Paradise: Ken Hollings’ Guide to the Trash Underworld",
+    "expected": "Inferno, Purgatory and Paradise: Ken Hollings’ Guide to the Trash Underworld"
+  },
+  {
+    "raw": "Little Shop of Horrors : Directors Cut",
+    "expected": "Little Shop of Horrors"
+  },
+  {
+    "raw": "Little White Lies: The Testament of Ann Lee",
+    "expected": "Little White Lies: The Testament of Ann Lee"
+  },
+  {
+    "raw": "Live stand-up + Is This Thing On?",
+    "expected": "Is This Thing On?"
+  },
+  {
+    "raw": "London Boys + Q&amp;A",
+    "expected": "London Boys"
+  },
+  {
+    "raw": "Londons Last Wilderness + Q&A",
+    "expected": "London's Last Wilderness"
+  },
+  {
+    "raw": "Looney Tunes: The Day The World Blew Up",
+    "expected": "Looney Tunes: The Day The World Blew Up"
+  },
+  {
+    "raw": "Looney Tunes: The Day the Earth Blew Up",
+    "expected": "Looney Tunes: The Day the Earth Blew Up"
+  },
+  {
+    "raw": "Lost Reels presents \"Lianna\" + Q&A",
+    "expected": "Lianna"
+  },
+  {
+    "raw": "Lost Reels: Gas Food Lodging + Q&A",
+    "expected": "Gas Food Lodging"
+  },
+  {
+    "raw": "Lost Reels: Mi Vida Loca + Q&A",
+    "expected": "Mi Vida Loca"
+  },
+  {
+    "raw": "Lower City + intro by season co-curator Renata de Almeida",
+    "expected": "Lower City"
+  },
+  {
+    "raw": "Lunch Screening: Craft Club: The Muppets",
+    "expected": "The Muppets"
+  },
+  {
+    "raw": "Lunch Screening: The Princess Bride",
+    "expected": "The Princess Bride"
+  },
+  {
+    "raw": "Lupin The IIIrd: The Movie",
+    "expected": "Lupin The IIIrd: The Movie"
+  },
+  {
+    "raw": "MASSIVE presents: California Schemin'",
+    "expected": "California Schemin'"
+  },
+  {
+    "raw": "MET Opera: El Ultimo sueno de Frida y Diego",
+    "expected": "El Ultimo sueno de Frida y Diego"
+  },
+  {
+    "raw": "MET Opera: Eugene Onegin",
+    "expected": "Eugene Onegin"
+  },
+  {
+    "raw": "MET Opera: Tristan und Isolde",
+    "expected": "Tristan und Isolde"
+  },
+  {
+    "raw": "MOUTH TO MOUTH + Q&amp;A",
+    "expected": "Mouth to Mouth"
+  },
+  {
+    "raw": "MUBI & PINTS OF KNOWLEDGE present NO OTHER CHOICE",
+    "expected": "NO OTHER CHOICE"
+  },
+  {
+    "raw": "MY NAME IS MONDAY: A NIGHT OF SOVIET FILM, MUSIC & ANIMATION",
+    "expected": "MY NAME IS MONDAY"
+  },
+  {
+    "raw": "MYSTERY DOJO: SURPRISE KUNG FU MATINEES",
+    "expected": "Surprise Kung Fu Matinees"
+  },
+  {
+    "raw": "Macho Dancer + intro",
+    "expected": "Macho Dancer"
+  },
+  {
+    "raw": "Made In Sussex: A Life in Tandem",
+    "expected": "Made In Sussex: A Life in Tandem"
+  },
+  {
+    "raw": "Made In Sussex: Charlie Shaw’s Revenge",
+    "expected": "Charlie Shaw’s Revenge"
+  },
+  {
+    "raw": "Made In Sussex: Rumpelstiltskin",
+    "expected": "Made In Sussex: Rumpelstiltskin"
+  },
+  {
+    "raw": "Made In Sussex: Stargazers",
+    "expected": "Made In Sussex: Stargazers"
+  },
+  {
+    "raw": "Made In Sussex: Sussex Shorts 1",
+    "expected": "Made In Sussex"
+  },
+  {
+    "raw": "Made In Sussex: Sussex Shorts 2",
+    "expected": "Made In Sussex"
+  },
+  {
+    "raw": "Made In Sussex: The Bystanders",
+    "expected": "The Bystanders"
+  },
+  {
+    "raw": "Malcolm X + intro by Ashley Clark",
+    "expected": "Malcolm X"
+  },
+  {
+    "raw": "Manas + intro by season co-curator Renata de Almeida",
+    "expected": "Manas"
+  },
+  {
+    "raw": "Mandy + intro by Josephine Botting, Curator, BFI National Archive",
+    "expected": "Mandy"
+  },
+  {
+    "raw": "Mars One + intro by Marta Calderon Quinones, Cinema Mentire",
+    "expected": "Mars One"
+  },
+  {
+    "raw": "Master and Commander : The Far Side of the World",
+    "expected": "Master and Commander: The Far Side of the World"
+  },
+  {
+    "raw": "McCartney: The Hunt for the Lost Bass",
+    "expected": "McCartney: The Hunt for the Lost Bass"
+  },
+  {
+    "raw": "Member Exclusive: Archive Tour",
+    "expected": "Archive Tour"
+  },
+  {
+    "raw": "Member Library Lates: Guillermo del Toro",
+    "expected": "Guillermo del Toro"
+  },
+  {
+    "raw": "Member Picks: Bride of Frankenstein",
+    "expected": "Bride of Frankenstein"
+  },
+  {
+    "raw": "Member Picks: Gattaca",
+    "expected": "Gattaca"
+  },
+  {
+    "raw": "Member exclusive: Days and Nights in the Forest",
+    "expected": "Days and Nights in the Forest"
+  },
+  {
+    "raw": "Members' Film Quiz: Birthday",
+    "expected": "Birthday"
+  },
+  {
+    "raw": "Members' Preview: Power Ballad",
+    "expected": "Power Ballad"
+  },
+  {
+    "raw": "Members' Preview: Tuner",
+    "expected": "Tuner"
+  },
+  {
+    "raw": "Members' Screening: \"Wuthering Heights\"",
+    "expected": "Wuthering Heights"
+  },
+  {
+    "raw": "Members' Screening: Father Mother Sister Brother",
+    "expected": "Father Mother Sister Brother"
+  },
+  {
+    "raw": "Members' Screening: Kokuho",
+    "expected": "Kokuho"
+  },
+  {
+    "raw": "Members' Screening: Project Hail Mary",
+    "expected": "Project Hail Mary"
+  },
+  {
+    "raw": "Members' Screening: Rose of Nevada",
+    "expected": "Rose of Nevada"
+  },
+  {
+    "raw": "Members' Screening: Sound of Falling",
+    "expected": "Sound of Falling"
+  },
+  {
+    "raw": "Members' Screening: The Blue Trail",
+    "expected": "The Blue Trail"
+  },
+  {
+    "raw": "Members' Screening: The Christophers",
+    "expected": "The Christophers"
+  },
+  {
+    "raw": "Members' Screening: The Devil Wears Prada 2",
+    "expected": "The Devil Wears Prada 2"
+  },
+  {
+    "raw": "Members' Screening: The Love That Remains",
+    "expected": "The Love That Remains"
+  },
+  {
+    "raw": "Members' Screening: The Testament of Ann Lee",
+    "expected": "The Testament of Ann Lee"
+  },
+  {
+    "raw": "Members' Screening: Underland",
+    "expected": "Underland"
+  },
+  {
+    "raw": "Members’ Preview: California Schemin’",
+    "expected": "California Schemin’"
+  },
+  {
+    "raw": "Members’ Preview: How To Make A Killing",
+    "expected": "How To Make A Killing"
+  },
+  {
+    "raw": "Members’ Preview: The Christophers",
+    "expected": "The Christophers"
+  },
+  {
+    "raw": "Memories: 4K Restoration Premiere",
+    "expected": "Memories"
+  },
+  {
+    "raw": "Mercedes Sosa: The Voice Of Latin America",
+    "expected": "Mercedes Sosa: The Voice Of Latin America"
+  },
+  {
+    "raw": "Met Opera 2025-26: Eugene Onegin",
+    "expected": "Eugene Onegin"
+  },
+  {
+    "raw": "Met Opera 2025-26: Tristan und Isolde",
+    "expected": "Tristan und Isolde"
+  },
+  {
+    "raw": "Met Opera 2026: El Último Sueño de Frida y Diego",
+    "expected": "El Último Sueño de Frida y Diego"
+  },
+  {
+    "raw": "Met Opera Encore: El Último Sueño de Frida y Diego",
+    "expected": "El Último Sueño de Frida y Diego"
+  },
+  {
+    "raw": "Met Opera Encore: Eugene Onegin",
+    "expected": "Eugene Onegin"
+  },
+  {
+    "raw": "Met Opera Encore: Tristan and Isolde",
+    "expected": "Tristan and Isolde"
+  },
+  {
+    "raw": "Met Opera Live: El Último Sueño de Frida y Diego",
+    "expected": "El Último Sueño de Frida y Diego"
+  },
+  {
+    "raw": "Met Opera Live: Eugene Onegin",
+    "expected": "Eugene Onegin"
+  },
+  {
+    "raw": "Met Opera Live: Tristan and Isolde",
+    "expected": "Tristan and Isolde"
+  },
+  {
+    "raw": "Metis Films presents: Surviving Earth + Live Q&A",
+    "expected": "Surviving Earth"
+  },
+  {
+    "raw": "Metropolis + intro by filmmaker Gerald Fox",
+    "expected": "Metropolis"
+  },
+  {
+    "raw": "Metropolis- Birthday Season",
+    "expected": "Metropolis"
+  },
+  {
+    "raw": "Metropolitan + Live Recording of Past Present Future Podcast with David Runciman, James Marriott",
+    "expected": "Metropolitan"
+  },
+  {
+    "raw": "MilkTea presents – UK Premiere: Last Days + Q&A with actor Sky Yang",
+    "expected": "Last Days"
+  },
+  {
+    "raw": "Miss Mary + intro",
+    "expected": "Miss Mary"
+  },
+  {
+    "raw": "Mitski: The Land",
+    "expected": "Mitski: The Land"
+  },
+  {
+    "raw": "Molly Vs THE MACHINES + Discussion",
+    "expected": "Molly Vs the Machines"
+  },
+  {
+    "raw": "Molly Vs the Machines + Recorded Q&A",
+    "expected": "Molly Vs the Machines"
+  },
+  {
+    "raw": "Mondays for Members: Mondo Lux",
+    "expected": "Mondo Lux"
+  },
+  {
+    "raw": "Mostovi Film Collective Presents: No Man's Land",
+    "expected": "No Man's Land"
+  },
+  {
+    "raw": "Mother's Day: Mamma Mia!",
+    "expected": "Mamma Mia!"
+  },
+  {
+    "raw": "Moulin Rouge + Live Organ",
+    "expected": "Moulin Rouge"
+  },
+  {
+    "raw": "Multicultural TV in Europe + intro by Momtaza Mehri",
+    "expected": "Multicultural TV in Europe"
+  },
+  {
+    "raw": "Multiple Maniacs + intro and discussion",
+    "expected": "Multiple Maniacs"
+  },
+  {
+    "raw": "My Beautiful Laundrette (40th Anniversary) + Q&A",
+    "expected": "My Beautiful Laundrette"
+  },
+  {
+    "raw": "My Feral Heart + 10th anniversary Q&A",
+    "expected": "My Feral Heart"
+  },
+  {
+    "raw": "NEVER WATCHING MOVIES: Spike Lee’s SCHOOL DAZE",
+    "expected": "Spike Lee's School Daze"
+  },
+  {
+    "raw": "NIGHT STAGE + Q&amp;A",
+    "expected": "NIGHT STAGE"
+  },
+  {
+    "raw": "NORTHERN SOUL: STILL BURNING",
+    "expected": "Still Burning"
+  },
+  {
+    "raw": "NT Live: The Audience",
+    "expected": "The Audience"
+  },
+  {
+    "raw": "NT Live: The Playboy of the Western World",
+    "expected": "The Playboy of the Western World"
+  },
+  {
+    "raw": "NT: The Playboy of the Western World",
+    "expected": "The Playboy of the Western World"
+  },
+  {
+    "raw": "Naked Acts + intro by Rogan Graham, BFI Film Programmer",
+    "expected": "Naked Acts"
+  },
+  {
+    "raw": "National Pride: From Jericho to Gaza",
+    "expected": "National Pride: From Jericho to Gaza"
+  },
+  {
+    "raw": "National Theatre Live: All My Sons",
+    "expected": "All My Sons"
+  },
+  {
+    "raw": "National Theatre Live: Hamlet",
+    "expected": "Hamlet"
+  },
+  {
+    "raw": "National Theatre Live: Les Liaisons Dangereuses",
+    "expected": "Les Liaisons Dangereuses"
+  },
+  {
+    "raw": "National Theatre Live: The Audience",
+    "expected": "The Audience"
+  },
+  {
+    "raw": "National Theatre Live: The Fifth Step",
+    "expected": "The Fifth Step"
+  },
+  {
+    "raw": "National Theatre Live: The Playboy of the Western",
+    "expected": "The Playboy of the Western"
+  },
+  {
+    "raw": "National Theatre Live: The Playboy of the Western World",
+    "expected": "The Playboy of the Western World"
+  },
+  {
+    "raw": "Naturist Screening: NIGHT STAGE",
+    "expected": "NIGHT STAGE"
+  },
+  {
+    "raw": "Near Dark + intro by actor Joshua John Miller",
+    "expected": "Near Dark"
+  },
+  {
+    "raw": "Never Let Go + intro by season curator Ehsan Khoshbakt",
+    "expected": "Never Let Go"
+  },
+  {
+    "raw": "Never Watching Movies: BURNING AN ILLUSION",
+    "expected": "BURNING AN ILLUSION"
+  },
+  {
+    "raw": "New Writings: 100 Bible Films",
+    "expected": "100 Bible Films"
+  },
+  {
+    "raw": "New Writings: Acting and Performance in Hitchcock",
+    "expected": "Acting and Performance in Hitchcock"
+  },
+  {
+    "raw": "New Writings: Hitchcock & Herrmann",
+    "expected": "Hitchcock & Herrmann"
+  },
+  {
+    "raw": "New Writings: In the Scene: Agnes Varda",
+    "expected": "Agnes Varda"
+  },
+  {
+    "raw": "New Writings: Laura Mulvey and Peter Wollen: Towards Counter-Cinema",
+    "expected": "Towards Counter-Cinema"
+  },
+  {
+    "raw": "New Writings: Melodrama as Provocateur",
+    "expected": "Melodrama as Provocateur"
+  },
+  {
+    "raw": "New Writings: Moving Image",
+    "expected": "Moving Image"
+  },
+  {
+    "raw": "New Writings: The Story of British Video Activism",
+    "expected": "The Story of British Video Activism"
+  },
+  {
+    "raw": "Newsreel: Power to the People",
+    "expected": "Power to the People"
+  },
+  {
+    "raw": "Nightmare Alley: Vision in Darkness and Light",
+    "expected": "Nightmare Alley: Vision in Darkness and Light"
+  },
+  {
+    "raw": "Nil By Mouth- Birthday Season",
+    "expected": "Nil By Mouth"
+  },
+  {
+    "raw": "Nish Kumar: Nish, Don’t Kill My Vibe + Q&A",
+    "expected": "Nish Kumar: Nish, Don’t Kill My Vibe"
+  },
+  {
+    "raw": "Normal + Ben Wheatley Q&A",
+    "expected": "Normal"
+  },
+  {
+    "raw": "Normal + Q&A with Ben Wheatley and Bob Odenkirk",
+    "expected": "Normal"
+  },
+  {
+    "raw": "Normal + Q&A with Bob Odenkirk and director Ben Wheatley",
+    "expected": "Normal"
+  },
+  {
+    "raw": "Northern Soul: Still Burning",
+    "expected": "Still Burning"
+  },
+  {
+    "raw": "Nuts in May 50th Anniversary Screening",
+    "expected": "Nuts in May"
+  },
+  {
+    "raw": "OCDF26 Closing Night: SLET 1988 + The Case Against Space",
+    "expected": "SLET 1988"
+  },
+  {
+    "raw": "OCDF26 In Focus: Onyeka Igwe 2",
+    "expected": "Onyeka Igwe 2"
+  },
+  {
+    "raw": "OCDF26 In Focus: Onyeka Igwe 3",
+    "expected": "Onyeka Igwe 3"
+  },
+  {
+    "raw": "OCDF26 Ken and Flo Jacobs: Seeing Through Film 2",
+    "expected": "Seeing Through Film 2"
+  },
+  {
+    "raw": "OCDF26 The Ian White Lecture: Jordan Lord",
+    "expected": "The Ian White Lecture: Jordan Lord"
+  },
+  {
+    "raw": "OCDF26 To the Left of the Fir-Tree + The Seasons",
+    "expected": "To the Left of the Fir-Tree"
+  },
+  {
+    "raw": "OCDF26 Two Refusals + An Impossible Address",
+    "expected": "Two Refusals"
+  },
+  {
+    "raw": "Off-Circuit: Bouchra",
+    "expected": "Bouchra"
+  },
+  {
+    "raw": "Off-Circuit: Do You Love Me",
+    "expected": "Do You Love Me"
+  },
+  {
+    "raw": "Off-Circuit: Dracula",
+    "expected": "Dracula"
+  },
+  {
+    "raw": "Off-Circuit: Gangsterism",
+    "expected": "Gangsterism"
+  },
+  {
+    "raw": "Off-Circuit: MACDO",
+    "expected": "MACDO"
+  },
+  {
+    "raw": "Off-Circuit: Phantoms of July",
+    "expected": "Phantoms of July"
+  },
+  {
+    "raw": "Off-Circuit: UK PREMIERE Tycoon",
+    "expected": "Tycoon"
+  },
+  {
+    "raw": "OffBeat Folk Film Festival: Epic Journeys",
+    "expected": "Epic Journeys"
+  },
+  {
+    "raw": "OffBeat Folk Film Festival: Outside Interests",
+    "expected": "Outside Interests"
+  },
+  {
+    "raw": "Olivia + Q&A",
+    "expected": "Olivia"
+  },
+  {
+    "raw": "Olivia + Q&A with Sofía Petersen",
+    "expected": "Olivia"
+  },
+  {
+    "raw": "One Last Deal + Danny Dyer Q&A",
+    "expected": "One Last Deal"
+  },
+  {
+    "raw": "Open City Documentary Festival: Analogue in Depth Screening",
+    "expected": "Analogue in Depth"
+  },
+  {
+    "raw": "Open City Documentary Festival: Clay + Lunar Visions Part II",
+    "expected": "Clay"
+  },
+  {
+    "raw": "Open City Documentary Festival: Combined Programme: Love is the Drug",
+    "expected": "Love is the Drug"
+  },
+  {
+    "raw": "Open City Documentary Festival: National Pride: From Jericho to Gaza",
+    "expected": "National Pride: From Jericho to Gaza"
+  },
+  {
+    "raw": "Open City Documentary Festival: Seeing Through Film 3",
+    "expected": "Seeing Through Film 3"
+  },
+  {
+    "raw": "Open City Documentary Festival: Seeing Through Film 4",
+    "expected": "Seeing Through Film 4"
+  },
+  {
+    "raw": "Open City Documentary Festival: The Glass Booth + Return of the Bright Night + Morgenkreis",
+    "expected": "The Glass Booth"
+  },
+  {
+    "raw": "Opening Night + intro by Katie McCabe, Reviews Editor at Sight and Sound",
+    "expected": "Opening Night"
+  },
+  {
+    "raw": "Orwell 2+2=5 (15) + Screentalk with Director Raoul Peck",
+    "expected": "Orwell 2+2=5"
+  },
+  {
+    "raw": "Orwell: 2+2=5",
+    "expected": "Orwell: 2+2=5"
+  },
+  {
+    "raw": "Oscars Night Party: Sinners",
+    "expected": "Sinners"
+  },
+  {
+    "raw": "Oska Bright Film Festival: Best of the Fest",
+    "expected": "Best of the Fest"
+  },
+  {
+    "raw": "Oska Bright: Best of the Fest",
+    "expected": "Best of the Fest"
+  },
+  {
+    "raw": "Oska Bright: Wild Women",
+    "expected": "Oska Bright: Wild Women"
+  },
+  {
+    "raw": "Our Land + Q&A",
+    "expected": "Our Land"
+  },
+  {
+    "raw": "Our Planet, The People, My Blood + Q&A",
+    "expected": "Our Planet, The People, My Blood"
+  },
+  {
+    "raw": "Out at Clapham: Madfabulous",
+    "expected": "Madfabulous"
+  },
+  {
+    "raw": "Out at Clapham: Madfabulous + director Q&A",
+    "expected": "Madfabulous"
+  },
+  {
+    "raw": "PARENT & BABY ONLY: Soul to Soul",
+    "expected": "Soul to Soul"
+  },
+  {
+    "raw": "PARENT & BABY ONLY: The Devil Wears Prada 2",
+    "expected": "The Devil Wears Prada 2"
+  },
+  {
+    "raw": "PARENT & BABY ONLY: The Drama",
+    "expected": "The Drama"
+  },
+  {
+    "raw": "PARENT & BABY ONLY: The Testament of Ann Lee",
+    "expected": "The Testament of Ann Lee"
+  },
+  {
+    "raw": "PINK PALACE: DRESSED TO KILL",
+    "expected": "Dressed to Kill"
+  },
+  {
+    "raw": "PINK PALACE: THE FILMS OF THE GAY GIRLS RIDING CLUB",
+    "expected": "The Films of the Gay Girls Riding Club"
+  },
+  {
+    "raw": "PREVIEW Resurrection + online Q&A",
+    "expected": "Resurrection"
+  },
+  {
+    "raw": "Palestine Comedy Club + Q&A",
+    "expected": "Palestine Comedy Club"
+  },
+  {
+    "raw": "Parent & Baby ONLY: Wuthering Heights",
+    "expected": "Wuthering Heights"
+  },
+  {
+    "raw": "Parent & Baby Screening: \"Wuthering Heights\"",
+    "expected": "Wuthering Heights"
+  },
+  {
+    "raw": "Parent & Baby Screening: Akira",
+    "expected": "Akira"
+  },
+  {
+    "raw": "Parent & Baby Screening: Father Mother Sister Brother",
+    "expected": "Father Mother Sister Brother"
+  },
+  {
+    "raw": "Parent & Baby Screening: Kokuho",
+    "expected": "Kokuho"
+  },
+  {
+    "raw": "Parent & Baby Screening: Project Hail Mary",
+    "expected": "Project Hail Mary"
+  },
+  {
+    "raw": "Parent & Baby Screening: Resurrection",
+    "expected": "Resurrection"
+  },
+  {
+    "raw": "Parent & Baby Screening: Romeria",
+    "expected": "Romeria"
+  },
+  {
+    "raw": "Parent & Baby Screening: Rose of Nevada",
+    "expected": "Rose of Nevada"
+  },
+  {
+    "raw": "Parent & Baby Screening: Sirat",
+    "expected": "Sirat"
+  },
+  {
+    "raw": "Parent & Baby Screening: Sound of Falling",
+    "expected": "Sound of Falling"
+  },
+  {
+    "raw": "Parent & Baby Screening: The Christophers",
+    "expected": "The Christophers"
+  },
+  {
+    "raw": "Parent & Baby Screening: The Devil Wears Prada",
+    "expected": "The Devil Wears Prada"
+  },
+  {
+    "raw": "Parent & Baby Screening: The Love That Remains",
+    "expected": "The Love That Remains"
+  },
+  {
+    "raw": "Parent & Baby Screening: The Old Ways: A Century in Sound",
+    "expected": "A Century in Sound"
+  },
+  {
+    "raw": "Parent & Baby Screening: The Secret Agent",
+    "expected": "The Secret Agent"
+  },
+  {
+    "raw": "Parent & Baby Screening: The Testament of Ann Lee",
+    "expected": "The Testament of Ann Lee"
+  },
+  {
+    "raw": "Parent & Baby Screening: Underland",
+    "expected": "Underland"
+  },
+  {
+    "raw": "Parent and Baby: Michael",
+    "expected": "Parent and Baby: Michael"
+  },
+  {
+    "raw": "Parent and Baby: Rose of Nevada",
+    "expected": "Rose of Nevada"
+  },
+  {
+    "raw": "Parent and Baby: The Mandalorian and Grogu",
+    "expected": "The Mandalorian and Grogu"
+  },
+  {
+    "raw": "Parents and Baby screening: The Devil Wears Prada 2",
+    "expected": "The Devil Wears Prada 2"
+  },
+  {
+    "raw": "Paris, Texas Presented by the Cult Classic Collective- Birthday Season",
+    "expected": "Paris, Texas"
+  },
+  {
+    "raw": "Pather Panchali- Birthday Season",
+    "expected": "Pather Panchali"
+  },
+  {
+    "raw": "Paul McCartney: Man On The Run",
+    "expected": "Paul McCartney: Man On The Run"
+  },
+  {
+    "raw": "Paul McCartney: Man on the Run",
+    "expected": "Paul McCartney: Man on the Run"
+  },
+  {
+    "raw": "Pavle Vujisic 100: It is Better to Know How",
+    "expected": "It is Better to Know How"
+  },
+  {
+    "raw": "Peaky Blinders: The Immortal Man",
+    "expected": "Peaky Blinders: The Immortal Man"
+  },
+  {
+    "raw": "Petite Maman- Birthday Season",
+    "expected": "Petite Maman"
+  },
+  {
+    "raw": "Phoenix Classics + YSP Pizza Night: Wayne's World",
+    "expected": "Wayne's World"
+  },
+  {
+    "raw": "Picnic at Hanging Rock (Director’s Cut) + extended intro by season curator Elena Lazic",
+    "expected": "Picnic at Hanging Rock (Director’s Cut)"
+  },
+  {
+    "raw": "Pink Palace: Adam + intro",
+    "expected": "Adam"
+  },
+  {
+    "raw": "Pink Palace: BATTLESHIP POTEMKIN x PET SHOP BOYS",
+    "expected": "BATTLESHIP POTEMKIN"
+  },
+  {
+    "raw": "Pink Palace: Beneath the Valley of the Ultra Vixens",
+    "expected": "Beneath the Valley of the Ultra Vixens"
+  },
+  {
+    "raw": "Pink Palace: Cat People",
+    "expected": "Cat People"
+  },
+  {
+    "raw": "Pink Palace: Decoder",
+    "expected": "Decoder"
+  },
+  {
+    "raw": "Pink Palace: Dildo Heaven + Intro Talk",
+    "expected": "Dildo Heaven"
+  },
+  {
+    "raw": "Pink Palace: FLESHPOT ON 42ND STREET + Short",
+    "expected": "Fleshpot on 42nd Street"
+  },
+  {
+    "raw": "Pink Palace: It Came From Kuchar",
+    "expected": "It Came From Kuchar"
+  },
+  {
+    "raw": "Pink Palace: One Queer Day In Hackney",
+    "expected": "One Queer Day In Hackney"
+  },
+  {
+    "raw": "Pink Palace: Please Baby Please + Short",
+    "expected": "Please Baby Please"
+  },
+  {
+    "raw": "Pink Palace: Thundercrack!",
+    "expected": "Thundercrack"
+  },
+  {
+    "raw": "Pink Palace: Wakefield Poole’s Bijou + Intro",
+    "expected": "Wakefield Poole's Bijou"
+  },
+  {
+    "raw": "Pip and Posy: Sandpit Friends",
+    "expected": "Pip and Posy"
+  },
+  {
+    "raw": "Pip and Posy: The Cinema Show",
+    "expected": "Pip and Posy"
+  },
+  {
+    "raw": "Pitchblack Playback: Arthur Russell 'World Of Echo'",
+    "expected": "Arthur Russell 'World Of Echo'"
+  },
+  {
+    "raw": "Pitchblack Playback: Jeff Buckley 'Grace'",
+    "expected": "Jeff Buckley 'Grace'"
+  },
+  {
+    "raw": "Pitchblack Playback: Radiohead 'Amnesiac'",
+    "expected": "Radiohead 'Amnesiac'"
+  },
+  {
+    "raw": "Point Break + intro and discussion",
+    "expected": "Point Break"
+  },
+  {
+    "raw": "Pompeii: Below the Clouds",
+    "expected": "Pompeii: Below the Clouds"
+  },
+  {
+    "raw": "Power Station + director Q&A",
+    "expected": "Power Station"
+  },
+  {
+    "raw": "Power To The People: John & Yoko Live In NYC",
+    "expected": "John & Yoko Live In NYC"
+  },
+  {
+    "raw": "Power To The People: John & Yoko Live in NYC",
+    "expected": "John & Yoko Live in NYC"
+  },
+  {
+    "raw": "Power to the People: John and Yoko live in NYC",
+    "expected": "John and Yoko live in NYC"
+  },
+  {
+    "raw": "Preschool Pictures: Amazing Animations",
+    "expected": "Amazing Animations"
+  },
+  {
+    "raw": "Preview screening: The North",
+    "expected": "The North"
+  },
+  {
+    "raw": "Psychedelia (1969) + More (1969) + Introduction by Jenny Fabian and Sophia Satchell-Baeza",
+    "expected": "Psychedelia"
+  },
+  {
+    "raw": "Q: THE WINGED SERPENT",
+    "expected": "Q: THE WINGED SERPENT"
+  },
+  {
+    "raw": "QUEER EAST: FLOWER GIRL",
+    "expected": "FLOWER GIRL"
+  },
+  {
+    "raw": "QUEER EAST: WATER EMOJI X5 SHORTS PROGRAMME",
+    "expected": "WATER EMOJI"
+  },
+  {
+    "raw": "Queer East presents Edhi Alice: Reverse",
+    "expected": "Edhi Alice: Reverse"
+  },
+  {
+    "raw": "Queer East presents Miracle on Jongno Street",
+    "expected": "Miracle on Jongno Street"
+  },
+  {
+    "raw": "Queer East: 3670",
+    "expected": "3670"
+  },
+  {
+    "raw": "Queer East: A Useful Ghost",
+    "expected": "A Useful Ghost"
+  },
+  {
+    "raw": "Queer East: Girlfriends (15*) + Screen Talk",
+    "expected": "Girlfriends"
+  },
+  {
+    "raw": "Queer East: Mari Terashima: Exquisite Tastes",
+    "expected": "Mari Terashima: Exquisite Tastes"
+  },
+  {
+    "raw": "Queer East: Queer as Punk",
+    "expected": "Queer as Punk"
+  },
+  {
+    "raw": "Queer East: The Outsiders",
+    "expected": "The Outsiders"
+  },
+  {
+    "raw": "Queercore: Our Heroes Bleed Glitter",
+    "expected": "Queercore: Our Heroes Bleed Glitter"
+  },
+  {
+    "raw": "RBO Cinema Season 2025-26: Giselle",
+    "expected": "Giselle"
+  },
+  {
+    "raw": "RBO Cinema Season 2025-26: Siegfried",
+    "expected": "Siegfried"
+  },
+  {
+    "raw": "RBO Cinema Season 2025-26: The Magic Flute",
+    "expected": "The Magic Flute"
+  },
+  {
+    "raw": "RBO Encore: Giselle",
+    "expected": "Giselle"
+  },
+  {
+    "raw": "RBO Encore: Siegfried",
+    "expected": "Siegfried"
+  },
+  {
+    "raw": "RBO Encore: The Magic Flute",
+    "expected": "The Magic Flute"
+  },
+  {
+    "raw": "RBO Encore: Woolf Works",
+    "expected": "Woolf Works"
+  },
+  {
+    "raw": "RBO Live: Giselle",
+    "expected": "Giselle"
+  },
+  {
+    "raw": "RBO Live: Siegfried",
+    "expected": "Siegfried"
+  },
+  {
+    "raw": "RBO Live: The Magic Flute",
+    "expected": "The Magic Flute"
+  },
+  {
+    "raw": "RBO Live: Woolf Works",
+    "expected": "Woolf Works"
+  },
+  {
+    "raw": "RBO: \nEugene Onegin",
+    "expected": "Eugene Onegin"
+  },
+  {
+    "raw": "RBO: Giselle",
+    "expected": "Giselle"
+  },
+  {
+    "raw": "RBO: Siegfried",
+    "expected": "Siegfried"
+  },
+  {
+    "raw": "RBO: The Magic Flute",
+    "expected": "The Magic Flute"
+  },
+  {
+    "raw": "REFLECTION IN A DEAD DIAMOND + INTRO",
+    "expected": "Reflection in a Dead Diamond"
+  },
+  {
+    "raw": "RIO FOREVER / NEVER EVER WITH CATEGORY H: An Evening of Public Access",
+    "expected": "An Evening of Public Access"
+  },
+  {
+    "raw": "RIO FOREVER X QUEER EAST: FANTASY OF DEER WARRIOR",
+    "expected": "FANTASY OF DEER WARRIOR"
+  },
+  {
+    "raw": "RIO FOREVER x ASIF KAPADIA: THE GODFATHER: PART II",
+    "expected": "The Godfather: Part II"
+  },
+  {
+    "raw": "RIO FOREVER: APPROPRIATE BEHAVIOUR",
+    "expected": "APPROPRIATE BEHAVIOUR"
+  },
+  {
+    "raw": "RIO FOREVER: DAILIES X ICO: UNCOMMON VOICES with TOMISIN ADEPEJU",
+    "expected": "DAILIES X ICO: UNCOMMON VOICES"
+  },
+  {
+    "raw": "RIO FOREVER: LWL PRESENT A CELLULOID SURPRISE #1",
+    "expected": "A CELLULOID SURPRISE #1"
+  },
+  {
+    "raw": "RIO FOREVER: ORLANDO ON 35MM WITH SALLY POTTER AND SO MAYER",
+    "expected": "ORLANDO"
+  },
+  {
+    "raw": "RIO FOREVER: PUNCH DRUNK LOVE",
+    "expected": "Punch-Drunk Love"
+  },
+  {
+    "raw": "RIO FOREVER: PURPLE RAIN",
+    "expected": "Purple Rain"
+  },
+  {
+    "raw": "RIO FOREVER: VARDA FILM CLUB X LA CINEMAÍZ PRESENT: MURS MURS",
+    "expected": "Murs Murs"
+  },
+  {
+    "raw": "RON ORMOND DOUBLE BILL: THE BURNING HELL & IF FOOTMEN TIRE YOU, WHAT WILL HORSES DO?",
+    "expected": "The Burning Hell"
+  },
+  {
+    "raw": "RZA presents THE MYSTERY OF CHESS BOXING",
+    "expected": "THE MYSTERY OF CHESS BOXING"
+  },
+  {
+    "raw": "Raging Bull + intro by season curator Dr Clive Chijioke Nwonka",
+    "expected": "Raging Bull"
+  },
+  {
+    "raw": "Ratzo Presents...",
+    "expected": "Ratzo"
+  },
+  {
+    "raw": "Re:Mind Film Festival presents Guo Ran",
+    "expected": "Guo Ran"
+  },
+  {
+    "raw": "Re:Mind Film Festival presents Stoma",
+    "expected": "Stoma"
+  },
+  {
+    "raw": "Ready Or Not 2: Here I Come",
+    "expected": "Ready Or Not 2: Here I Come"
+  },
+  {
+    "raw": "Ready or Not 2: Here I Come",
+    "expected": "Ready or Not 2: Here I Come"
+  },
+  {
+    "raw": "Rebels: Rafiki",
+    "expected": "Rebels: Rafiki"
+  },
+  {
+    "raw": "Rebuilding + Director Q&A",
+    "expected": "Rebuilding"
+  },
+  {
+    "raw": "Reece Shearsmith Presents: The Bounty",
+    "expected": "The Bounty"
+  },
+  {
+    "raw": "Reece Shearsmith Presents: The Bounty + intro by Reece Shearsmith",
+    "expected": "The Bounty"
+  },
+  {
+    "raw": "Reflecting on Stuart Hall’s Impact in association with the Stuart Hall Foundation + discussion",
+    "expected": "Stuart Hall"
+  },
+  {
+    "raw": "Relaxed screening: Point Break + intro and discussion",
+    "expected": "Point Break"
+  },
+  {
+    "raw": "Resurrection (15) + Screentalk with Bi Gan",
+    "expected": "Resurrection"
+  },
+  {
+    "raw": "Resurrection + Pre-recorded Director's Intro",
+    "expected": "Resurrection"
+  },
+  {
+    "raw": "Resurrection + Q&A",
+    "expected": "Resurrection"
+  },
+  {
+    "raw": "Resurrection + live broadcast Q&A with Bi Gan",
+    "expected": "Resurrection"
+  },
+  {
+    "raw": "Rio Forever / Never Ever: Ladies Night",
+    "expected": "Rio Forever / Never Ever"
+  },
+  {
+    "raw": "Rio Forever: Pink Palace 4th Birthday: The Birdcage + in conversation + DJ Party",
+    "expected": "The Birdcage"
+  },
+  {
+    "raw": "Rita Azevedo Gomes: A Woman's Revenge",
+    "expected": "A Woman's Revenge"
+  },
+  {
+    "raw": "Rita Azevedo Gomes: After the Rehearsal",
+    "expected": "After the Rehearsal"
+  },
+  {
+    "raw": "Rita Azevedo Gomes: Correspondências",
+    "expected": "Correspondências"
+  },
+  {
+    "raw": "Rita Azevedo Gomes: Danses macabres, squelettes et autres fantaisies",
+    "expected": "Danses macabres, squelettes et autres fantaisies"
+  },
+  {
+    "raw": "Rita Azevedo Gomes: Fragile as the World",
+    "expected": "Fragile as the World"
+  },
+  {
+    "raw": "Rita Azevedo Gomes: Il Bacio di Tosca",
+    "expected": "Il Bacio di Tosca"
+  },
+  {
+    "raw": "Rita Azevedo Gomes: O Som da Terra a Tremer",
+    "expected": "O Som da Terra a Tremer"
+  },
+  {
+    "raw": "Rita Azevedo Gomes: The Portuguese Woman",
+    "expected": "The Portuguese Woman"
+  },
+  {
+    "raw": "Ritzy Presents... The Balcony",
+    "expected": "The Balcony"
+  },
+  {
+    "raw": "Robot Dreams + Workshop",
+    "expected": "Robot Dreams"
+  },
+  {
+    "raw": "Rocker 'Brella Fella + Tim Vine Q&A",
+    "expected": "Rocker 'Brella Fella"
+  },
+  {
+    "raw": "Rocky + intro by season curator Dr Clive Chijioke Nwonka",
+    "expected": "Rocky"
+  },
+  {
+    "raw": "Romeo + Juliet",
+    "expected": "Romeo + Juliet"
+  },
+  {
+    "raw": "Rose Of Nevada + director Q&A",
+    "expected": "Rose Of Nevada"
+  },
+  {
+    "raw": "Rose of Nevada (15) + Screentalk with Mark Jenkin",
+    "expected": "Rose of Nevada"
+  },
+  {
+    "raw": "Rose of Nevada + Mark Jenkin Q&A",
+    "expected": "Rose of Nevada"
+  },
+  {
+    "raw": "Rose of Nevada + Q&A with writer-director Mark Jenkin + cast",
+    "expected": "Rose of Nevada"
+  },
+  {
+    "raw": "Rose of Nevada + intro by writer-director Mark Jenkin, and actors Edward Rowe and Mary Woodvine",
+    "expected": "Rose of Nevada"
+  },
+  {
+    "raw": "Rough Treatment + intro by film critic and scholar Michal Oleszczyk",
+    "expected": "Rough Treatment"
+  },
+  {
+    "raw": "RuPaul's Drag Race: UK vs. the World Series 3.",
+    "expected": "RuPaul's Drag Race: UK vs. the World Series 3"
+  },
+  {
+    "raw": "SCS: Chico & Rita + Short",
+    "expected": "Chico & Rita"
+  },
+  {
+    "raw": "SCS: It Was Just an Accident",
+    "expected": "It Was Just an Accident"
+  },
+  {
+    "raw": "SCS: Sentimental Value",
+    "expected": "Sentimental Value"
+  },
+  {
+    "raw": "SCS: Souleymane's Story",
+    "expected": "Souleymane's Story"
+  },
+  {
+    "raw": "SHRIME TIME: A NIGHT OF BIZARRO UNDERSEEN ANIME",
+    "expected": "A NIGHT OF BIZARRO UNDERSEEN ANIME"
+  },
+  {
+    "raw": "SURVIVING EARTH + Q&amp;A",
+    "expected": "Surviving Earth"
+  },
+  {
+    "raw": "Salvation! + Goodbye 42nd Street + pre-recorded intro by Beth B",
+    "expected": "Salvation!"
+  },
+  {
+    "raw": "Samidoun: The Steadfast Women of Palestine",
+    "expected": "Samidoun"
+  },
+  {
+    "raw": "San Francisco (1968) + Zabriskie Point (1970) + Introduction by series curator Sophia Satchell-Baeza",
+    "expected": "San Francisco"
+  },
+  {
+    "raw": "Sao Paulo Incorporated + pre-recorded intro by Marina Person",
+    "expected": "Sao Paulo Incorporated"
+  },
+  {
+    "raw": "Sarah & Duck: Animal Visits",
+    "expected": "Sarah & Duck: Animal Visits"
+  },
+  {
+    "raw": "Sarah & Duck: Play and Explore",
+    "expected": "Sarah & Duck: Play and Explore"
+  },
+  {
+    "raw": "Saturday Morning Picture Club: Chicken Run",
+    "expected": "Chicken Run"
+  },
+  {
+    "raw": "Saturday Morning Picture Club: Fantastic Mr. Fox",
+    "expected": "Fantastic Mr. Fox"
+  },
+  {
+    "raw": "Saturday Morning Picture Club: My Neighbour Totoro",
+    "expected": "My Neighbour Totoro"
+  },
+  {
+    "raw": "Saturday Morning Picture Club: The Princess and The Frog",
+    "expected": "The Princess and The Frog"
+  },
+  {
+    "raw": "Scarface- Birthday Season",
+    "expected": "Scarface"
+  },
+  {
+    "raw": "Schools: Hola Frida",
+    "expected": "Hola Frida"
+  },
+  {
+    "raw": "Schroeter: Day of the Idiots",
+    "expected": "Day of the Idiots"
+  },
+  {
+    "raw": "Schroeter: Der Bomberpilot",
+    "expected": "Der Bomberpilot"
+  },
+  {
+    "raw": "Schroeter: Der Rosenkönig",
+    "expected": "Der Rosenkönig"
+  },
+  {
+    "raw": "Schroeter: Deux",
+    "expected": "Schroeter: Deux"
+  },
+  {
+    "raw": "Schroeter: Eika Katappa",
+    "expected": "Eika Katappa"
+  },
+  {
+    "raw": "Schroeter: Les Flocons d'or",
+    "expected": "Les Flocons d'or"
+  },
+  {
+    "raw": "Schroeter: Malina",
+    "expected": "Malina"
+  },
+  {
+    "raw": "Schroeter: Neurasia/Argila",
+    "expected": "Neurasia"
+  },
+  {
+    "raw": "Schroeter: Palermo oder Wolfsburg",
+    "expected": "Schroeter: Palermo oder Wolfsburg"
+  },
+  {
+    "raw": "Schroeter: Salomé",
+    "expected": "Salomé"
+  },
+  {
+    "raw": "Schroeter: Shorts Programme 1",
+    "expected": "Schroeter"
+  },
+  {
+    "raw": "Schroeter: Shorts Programme 2",
+    "expected": "Schroeter"
+  },
+  {
+    "raw": "Schroeter: The Black Angel",
+    "expected": "Schroeter: The Black Angel"
+  },
+  {
+    "raw": "Schroeter: The Death of Maria Malibran",
+    "expected": "Schroeter: The Death of Maria Malibran"
+  },
+  {
+    "raw": "Schroeter: The Kingdom of Naples",
+    "expected": "Schroeter: The Kingdom of Naples"
+  },
+  {
+    "raw": "Schroeter: The Smiling Star",
+    "expected": "The Smiling Star"
+  },
+  {
+    "raw": "Schroeter: Willow Springs",
+    "expected": "Willow Springs"
+  },
+  {
+    "raw": "Screen Cuba presents: El Benny",
+    "expected": "El Benny"
+  },
+  {
+    "raw": "Screen Cuba presents: Life is Dance",
+    "expected": "Life is Dance"
+  },
+  {
+    "raw": "Screen Cuba: Lucía",
+    "expected": "Lucía"
+  },
+  {
+    "raw": "Screen Cuba: The Last Supper",
+    "expected": "The Last Supper"
+  },
+  {
+    "raw": "Scroobius Pip presents An Evening of Short Films & Short Conversation",
+    "expected": "An Evening of Short Films & Short Conversation"
+  },
+  {
+    "raw": "Searching for Satyrus + Q&A with Director Rena Effendi, hosted by Dr Blanca Huertas",
+    "expected": "Searching for Satyrus"
+  },
+  {
+    "raw": "Season 2 Premiere + Q&amp;A: Drag House Rules",
+    "expected": "Drag House Rules"
+  },
+  {
+    "raw": "Season Introduction Talk + World Premiere: Learning the Ropes + Q&A",
+    "expected": "Learning the Ropes"
+  },
+  {
+    "raw": "Season launch: Drag performance + Ball of Fire",
+    "expected": "Ball of Fire"
+  },
+  {
+    "raw": "Secrets of the Jinn Valley Treasure (15*) + intro",
+    "expected": "Secrets of the Jinn Valley Treasure"
+  },
+  {
+    "raw": "Seniors’ Free Matinee: A Fish in the Bathtub",
+    "expected": "A Fish in the Bathtub"
+  },
+  {
+    "raw": "Seniors’ Free Matinee: The Trouble with Harry + intro by author Steven C. Smith",
+    "expected": "The Trouble with Harry"
+  },
+  {
+    "raw": "Seniors’ Matinee: Cronos",
+    "expected": "Cronos"
+  },
+  {
+    "raw": "Seniors’ Matinee: Rose of Nevada + intro",
+    "expected": "Rose of Nevada"
+  },
+  {
+    "raw": "Seniors’ Paid Matinee: My Father’s Shadow + intro by Ademola Bello",
+    "expected": "My Father’s Shadow"
+  },
+  {
+    "raw": "Seven Samurai- Birthday Season",
+    "expected": "Seven Samurai"
+  },
+  {
+    "raw": "Seventh x Bounce Cinema present: I Am Because We Are",
+    "expected": "I Am Because We Are"
+  },
+  {
+    "raw": "Señora de nadie (Nobody's Wife) + intro",
+    "expected": "Señora de nadie"
+  },
+  {
+    "raw": "Shadows of Beirut (UK Premiere) + Q&A Presented by BUFF Studios",
+    "expected": "Shadows of Beirut"
+  },
+  {
+    "raw": "Shasha Movies: Phantom Beirut + A Few Moments of Happiness",
+    "expected": "Phantom Beirut"
+  },
+  {
+    "raw": "Shasha Movies: Treat Me Like Your Mother + Q&A",
+    "expected": "Treat Me Like Your Mother"
+  },
+  {
+    "raw": "Short Circuit: Village People",
+    "expected": "Village People"
+  },
+  {
+    "raw": "Shrek- Birthday Season",
+    "expected": "Shrek"
+  },
+  {
+    "raw": "Silent Dreams Shorts Programme + intro by filmmaker Gerald Fox",
+    "expected": "Silent Dreams"
+  },
+  {
+    "raw": "Silent Film & Live Music: Blackmail (PG) + Intro",
+    "expected": "Blackmail"
+  },
+  {
+    "raw": "Silent Film & Live Music: My Grandmother",
+    "expected": "My Grandmother"
+  },
+  {
+    "raw": "Sirat + director Q&A",
+    "expected": "Sirat"
+  },
+  {
+    "raw": "Site&Sound 08: Build it Up, Tear it Down",
+    "expected": "Build it Up, Tear it Down"
+  },
+  {
+    "raw": "Slither: 20th Anniversary",
+    "expected": "Slither"
+  },
+  {
+    "raw": "Small Axe: Lovers Rock + intro with Yassmin V. Foster",
+    "expected": "Lovers Rock"
+  },
+  {
+    "raw": "Soundtracking Film Club: My Mother's Wedding with Kristin Scott Thomas",
+    "expected": "My Mother's Wedding"
+  },
+  {
+    "raw": "Soundtracking: Broken English",
+    "expected": "Broken English"
+  },
+  {
+    "raw": "Soundtracking: The Good Boy with Stephen Graham",
+    "expected": "The Good Boy"
+  },
+  {
+    "raw": "South Park: Bigger, Longer & Uncut + Live Recording of PPF Podcast with David Runciman & Guest",
+    "expected": "South Park: Bigger, Longer & Uncut"
+  },
+  {
+    "raw": "Space Jam- Birthday Season",
+    "expected": "Space Jam"
+  },
+  {
+    "raw": "Spare Ribs Club: Wuthering Heights",
+    "expected": "Wuthering Heights"
+  },
+  {
+    "raw": "Speak (1962) and The Committee (1968) + Introduction by series curator Sophia Satchell-Baeza",
+    "expected": "Speak (1962)"
+  },
+  {
+    "raw": "Special Presentation: Farewell to Spring",
+    "expected": "Farewell to Spring"
+  },
+  {
+    "raw": "Spice World -The Movie- Birthday Season",
+    "expected": "Spice World: The Movie"
+  },
+  {
+    "raw": "Spicy cocktail hour + Ash is Purest White",
+    "expected": "Ash is Purest White"
+  },
+  {
+    "raw": "Spider-Man: Across the Spider-Verse",
+    "expected": "Spider-Man: Across the Spider-Verse"
+  },
+  {
+    "raw": "Spider-Man: Into the Spider-Verse",
+    "expected": "Spider-Man: Into the Spider-Verse"
+  },
+  {
+    "raw": "Sporting Love + Marry the Girl + intro by Rosie Rowan Taylor",
+    "expected": "Sporting Love"
+  },
+  {
+    "raw": "Stalker- Birthday Season",
+    "expected": "Stalker"
+  },
+  {
+    "raw": "Star Wars: The Mandalorian and Grogu",
+    "expected": "The Mandalorian and Grogu"
+  },
+  {
+    "raw": "Stig Of The Dump 45th Anniversary Celebration <span style=\"color:red\">– POSTPONED</span>",
+    "expected": "Stig Of The Dump"
+  },
+  {
+    "raw": "Stuff the World is Made of (60 mins) + Steve Dilworth Q&A",
+    "expected": "Stuff the World is Made of"
+  },
+  {
+    "raw": "Sullivan's Travels + Live Organ",
+    "expected": "Sullivan's Travels"
+  },
+  {
+    "raw": "Summer of Soul + Funk Is Its Own Reward book launch",
+    "expected": "Summer of Soul"
+  },
+  {
+    "raw": "Sumud / Life endures: Three Stories from Palestine",
+    "expected": "Sumud / Life endures: Three Stories from Palestine"
+  },
+  {
+    "raw": "Sun Ra: Do The Impossible",
+    "expected": "Sun Ra: Do The Impossible"
+  },
+  {
+    "raw": "Sun Ra: The Magic City: Birmingham according to Sun Ra",
+    "expected": "Sun Ra: The Magic City"
+  },
+  {
+    "raw": "Sunday Bloody Sunday + Q&A",
+    "expected": "Sunday Bloody Sunday"
+  },
+  {
+    "raw": "Sunset Boulevard 75th Anniversary",
+    "expected": "Sunset Boulevard"
+  },
+  {
+    "raw": "Surviving Earth + Thea Gajic Q&A",
+    "expected": "Surviving Earth"
+  },
+  {
+    "raw": "Sweetheart + intro and Q&A with director Margherita Spampinato",
+    "expected": "Sweetheart"
+  },
+  {
+    "raw": "SÜRREAL SİNEMA: VANILLA IS A TURKISH WORD",
+    "expected": "VANILLA IS A TURKISH WORD"
+  },
+  {
+    "raw": "Sürreal Sinema: A Ay",
+    "expected": "A Ay"
+  },
+  {
+    "raw": "TERRA + Q&A",
+    "expected": "Terra"
+  },
+  {
+    "raw": "THAT MOST IMPORTANT THING: LOVE",
+    "expected": "THAT MOST IMPORTANT THING: LOVE"
+  },
+  {
+    "raw": "THE SECRET AGENT + Talk presented by MUBI and PINTS OF KNOWLEDGE",
+    "expected": "The Secret Agent"
+  },
+  {
+    "raw": "THEATRE OF HORRORS: THE SORDID STORY OF PARIS’ GRAND GUIGNOL",
+    "expected": "THE SORDID STORY OF PARIS’ GRAND GUIGNOL"
+  },
+  {
+    "raw": "THUNDERFLIX presents: Kreator",
+    "expected": "Kreator"
+  },
+  {
+    "raw": "TRANSMISSIONS x DREAM EMULATOR: Crimes of the Future",
+    "expected": "Crimes of the Future"
+  },
+  {
+    "raw": "TV PARTY, TONIGHT!: A Pink Palace Collaboration",
+    "expected": "TV PARTY, TONIGHT!"
+  },
+  {
+    "raw": "TV PARTY, TONIGHT!: An Education in Blood and Guts Filmmaking",
+    "expected": "An Education in Blood and Guts Filmmaking"
+  },
+  {
+    "raw": "TV PARTY, TONIGHT!: Photographers on Film",
+    "expected": "Photographers on Film"
+  },
+  {
+    "raw": "TV Party: The Documentary + Best of Glenn O’Brien's TV Party",
+    "expected": "The Documentary"
+  },
+  {
+    "raw": "TV Preview: Big Mood series 2 + Q&A with Camilla Whitehill, Nicola Coughlan and Lydia West",
+    "expected": "Big Mood"
+  },
+  {
+    "raw": "TV Preview: Bridgerton part two (season four) + Q&A with guests tbc",
+    "expected": "Bridgerton"
+  },
+  {
+    "raw": "TV Preview: Tip Toe",
+    "expected": "Tip Toe"
+  },
+  {
+    "raw": "TV Preview: Tip Toe + Q&A with cast and creator Russell T Davies",
+    "expected": "Tip Toe"
+  },
+  {
+    "raw": "Talk: Gothic 1 – Origins and Themes",
+    "expected": "Gothic 1"
+  },
+  {
+    "raw": "Tarot readings, Demi Moore-tinis + Ghost",
+    "expected": "Ghost"
+  },
+  {
+    "raw": "Team Picks: Everything Everywhere All at Once",
+    "expected": "Everything Everywhere All at Once"
+  },
+  {
+    "raw": "Team Picks: Speed Racer",
+    "expected": "Speed Racer"
+  },
+  {
+    "raw": "Team Picks: The Man in the White Suit",
+    "expected": "The Man in the White Suit"
+  },
+  {
+    "raw": "Teatro Dell'Opera di Roma: Lohengrin",
+    "expected": "Lohengrin"
+  },
+  {
+    "raw": "Terry's GI Dad + Q&A",
+    "expected": "Terry's GI Dad"
+  },
+  {
+    "raw": "Tetsuo : The Iron Man",
+    "expected": "Tetsuo: The Iron Man"
+  },
+  {
+    "raw": "Tetsuo: The Iron Man",
+    "expected": "Tetsuo: The Iron Man"
+  },
+  {
+    "raw": "The Ashes + intro by writer Michael Brooke",
+    "expected": "The Ashes"
+  },
+  {
+    "raw": "The Babadook + Intro with Kim Taylor-Foster",
+    "expected": "The Babadook"
+  },
+  {
+    "raw": "The Birds + intro by Professor Lucy Bolton",
+    "expected": "The Birds"
+  },
+  {
+    "raw": "The Christophers + Live Broadcast Q&A",
+    "expected": "The Christophers"
+  },
+  {
+    "raw": "The Conductor + intro by film critic and scholar Michal Oleszczyk",
+    "expected": "The Conductor"
+  },
+  {
+    "raw": "The Conspiracists (2025) + Q&A",
+    "expected": "The Conspiracists"
+  },
+  {
+    "raw": "The Conspiracists + Q&amp;A",
+    "expected": "The Conspiracists"
+  },
+  {
+    "raw": "The Devil Wears Prada 2 + Prosecco & Popcorn",
+    "expected": "The Devil Wears Prada 2"
+  },
+  {
+    "raw": "The Erotics of Space: Horoyuki Oki + conversation",
+    "expected": "The Erotics of Space"
+  },
+  {
+    "raw": "The Fastest Bicycle + Q&A",
+    "expected": "The Fastest Bicycle"
+  },
+  {
+    "raw": "The Gleaners & I- Birthday Season",
+    "expected": "The Gleaners & I"
+  },
+  {
+    "raw": "The Gold Rush + intro",
+    "expected": "The Gold Rush"
+  },
+  {
+    "raw": "The Good Boy + Q&A",
+    "expected": "The Good Boy"
+  },
+  {
+    "raw": "The Happiest Day in the Life of Olli Maki + intro by season curator Dr Clive Chijioke Nwonka",
+    "expected": "The Happiest Day in the Life of Olli Maki"
+  },
+  {
+    "raw": "The Happiest Days of Your Life + intro by script supervisor Angela Allen",
+    "expected": "The Happiest Days of Your Life"
+  },
+  {
+    "raw": "The Happy Family + intro",
+    "expected": "The Happy Family"
+  },
+  {
+    "raw": "The Hero + intro by Sam Wigley, BFI Digital Features Editor at Sight and Sound",
+    "expected": "The Hero"
+  },
+  {
+    "raw": "The Holy Mountain- Birthday Season",
+    "expected": "The Holy Mountain"
+  },
+  {
+    "raw": "The Killer (1989)- John Woo Season",
+    "expected": "The Killer"
+  },
+  {
+    "raw": "The Last One for the Road + intro and Q&A with director Francesco Sossai",
+    "expected": "The Last One for the Road"
+  },
+  {
+    "raw": "The Liberated Film Club: Sophie Sleigh-Johnson",
+    "expected": "Sophie Sleigh-Johnson"
+  },
+  {
+    "raw": "The London International Animation Festival presents Wonderful Animated Shorts for 3 -12 year-olds",
+    "expected": "Wonderful Animated Shorts"
+  },
+  {
+    "raw": "The Lost Explorer Mezcal Presents EOS: Frida Kahlo",
+    "expected": "Frida Kahlo"
+  },
+  {
+    "raw": "The MET Opera 2025-26 : El Último Sueño de Frida y Diego",
+    "expected": "El Último Sueño de Frida y Diego"
+  },
+  {
+    "raw": "The Machine That Kills Bad People: Peggy and Fred in Hell + Innocence",
+    "expected": "The Machine That Kills Bad People"
+  },
+  {
+    "raw": "The Miles Davis Story + Q&A with Director Mike Dibb",
+    "expected": "The Miles Davis Story"
+  },
+  {
+    "raw": "The Moment + Live Extended Intro with Aidan Zamiri & Charli XCX",
+    "expected": "The Moment"
+  },
+  {
+    "raw": "The Naked Gun: From The Files of Police Squad!",
+    "expected": "The Naked Gun: From The Files of Police Squad!"
+  },
+  {
+    "raw": "The Night It Rained + shorts (PG*) + intro",
+    "expected": "The Night It Rained"
+  },
+  {
+    "raw": "The North + Q&A",
+    "expected": "The North"
+  },
+  {
+    "raw": "The Old Ways: Doc n Roll",
+    "expected": "The Old Ways: Doc n Roll"
+  },
+  {
+    "raw": "The Old Ways: Historjá",
+    "expected": "The Old Ways"
+  },
+  {
+    "raw": "The Old Ways: In the Making",
+    "expected": "The Old Ways"
+  },
+  {
+    "raw": "The Old Ways: Senior Community Screening",
+    "expected": "The Old Ways"
+  },
+  {
+    "raw": "The Old Ways: Shades of Indigo (U*) + Introduction",
+    "expected": "The Old Ways"
+  },
+  {
+    "raw": "The Old Ways: The Colour of Ink (U*) + Intro",
+    "expected": "The Old Ways: The Colour of Ink"
+  },
+  {
+    "raw": "The Old Ways: Yarn Stories",
+    "expected": "The Old Ways"
+  },
+  {
+    "raw": "The Old Ways: Yarn Stories (PG*) + Repair Café",
+    "expected": "The Old Ways: Yarn Stories"
+  },
+  {
+    "raw": "The Outsiders (40th Anniversary) + Intro",
+    "expected": "The Outsiders"
+  },
+  {
+    "raw": "The Perfect Storm + intro by filmmaker Mark Jenkin",
+    "expected": "The Perfect Storm"
+  },
+  {
+    "raw": "The Ponds + Swim Peeps Social",
+    "expected": "The Ponds"
+  },
+  {
+    "raw": "The Power Station with Director’s Q&A + Free Solar & Retrofit Advice",
+    "expected": "The Power Station"
+  },
+  {
+    "raw": "The Promised Land + Q&A with actor Daniel Olbrychski",
+    "expected": "The Promised Land"
+  },
+  {
+    "raw": "The Ritzy's 115th Anniversary Audience Vote Winner: All About Eve",
+    "expected": "All About Eve"
+  },
+  {
+    "raw": "The Ritzy's 115th Anniversary: Babylon & The Lonedale Operator",
+    "expected": "Babylon & The Lonedale Operator"
+  },
+  {
+    "raw": "The Running Man + Edgar Wright Q&A",
+    "expected": "The Running Man"
+  },
+  {
+    "raw": "The Running Man + Q&A with director Edgar Wright",
+    "expected": "The Running Man"
+  },
+  {
+    "raw": "The Seventh Seal- Birthday Season",
+    "expected": "The Seventh Seal"
+  },
+  {
+    "raw": "The Skin I Live In- Birthday Seaon",
+    "expected": "The Skin I Live In"
+  },
+  {
+    "raw": "The Solidarity Trilogy: Man of Iron",
+    "expected": "Man of Iron"
+  },
+  {
+    "raw": "The Solidarity Trilogy: Man of Marble",
+    "expected": "Man of Marble"
+  },
+  {
+    "raw": "The Solidarity Trilogy: Walesa: Man of Hope",
+    "expected": "Walesa: Man of Hope"
+  },
+  {
+    "raw": "The SpongeBob Movie: Search for Squarepants",
+    "expected": "The SpongeBob Movie: Search for SquarePants"
+  },
+  {
+    "raw": "The Swimming Diaries + Q&A with Susan Thomson & Wendy Pye",
+    "expected": "The Swimming Diaries"
+  },
+  {
+    "raw": "The Third Man + Live Recording of Past Present Future Podcast with David Runciman, Misha Glenny",
+    "expected": "The Third Man"
+  },
+  {
+    "raw": "The Transparent “I”: Authority and Authorship in Anthropological Filmmaking",
+    "expected": "The Transparent “I”: Authority and Authorship in Anthropological Filmmaking"
+  },
+  {
+    "raw": "The Voice of Hind Rajab + Q&A with director Kaouther Ben Hania",
+    "expected": "The Voice of Hind Rajab"
+  },
+  {
+    "raw": "The Voice of Hind Rajab + Q&A with director Kaouther Ben Hania and producer Nadim Cheikrouha",
+    "expected": "The Voice of Hind Rajab"
+  },
+  {
+    "raw": "The War Trilogy: Ashes and Diamonds",
+    "expected": "Ashes and Diamonds"
+  },
+  {
+    "raw": "The Wicker Man: The Final Cut",
+    "expected": "The Wicker Man: The Final Cut"
+  },
+  {
+    "raw": "Theatre on Screen: Othello",
+    "expected": "Othello"
+  },
+  {
+    "raw": "Throwback: 300",
+    "expected": "300"
+  },
+  {
+    "raw": "Throwback: A Knight's Tale",
+    "expected": "A Knight's Tale"
+  },
+  {
+    "raw": "Throwback: Amélie",
+    "expected": "Amélie"
+  },
+  {
+    "raw": "Throwback: Cape Fear",
+    "expected": "Cape Fear"
+  },
+  {
+    "raw": "Throwback: Do The Right Thing",
+    "expected": "Do The Right Thing"
+  },
+  {
+    "raw": "Throwback: Legally Blonde",
+    "expected": "Legally Blonde"
+  },
+  {
+    "raw": "Throwback: Master and Commander",
+    "expected": "Master and Commander"
+  },
+  {
+    "raw": "Throwback: Moulin Rouge",
+    "expected": "Moulin Rouge"
+  },
+  {
+    "raw": "Throwback: Moulin Rouge!",
+    "expected": "Moulin Rouge!"
+  },
+  {
+    "raw": "Throwback: Romeo + Juliet",
+    "expected": "Romeo + Juliet"
+  },
+  {
+    "raw": "Throwback: Singin' in the Rain",
+    "expected": "Singin' in the Rain"
+  },
+  {
+    "raw": "Throwback: The Fifth Element",
+    "expected": "The Fifth Element"
+  },
+  {
+    "raw": "Throwback: The Wolf of Wall Street",
+    "expected": "The Wolf of Wall Street"
+  },
+  {
+    "raw": "Throwback: Top Gun",
+    "expected": "Top Gun"
+  },
+  {
+    "raw": "Ties that Bind + Intro",
+    "expected": "Ties that Bind"
+  },
+  {
+    "raw": "Timecode Live + intro",
+    "expected": "Timecode Live"
+  },
+  {
+    "raw": "To Kill a Mockingbird + Panel Conversation on Justice Storytelling",
+    "expected": "To Kill a Mockingbird"
+  },
+  {
+    "raw": "Toddler Club: A Bug's Life",
+    "expected": "A Bug's Life"
+  },
+  {
+    "raw": "Toddler Club: An American Tail",
+    "expected": "An American Tail"
+  },
+  {
+    "raw": "Toddler Club: Bluey at the Cinema: Playdates with Friends",
+    "expected": "Bluey"
+  },
+  {
+    "raw": "Toddler Club: Dr Seuss' The Lorax",
+    "expected": "Dr Seuss' The Lorax"
+  },
+  {
+    "raw": "Toddler Club: GOAT",
+    "expected": "GOAT"
+  },
+  {
+    "raw": "Toddler Club: How to Train Your Dragon",
+    "expected": "How to Train Your Dragon"
+  },
+  {
+    "raw": "Toddler Club: Lilo & Stitch",
+    "expected": "Lilo & Stitch"
+  },
+  {
+    "raw": "Toddler Club: Pip and Posy and Friends",
+    "expected": "Pip and Posy and Friends"
+  },
+  {
+    "raw": "Toddler Club: Shrek",
+    "expected": "Shrek"
+  },
+  {
+    "raw": "Toddler Club: Space Jam",
+    "expected": "Space Jam"
+  },
+  {
+    "raw": "Toddler Club: Stick Man + Superworm",
+    "expected": "Stick Man"
+  },
+  {
+    "raw": "Toddler Club: Storks",
+    "expected": "Storks"
+  },
+  {
+    "raw": "Toddler Club: The Highway Rat + Zog & the Flying Doctors",
+    "expected": "The Highway Rat\nZog & the Flying Doctors"
+  },
+  {
+    "raw": "Toddler Club: The Land Before Time",
+    "expected": "The Land Before Time"
+  },
+  {
+    "raw": "Toddler Club: The Rugrats Movie",
+    "expected": "The Rugrats Movie"
+  },
+  {
+    "raw": "Toddler Club: The Scarecrows' Wedding + Tabby McTat",
+    "expected": "The Scarecrows' Wedding"
+  },
+  {
+    "raw": "Toddler Club: The Scarecrows' Wedding + The Smeds and the Smoos",
+    "expected": "The Scarecrows' Wedding"
+  },
+  {
+    "raw": "Tokyo Story- Birthday Season",
+    "expected": "Tokyo Story"
+  },
+  {
+    "raw": "Tom, Tom, the Piper's Son (15*) + intro",
+    "expected": "Tom, Tom, the Piper's Son"
+  },
+  {
+    "raw": "Top Gun: Maverick",
+    "expected": "Top Gun: Maverick"
+  },
+  {
+    "raw": "Total Immersion: Iceland: Land of Ice and Fire (TBC) + Talk",
+    "expected": "Iceland: Land of Ice and Fire"
+  },
+  {
+    "raw": "Tracing Transcendental Tone + Q&A",
+    "expected": "Tracing Transcendental Tone"
+  },
+  {
+    "raw": "Transformers- Birthday Season",
+    "expected": "Transformers"
+  },
+  {
+    "raw": "Tribute to Claudia Cardinale: The Facts of Murder + intro by Adrian Wootton",
+    "expected": "The Facts of Murder"
+  },
+  {
+    "raw": "Turn the Key Softly + intro by professor Melanie Williams",
+    "expected": "Turn the Key Softly"
+  },
+  {
+    "raw": "Twenty One Pilots: More Than We Ever Imagined",
+    "expected": "Twenty One Pilots: More Than We Ever Imagined"
+  },
+  {
+    "raw": "TwentyFourSeven + Q&A with director Shane Meadows",
+    "expected": "TwentyFourSeven"
+  },
+  {
+    "raw": "Twin Peaks : Pilot",
+    "expected": "Twin Peaks"
+  },
+  {
+    "raw": "Twin Peaks: Fire Walk With Me",
+    "expected": "Twin Peaks: Fire Walk With Me"
+  },
+  {
+    "raw": "UK PREMIERE Isan Odyssey + introduction",
+    "expected": "Isan Odyssey"
+  },
+  {
+    "raw": "UK Premiere of 4K Restoration: Not a Pretty Picture + intro",
+    "expected": "Not a Pretty Picture"
+  },
+  {
+    "raw": "UK Premiere of 4K Restoration: The Cannibals",
+    "expected": "The Cannibals"
+  },
+  {
+    "raw": "UK Premiere of 4K Restoration: The Razor’s Edge + pre-recorded intro by Mathilde Rouxel",
+    "expected": "The Razor's Edge"
+  },
+  {
+    "raw": "UK Premiere: Between Goodbyes",
+    "expected": "Between Goodbyes"
+  },
+  {
+    "raw": "UK Premiere: Open Endings",
+    "expected": "Open Endings"
+  },
+  {
+    "raw": "UK Premiere: The Featherweight + Q&A",
+    "expected": "The Featherweight"
+  },
+  {
+    "raw": "UVFF2026: Opening Night Gala",
+    "expected": "Opening Night Gala"
+  },
+  {
+    "raw": "UVFF2026: The Old Man",
+    "expected": "The Old Man"
+  },
+  {
+    "raw": "Uchronia: Parallel histories of queer revolt + Q&A",
+    "expected": "Uchronia"
+  },
+  {
+    "raw": "Ultras + Q&A with director Ragnhild Ekner",
+    "expected": "Ultras"
+  },
+  {
+    "raw": "Underland (12A*) + ScreenTalk",
+    "expected": "Underland"
+  },
+  {
+    "raw": "Underland + Q&amp;A",
+    "expected": "Underland"
+  },
+  {
+    "raw": "Underland + pre-recorded Q&amp;A",
+    "expected": "Underland"
+  },
+  {
+    "raw": "VHS Late Tapes: UNIFORM",
+    "expected": "UNIFORM"
+  },
+  {
+    "raw": "VHS Late Tapes: WORSHIP",
+    "expected": "WORSHIP"
+  },
+  {
+    "raw": "Vampire Hunter D: Bloodlust",
+    "expected": "Vampire Hunter D: Bloodlust"
+  },
+  {
+    "raw": "Vampire's Kiss : 4K Restoration Premiere",
+    "expected": "Vampire's Kiss"
+  },
+  {
+    "raw": "Varda Film Club: One Sings, The Other Doesn't",
+    "expected": "One Sings, The Other Doesn't"
+  },
+  {
+    "raw": "Video Bazaar presents He Who Gets Slapped w/ Live Score",
+    "expected": "He Who Gets Slapped"
+  },
+  {
+    "raw": "Violet Hour presents: Body Double",
+    "expected": "Body Double"
+  },
+  {
+    "raw": "Violet Hour presents: Kiss Me Deadly",
+    "expected": "Kiss Me Deadly"
+  },
+  {
+    "raw": "Violet Hour presents: Lost Highway",
+    "expected": "Lost Highway"
+  },
+  {
+    "raw": "Violet Hour presents: The Long Goodbye",
+    "expected": "The Long Goodbye"
+  },
+  {
+    "raw": "Wallace & Gromit: Curse Of The Were-Rabbit",
+    "expected": "Wallace & Gromit: Curse Of The Were-Rabbit"
+  },
+  {
+    "raw": "Washed Up + Q&A",
+    "expected": "Washed Up"
+  },
+  {
+    "raw": "Watership Down- Birthday Season",
+    "expected": "Watership Down"
+  },
+  {
+    "raw": "Waving Kites and Re:Mind Film Festival present Reunification",
+    "expected": "Reunification"
+  },
+  {
+    "raw": "Ways of Seeing Archives: Films by Chris Paul Daniels, Tierney Walker and Tina Grace + Q&A",
+    "expected": "Ways of Seeing Archives"
+  },
+  {
+    "raw": "We Are Doc Women presents: Still Pushing Pineapples + Q&A",
+    "expected": "Still Pushing Pineapples"
+  },
+  {
+    "raw": "We Are Making A Film About Mark Fisher + Q&A with Simon Poulter and Tariq Goddard",
+    "expected": "We Are Making A Film About Mark Fisher"
+  },
+  {
+    "raw": "We're Nothing at All + Live Broadcast Q&A",
+    "expected": "We're Nothing at All"
+  },
+  {
+    "raw": "WePresent x Minute Shorts present: CKTRL “Spirit”",
+    "expected": "CKTRL “Spirit”"
+  },
+  {
+    "raw": "WePresent x Minute Shorts present: CKTRL “Spirit”, a film by Akinola Davies Jr.",
+    "expected": "CKTRL “Spirit”"
+  },
+  {
+    "raw": "Weekend- Birthday Season",
+    "expected": "Weekend"
+  },
+  {
+    "raw": "West Indies: The Fugitive Slaves of Liberty + intro by Ashley Clark",
+    "expected": "The Fugitive Slaves of Liberty"
+  },
+  {
+    "raw": "Who Framed Roger Rabbit?- Birthday Season",
+    "expected": "Who Framed Roger Rabbit"
+  },
+  {
+    "raw": "Wicked: For Good",
+    "expected": "Wicked"
+  },
+  {
+    "raw": "Woman with a Movie Camera Preview: Cotton Queen + intro by Leila Latif",
+    "expected": "Cotton Queen"
+  },
+  {
+    "raw": "Women Without Borders Film Festival: Opening Night",
+    "expected": "Women Without Borders Film Festival: Opening Night"
+  },
+  {
+    "raw": "Women from Hackney's History Premiere + Panel",
+    "expected": "Women from Hackney's History"
+  },
+  {
+    "raw": "Women’s History Month Special: My Dear Theo",
+    "expected": "My Dear Theo"
+  },
+  {
+    "raw": "World Goth Day Double Bill + Goth Drag Intro",
+    "expected": "World Goth Day Double Bill"
+  },
+  {
+    "raw": "Wuthering Heights (15) + ScreenTalk with Emerald Fennell",
+    "expected": "Wuthering Heights"
+  },
+  {
+    "raw": "Wuthering Heights + A Panel Discussion on the Future of Film Criticism",
+    "expected": "Wuthering Heights"
+  },
+  {
+    "raw": "Wuthering Heights: Screening + Book Club Presented by Girls in Film and It's Hardback Out Here",
+    "expected": "Wuthering Heights"
+  },
+  {
+    "raw": "Xiao Shan Going Home + Q&A",
+    "expected": "Xiao Shan Going Home"
+  },
+  {
+    "raw": "Yi-Yi- Birthday Season",
+    "expected": "Yi-Yi"
+  },
+  {
+    "raw": "back home + Q&A",
+    "expected": "back home"
+  }
+]
