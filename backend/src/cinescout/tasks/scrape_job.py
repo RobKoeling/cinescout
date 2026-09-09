@@ -2,7 +2,8 @@
 
 import asyncio
 import logging
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
+from typing import Literal, TypedDict
 
 from sqlalchemy import func, select
 from sqlalchemy.dialects.postgresql import insert as pg_insert
@@ -22,6 +23,73 @@ SCRAPE_DAYS_AHEAD = 14
 # never returns under Fly's memory-constrained containers) can't starve every
 # cinema later in the batch.
 SCRAPER_TIMEOUT_SECONDS = 120
+
+
+class CinemaScrapeResult(TypedDict):
+    name: str
+    count: int
+    ok: bool
+    error: str | None
+
+
+class ScrapeProgress(TypedDict):
+    status: Literal["idle", "running", "done"]
+    total: int
+    completed: int
+    started_at: datetime | None
+    finished_at: datetime | None
+    results: list[CinemaScrapeResult]
+
+
+# Process-local progress state for the currently (or most recently) running
+# scrape, polled by the admin Tools page. Fine to keep in-memory: the app
+# runs as a single Fly machine and this is monitoring state, not data.
+_progress: ScrapeProgress = {
+    "status": "idle",
+    "total": 0,
+    "completed": 0,
+    "started_at": None,
+    "finished_at": None,
+    "results": [],
+}
+
+
+def get_scrape_progress() -> ScrapeProgress:
+    return _progress
+
+
+def mark_scrape_pending() -> None:
+    """Flip status to 'running' immediately when a scrape is triggered.
+
+    Called synchronously by the admin view before the actual scrape task
+    starts, so the Tools page shows "Running" (and starts auto-refreshing)
+    right away instead of the previous run's stale "done" state until the
+    background task gets its first chance to run.
+    """
+    _progress["status"] = "running"
+    _progress["completed"] = 0
+    _progress["results"] = []
+    _progress["started_at"] = datetime.now(timezone.utc)
+    _progress["finished_at"] = None
+
+
+def _reset_progress(total: int) -> None:
+    _progress["status"] = "running"
+    _progress["total"] = total
+    _progress["completed"] = 0
+    _progress["started_at"] = datetime.now(timezone.utc)
+    _progress["finished_at"] = None
+    _progress["results"] = []
+
+
+def _record_progress(name: str, count: int, ok: bool, error: str | None = None) -> None:
+    _progress["results"].append({"name": name, "count": count, "ok": ok, "error": error})
+    _progress["completed"] += 1
+
+
+def _finish_progress() -> None:
+    _progress["status"] = "done"
+    _progress["finished_at"] = datetime.now(timezone.utc)
 
 
 async def run_scrape_all() -> None:
@@ -54,7 +122,11 @@ async def run_scrape_all() -> None:
             return
 
         logger.info(f"Scraping {len(cinema_rows)} cinemas for {date_from} to {date_to}")
-        await _scrape_cinemas(db, cinema_rows, date_from, date_to)
+        _reset_progress(len(cinema_rows))
+        try:
+            await _scrape_cinemas(db, cinema_rows, date_from, date_to)
+        finally:
+            _finish_progress()
 
 
 async def run_scrape_selected(cinema_ids: list[str]) -> None:
@@ -86,7 +158,11 @@ async def run_scrape_selected(cinema_ids: list[str]) -> None:
             return
 
         logger.info(f"Scraping {len(cinema_rows)} cinemas for {date_from} to {date_to}")
-        await _scrape_cinemas(db, cinema_rows, date_from, date_to)
+        _reset_progress(len(cinema_rows))
+        try:
+            await _scrape_cinemas(db, cinema_rows, date_from, date_to)
+        finally:
+            _finish_progress()
 
 
 async def _scrape_cinemas(
@@ -112,6 +188,7 @@ async def _scrape_cinemas(
         if not scraper:
             logger.warning(f"No scraper found for {cinema_name} (type: {scraper_type})")
             failures += 1
+            _record_progress(cinema_name, 0, ok=False, error="no scraper registered")
             continue
 
         try:
@@ -126,6 +203,9 @@ async def _scrape_cinemas(
                     f"{SCRAPER_TIMEOUT_SECONDS}s — skipping"
                 )
                 failures += 1
+                _record_progress(
+                    cinema_name, 0, ok=False, error=f"timed out after {SCRAPER_TIMEOUT_SECONDS}s"
+                )
                 continue
 
             if raw_showings:
@@ -194,10 +274,12 @@ async def _scrape_cinemas(
             total_showings += showings_created
             successes += 1
             logger.info(f"Scraped {cinema_name}: {showings_created} new showings")
+            _record_progress(cinema_name, showings_created, ok=True)
 
         except Exception as e:
             logger.error(f"Error scraping {cinema_name}: {e}", exc_info=True)
             failures += 1
+            _record_progress(cinema_name, 0, ok=False, error=str(e))
             try:
                 await db.rollback()
             except Exception:

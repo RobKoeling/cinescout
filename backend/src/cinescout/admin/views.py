@@ -17,7 +17,12 @@ from cinescout.models.watch_log import WatchLog
 from cinescout.scripts.backfill_tmdb import backfill
 from cinescout.scripts.seed_cinemas import seed_cinemas
 from cinescout.scripts.smoke_test import SmokeTestReport, run_smoke_test
-from cinescout.tasks.scrape_job import run_scrape_all, run_scrape_selected
+from cinescout.tasks.scrape_job import (
+    get_scrape_progress,
+    mark_scrape_pending,
+    run_scrape_all,
+    run_scrape_selected,
+)
 
 
 class CinemaAdmin(ModelView, model=Cinema):
@@ -119,6 +124,49 @@ _TOOLS_TEMPLATE = """\
 
   <hr class="my-4">
 
+  <h2>Scrape Progress</h2>
+  {% if scrape_progress.status == 'idle' %}
+  <p class="text-muted">No scrape has been run yet.</p>
+  {% else %}
+  <p>
+    {% if scrape_progress.status == 'running' %}
+    <span class="badge bg-warning text-dark">Running</span>
+    {% else %}
+    <span class="badge bg-success">Done</span>
+    {% endif %}
+    {{ scrape_progress.completed }} / {{ scrape_progress.total }} cinemas
+    {% if scrape_progress.started_at %}
+    <br><small class="text-muted">
+      Started {{ scrape_progress.started_at.strftime('%H:%M:%S') }} UTC
+      {% if scrape_progress.finished_at %}, finished {{ scrape_progress.finished_at.strftime('%H:%M:%S') }} UTC{% endif %}
+    </small>
+    {% endif %}
+  </p>
+  <table class="table table-sm table-bordered" style="max-width:640px">
+    <thead>
+      <tr>
+        <th>Cinema</th>
+        <th class="text-end">New showings</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for r in scrape_progress.results|reverse %}
+      <tr class="{{ '' if r.ok else 'table-danger' }}">
+        <td>{{ r.name }}</td>
+        <td class="text-end">{{ r.count }}</td>
+        <td>{{ '✓' if r.ok else '✗ ' + (r.error or 'failed') }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% if scrape_progress.status == 'running' %}
+  <script>setTimeout(function() { location.reload(); }, 3000);</script>
+  {% endif %}
+  {% endif %}
+
+  <hr class="my-4">
+
   <h2>Smoke Test</h2>
   <form method="post" class="mt-3 d-flex align-items-center gap-2 flex-wrap">
     <input type="date" name="smoke_date" value="{{ today }}" class="form-control" style="width:auto">
@@ -191,6 +239,7 @@ class ScrapeToolsView(BaseView):
             form = await request.form()
             action = form.get("action")
             if action == "scrape":
+                mark_scrape_pending()
                 asyncio.create_task(run_scrape_all())
                 message = "Scrape started in background."
             elif action == "backfill":
@@ -202,6 +251,7 @@ class ScrapeToolsView(BaseView):
             elif action == "scrape_selected":
                 cinema_ids = list(form.getlist("cinema_ids"))
                 if cinema_ids:
+                    mark_scrape_pending()
                     asyncio.create_task(run_scrape_selected(cinema_ids))
                     message = f"Scraping {len(cinema_ids)} cinema(s) in background."
                 else:
@@ -217,6 +267,7 @@ class ScrapeToolsView(BaseView):
             request=request,
             message=message,
             smoke_report=smoke_report,
+            scrape_progress=get_scrape_progress(),
             today=str(date.today()),
         )
         return HTMLResponse(content)
