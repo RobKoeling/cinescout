@@ -1,0 +1,282 @@
+[
+  {
+    "isOnSale": true,
+    "planId": "202AVGMPQTQBQRCSGKLRJQMMVGMLJNDVV",
+    "priceList": {
+      "id": "11201AKDDTJMTSLCSVGSKVSMSBBMJNQCH"
+    },
+    "event": {
+      "id": "43801ACRLMVKGBSGVDHLHBRQGTPTTSDDJ"
+    },
+    "start": "2026-05-23T10:00:00",
+    "startUtc": "2026-05-23T09:00:00",
+    "startSellingAtWeb": "2026-05-05T12:16:00",
+    "startSellingAtWebUtc": "2026-05-05T11:16:00Z",
+    "stopSellingAtWeb": "2026-05-23T09:55:00",
+    "stopSellingAtWebUtc": "2026-05-23T08:55:00Z",
+    "webInstanceId": null,
+    "cancelled": false,
+    "id": "198007AKLLQLQCMBCMPCDDVPBNHNCRHQM",
+    "hasBestAvailableOverlay": false,
+    "attribute_AudioDescribed": false,
+    "attribute_BSLInterpreted": false,
+    "attribute_Captioned": false,
+    "attribute_Relaxed": false,
+    "attribute_SubtitledInEnglish": false,
+    "attribute_PerformanceType1": "",
+    "attribute_PerformanceType2": "",
+    "attribute_Access": ""
+  },
+  {
+    "isOnSale": true,
+    "planId": "402AJKCLLRDNMBKMHTCGLBDHJTBPJBDNV",
+    "priceList": {
+      "id": "4202ARNPNTGRVMRLRVRSHLBLDJHGTSNTR"
+    },
+    "event": {
+      "id": "1432ASLLBSJTRKDJRMMMJNSVVQCCCGHDD"
+    },
+    "start": "2026-05-23T12:00:00",
+    "startUtc": "2026-05-23T11:00:00",
+    "startSellingAtWeb": "1900-01-01T00:00:00",
+    "startSellingAtWebUtc": "1900-01-01T00:00:00Z",
+    "stopSellingAtWeb": "2026-05-23T11:55:00",
+    "stopSellingAtWebUtc": "2026-05-23T10:55:00Z",
+    "webInstanceId": null,
+    "cancelled": false,
+    "id": "150204ACSTHTSLNMDHMRKLJCTJCKHCRGK",
+    "hasBestAvailableOverlay": false,
+    "attribute_AudioDescribed": false,
+    "attribute_BSLInterpreted": false,
+    "attribute_Captioned": false,
+    "attribute_Relaxed": false,
+    "attribute_SubtitledInEnglish": false,
+    "attribute_PerformanceType1": "",
+    "attribute_PerformanceType2": "",
+    "attribute_Access": ""
+  },
+  {
+    "isOnSale": true,
+    "planId": "202AVGMPQTQBQRCSGKLRJQMMVGMLJNDVV",
+    "priceList": {
+      "id": "27602AVNLMNVSTQPLPPDGSQSLPGLKHCCN"
+    },
+    "event": {
+      "id": "43601AMKQJGTDVBKLNSTTJVLMKDNDDDLS"
+    },
+    "start": "2026-05-23T12:10:00",
+    "startUtc": "2026-05-23T11:10:00",
+    "startSellingAtWeb": "2026-05-05T11:44:00",
+    "startSellingAtWebUtc": "2026-05-05T10:44:00Z",
+    "stopSellingAtWeb": "2026-05-23T12:05:00",
+    "stopSellingAtWebUtc": "2026-05-23T11:05:00Z",
+    "webInstanceId": null,
+    "cancelled": false,
+    "id": "198404AMJSBQJSSKCBQRDLBVLMDRTJPQG",
+    "hasBestAvailableOverlay": false,
+    "attribute_AudioDescribed": false,
+    "attribute_BSLInterpreted": false,
+    "attribute_Captioned": false,
+    "attribute_Relaxed": false,
+    "attribute_SubtitledInEnglish": false,
+    "attribute_PerformanceType1": "",
+    "attribute_PerformanceType2": "",
+    "attribute_Access": ""
+  },
+  {
+    "isOnSale": true,
+    "planId": "201AGBHDRLQHNHPHKKMPKLGPMDRDTDMVL",
+    "priceList": {
+      "id": "19401AJHGNGSSNHVHGVRMMRHQDRBGPQPM"
+    },
+    "event": {
+      "id": "26001APLNVRTPLBBPSVMJQSVGGNQMBRBG"
+    },
+    "start": "2026-05-23T12:30:00",
+    "startUtc": "2026-05-23T11:30:00",
+    "startSellingAtWeb": "2026-03-02T11:47:00",
+    "startSellingAtWebUtc": "2026-03-02T11:47:00Z",
+    "stopSellingAtWeb": "2026-05-23T12:25:00",
+    "stopSellingAtWebUtc": "2026-05-23T11:25:00Z",
+    "webInstanceId": null,
+    "cancelled": false,
+    "id": "123203AVLJNPTHNSQNKRCDKLNJTJTMQLD",
+    "hasBestAvailableOverlay": false,
+    "attribute_AudioDescribed": false,
+    "attribute_BSLInterpreted": false,
+    "attribute_Captioned": false,
+    "attribute_Relaxed": false,
+    "attribute_SubtitledInEnglish": false,
+    "attribute_PerformanceType1": "",
+    "attribute_PerformanceType2": "",
+    "attribute_Access": ""
+  },
+  {
+    "isOnSale": true,
+    "planId": "207AJSKLJGLRJRLJBVKNTSLJLNKQSGDRN",
+    "priceList": {
+      "id": "19001AGPSVSHKKJGHGMBKJNKLNQCSNLPR"
+    },
+    "event": {
+      "id": "11001ATRSBGDJMQQMCVKRJSQJPSBBHRPT"
+    },
+    "start": "2026-05-23T13:15:00",
+    "startUtc": "2026-05-23T12:15:00",
+    "startSellingAtWeb": "2026-01-16T10:56:00",
+    "startSellingAtWebUtc": "2026-01-16T10:56:00Z",
+    "stopSellingAtWeb": "2026-05-23T13:10:00",
+    "stopSellingAtWebUtc": "2026-05-23T12:10:00Z",
+    "webInstanceId": null,
+    "cancelled": false,
+    "id": "65804AJLHCPRKRNPQLQJMGGMQHNSVQSKM",
+    "hasBestAvailableOverlay": false,
+    "attribute_AudioDescribed": false,
+    "attribute_BSLInterpreted": false,
+    "attribute_Captioned": false,
+    "attribute_Relaxed": false,
+    "attribute_SubtitledInEnglish": false,
+    "attribute_PerformanceType1": "",
+    "attribute_PerformanceType2": "",
+    "attribute_Access": ""
+  },
+  {
+    "isOnSale": true,
+    "planId": "411APPGHLQHMBTKVQCCLNCNNTVTQRHRKG",
+    "priceList": {
+      "id": "31002AHNTDBKVDTQCLLKBQBVTKLSMMNRL"
+    },
+    "event": {
+      "id": "21001AHGQKHHCBJDNTTTMDTTPLSBDJSQB"
+    },
+    "start": "2026-05-23T14:15:00",
+    "startUtc": "2026-05-23T13:15:00",
+    "startSellingAtWeb": "2026-02-12T11:44:00",
+    "startSellingAtWebUtc": "2026-02-12T11:44:00Z",
+    "stopSellingAtWeb": "2026-05-23T14:10:00",
+    "stopSellingAtWebUtc": "2026-05-23T13:10:00Z",
+    "webInstanceId": null,
+    "cancelled": false,
+    "id": "103001ARMPDCGMDQVDNGCTTLVDLSDTDHC",
+    "hasBestAvailableOverlay": false,
+    "attribute_AudioDescribed": false,
+    "attribute_BSLInterpreted": false,
+    "attribute_Captioned": false,
+    "attribute_Relaxed": false,
+    "attribute_SubtitledInEnglish": false,
+    "attribute_PerformanceType1": "",
+    "attribute_PerformanceType2": "",
+    "attribute_Access": ""
+  },
+  {
+    "isOnSale": true,
+    "planId": "202AVGMPQTQBQRCSGKLRJQMMVGMLJNDVV",
+    "priceList": {
+      "id": "27602AVNLMNVSTQPLPPDGSQSLPGLKHCCN"
+    },
+    "event": {
+      "id": "43601AMKQJGTDVBKLNSTTJVLMKDNDDDLS"
+    },
+    "start": "2026-05-23T15:00:00",
+    "startUtc": "2026-05-23T14:00:00",
+    "startSellingAtWeb": "2026-05-05T11:44:00",
+    "startSellingAtWebUtc": "2026-05-05T10:44:00Z",
+    "stopSellingAtWeb": "2026-05-23T14:55:00",
+    "stopSellingAtWebUtc": "2026-05-23T13:55:00Z",
+    "webInstanceId": null,
+    "cancelled": false,
+    "id": "200001AKDLNNPPQKVCGNTJLPNLGRMLLQP",
+    "hasBestAvailableOverlay": false,
+    "attribute_AudioDescribed": false,
+    "attribute_BSLInterpreted": false,
+    "attribute_Captioned": false,
+    "attribute_Relaxed": false,
+    "attribute_SubtitledInEnglish": false,
+    "attribute_PerformanceType1": "",
+    "attribute_PerformanceType2": "",
+    "attribute_Access": ""
+  },
+  {
+    "isOnSale": true,
+    "planId": "1001ADGKSHLJDTDBJQTBMGLLJRLBJCMNN",
+    "priceList": {
+      "id": "35401APNVLPNRJRDCGRRCTSSJTSMNRNQD"
+    },
+    "event": {
+      "id": "13401ATNSLDSHJQKBGBDBQSJVDPTKJJMG"
+    },
+    "start": "2026-05-23T16:00:00",
+    "startUtc": "2026-05-23T15:00:00",
+    "startSellingAtWeb": "2026-01-15T13:37:00",
+    "startSellingAtWebUtc": "2026-01-15T13:37:00Z",
+    "stopSellingAtWeb": "2026-05-23T15:55:00",
+    "stopSellingAtWebUtc": "2026-05-23T14:55:00Z",
+    "webInstanceId": null,
+    "cancelled": false,
+    "id": "63802AMQSLPJJKBDPVSRKGNMHKBRCJDMG",
+    "hasBestAvailableOverlay": false,
+    "attribute_AudioDescribed": false,
+    "attribute_BSLInterpreted": false,
+    "attribute_Captioned": false,
+    "attribute_Relaxed": false,
+    "attribute_SubtitledInEnglish": false,
+    "attribute_PerformanceType1": "",
+    "attribute_PerformanceType2": "",
+    "attribute_Access": ""
+  },
+  {
+    "isOnSale": true,
+    "planId": "202AVGMPQTQBQRCSGKLRJQMMVGMLJNDVV",
+    "priceList": {
+      "id": "27602AVNLMNVSTQPLPPDGSQSLPGLKHCCN"
+    },
+    "event": {
+      "id": "43601AMKQJGTDVBKLNSTTJVLMKDNDDDLS"
+    },
+    "start": "2026-05-23T17:40:00",
+    "startUtc": "2026-05-23T16:40:00",
+    "startSellingAtWeb": "2026-05-05T11:44:00",
+    "startSellingAtWebUtc": "2026-05-05T10:44:00Z",
+    "stopSellingAtWeb": "2026-05-23T17:35:00",
+    "stopSellingAtWebUtc": "2026-05-23T16:35:00Z",
+    "webInstanceId": null,
+    "cancelled": false,
+    "id": "199403AVKDLKLVKBKPVKDPCRRQVCKLSQP",
+    "hasBestAvailableOverlay": false,
+    "attribute_AudioDescribed": false,
+    "attribute_BSLInterpreted": false,
+    "attribute_Captioned": false,
+    "attribute_Relaxed": false,
+    "attribute_SubtitledInEnglish": false,
+    "attribute_PerformanceType1": "",
+    "attribute_PerformanceType2": "",
+    "attribute_Access": ""
+  },
+  {
+    "isOnSale": true,
+    "planId": "207AJSKLJGLRJRLJBVKNTSLJLNKQSGDRN",
+    "priceList": {
+      "id": "19001AGPSVSHKKJGHGMBKJNKLNQCSNLPR"
+    },
+    "event": {
+      "id": "11001ATRSBGDJMQQMCVKRJSQJPSBBHRPT"
+    },
+    "start": "2026-05-23T18:15:00",
+    "startUtc": "2026-05-23T17:15:00",
+    "startSellingAtWeb": "2026-01-16T10:56:00",
+    "startSellingAtWebUtc": "2026-01-16T10:56:00Z",
+    "stopSellingAtWeb": "2026-05-23T18:10:00",
+    "stopSellingAtWebUtc": "2026-05-23T17:10:00Z",
+    "webInstanceId": null,
+    "cancelled": false,
+    "id": "66002AMJRRKMLMKQRPHRPCNVGRCJTPPSC",
+    "hasBestAvailableOverlay": false,
+    "attribute_AudioDescribed": false,
+    "attribute_BSLInterpreted": false,
+    "attribute_Captioned": false,
+    "attribute_Relaxed": false,
+    "attribute_SubtitledInEnglish": false,
+    "attribute_PerformanceType1": "",
+    "attribute_PerformanceType2": "",
+    "attribute_Access": ""
+  }
+]
