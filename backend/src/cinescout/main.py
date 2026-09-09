@@ -18,6 +18,8 @@ from cinescout.admin.views import (
     PasswordChangeView,
     ScrapeToolsView,
     ShowingAdmin,
+    UserAdmin,
+    WatchLogAdmin,
 )
 from cinescout.api.routes import (
     admin,
@@ -96,5 +98,14 @@ app.include_router(letterboxd.router, prefix="/api", tags=["letterboxd"])
 # Setup SQLAdmin
 auth_backend = AdminAuth(secret_key=settings.admin_secret_key)
 admin_panel = Admin(app, engine, authentication_backend=auth_backend, title="CineScout Admin")
-for view in [CinemaAdmin, FilmAdmin, ShowingAdmin, FilmAliasAdmin, ScrapeToolsView, PasswordChangeView]:
+for view in [
+    CinemaAdmin,
+    FilmAdmin,
+    ShowingAdmin,
+    FilmAliasAdmin,
+    UserAdmin,
+    WatchLogAdmin,
+    ScrapeToolsView,
+    PasswordChangeView,
+]:
     admin_panel.add_view(view)

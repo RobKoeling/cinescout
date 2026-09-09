@@ -7,13 +7,15 @@ from sqladmin import BaseView, ModelView, expose
 from starlette.requests import Request
 from starlette.responses import HTMLResponse
 
+from cinescout.config import settings
 from cinescout.models.cinema import Cinema
 from cinescout.models.film import Film
 from cinescout.models.film_alias import FilmAlias
 from cinescout.models.showing import Showing
+from cinescout.models.user import User
+from cinescout.models.watch_log import WatchLog
 from cinescout.scripts.backfill_tmdb import backfill
-from cinescout.scripts.smoke_test import run_smoke_test, SmokeTestReport
-from cinescout.config import settings
+from cinescout.scripts.smoke_test import SmokeTestReport, run_smoke_test
 from cinescout.tasks.scrape_job import run_scrape_all, run_scrape_selected
 
 
@@ -61,6 +63,38 @@ class ShowingAdmin(ModelView, model=Showing):
 class FilmAliasAdmin(ModelView, model=FilmAlias):
     column_list = [FilmAlias.id, FilmAlias.normalized_title, FilmAlias.film_id]
     column_searchable_list = [FilmAlias.normalized_title]
+
+
+class UserAdmin(ModelView, model=User):
+    # password_hash is deliberately excluded everywhere below — never show
+    # or make it editable via a raw text field in the admin UI.
+    column_list = [
+        User.id,
+        User.username,
+        User.is_active,
+        User.letterboxd_username,
+        User.created_at,
+    ]
+    column_searchable_list = [User.username, User.letterboxd_username]
+    column_sortable_list = [User.username, User.created_at]
+    form_excluded_columns = [User.password_hash, User.watch_logs]
+    # Account creation must go through /api/auth/register so passwords are
+    # hashed correctly; the admin panel is for moderation/cleanup only.
+    can_create = False
+
+
+class WatchLogAdmin(ModelView, model=WatchLog):
+    column_list = [
+        WatchLog.id,
+        WatchLog.user_id,
+        WatchLog.film_id,
+        WatchLog.showing_id,
+        WatchLog.watched_date,
+        WatchLog.rating,
+    ]
+    column_searchable_list = [WatchLog.film_id]
+    column_sortable_list = [WatchLog.watched_date]
+    can_create = False
 
 
 _TOOLS_TEMPLATE = """\
