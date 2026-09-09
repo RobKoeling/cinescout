@@ -127,6 +127,11 @@ async def _migrate(api_url: str, token: str, username: str) -> None:
                 ensure_resp = await client.post("/films/ensure", params={"tmdb_id": entry["tmdb_id"]})
                 if ensure_resp.status_code == 200:
                     backfilled_films += 1
+                    # The film may get a different id in production than
+                    # locally (e.g. the local match happened before the
+                    # release year was known, so the local slug lacks a
+                    # year suffix that a fresh TMDb lookup now includes).
+                    payload["film_id"] = ensure_resp.json()["id"]
                     resp = await client.post("/watch-logs", json=payload)
 
             if resp.status_code == 201:
