@@ -1,0 +1,259 @@
+
+  {
+    "raw": "AMERICAN MOVIE + COVEN",
+    "expected": "AMERICAN MOVIE"
+  },
+--> "expected": "AMERICAN MOVIE", "COVEN"
+
+ {
+    "raw": "Animation in Love: Chico and Rita + 20 Anos",
+    "expected": "Chico and Rita"
+  },
+--> "expected": "Chico and Rita", "20 Anos"
+
+  {
+    "raw": "Another Day, Another Man + Elevator Girls in Bondage",
+    "expected": "Another Day, Another Man"
+  },
+--> "expected": "Another Day, Another Man", "Elevator Girls in Bondage"
+
+  {
+    "raw": "Another Day, Another Man + Elevator Girls in Bondage + intro by Dr Elena Gorfinkel",
+    "expected": "Another Day, Another Man"
+  },
+--> "expected": "Another Day, Another Man", "Elevator Girls in Bondage"
+
+
+  {
+    "raw": "Antonia Luxem: Tetralogy On Falling",
+    "expected": "Antonia Luxem"
+  },
+--> "expected": "Antonia Luxem: Tetralogy On Falling"
+
+  {
+    "raw": "Avala Film at 80: Dušan Makavejev's Man is Not a Bird + Q&A",
+    "expected": "Dušan Makavejev's Man is Not a Bird"
+  },
+--> "expected": "Man is Not a Bird"
+
+  {
+    "raw": "Bar Trash: : B-Movie Women / Double Feature: LIMBO (1999) + ATTACK OF THE 50 FOOT WOMAN",
+    "expected": "Bar Trash: B-Movie Women"
+  },
+--> "expected": "LIMBO", "ATTACK OF THE 50 FOOT WOMAN"
+
+
+  {
+    "raw": "Bar Trash: Red Sonja",
+    "expected": "Bar Trash: Red Sonja → Red Sonja"
+  },
+--> "expected": "Red Sonja"
+
+
+  {
+    "raw": "Belgrade Noir: Vladimir Pogacic's Big and Small",
+    "expected": "Vladimir Pogacic's Big and Small"
+  },
+--> "expected": "Big and Small"
+
+  {
+    "raw": "Beyond: Arco",
+    "expected": "Beyond: Arco"
+  },
+--> "expected": "Arco"
+
+  {
+    "raw": "Beyond: Father Mother Sister Brother",
+    "expected": "Beyond: Father Mother Sister Brother"
+  },
+--> "expected": "Father Mother Sister Brother"
+
+{
+    "raw": "Beyond: La Grazia",
+    "expected": "Beyond: La Grazia"
+  },
+--> "expected": "La Grazia"
+
+{
+    "raw": "Beyond: Primavera",
+    "expected": "Beyond: Primavera"
+  },
+--> "expected": "Primavera"
+
+{
+    "raw": "Beyond: Rose of Nevada",
+    "expected": "Beyond: Rose of Nevada"
+  },
+--> "expected": "Rose of Nevada"
+
+
+{
+    "raw": "Beyond: Sirât",
+    "expected": "Sirât"
+  },
+--> "expected": "Sirât"
+
+{
+    "raw": "Beyond: The Secret Agent",
+    "expected": "Beyond: The Secret Agent"
+  },
+--> "expected": "The Secret Agent"
+
+{
+    "raw": "Beyond: Wasteman",
+    "expected": "Beyond: Wasteman"
+  },
+--> "expected": "Wasteman"
+
+
+  {
+    "raw": "Black Girl + Jemima + Johnny + intro by Ashley Clark",
+    "expected": "Black Girl"
+  },
+--> "expected": "Black Girl", "Jemima", "Johnny"
+
+
+  {
+    "raw": "CLUB ROOM: Let's Swim, Get Swimming",
+    "expected": "Let's Swim"
+  },
+--> "expected": "Let's Swim, Get Swimming"
+--> "expected": ""
+
+  {
+    "raw": "Carers &amp; Babies: THE DRAMA",
+    "expected": "Carers & Babies: The Drama"
+  },
+--> "expected": "The Drama"
+
+  {
+    "raw": "Carers &amp; Babies: The Testament of Ann Lee",
+    "expected": "Carers & Babies: The Testament of Ann Lee"
+  },
+--> "expected": " The Testament of Ann Lee"
+
+  {
+    "raw": "Chaplin: Spirit of The Tramp",
+    "expected": "Chaplin"
+  },
+--> "expected": "Chaplin: Spirit of The Tramp"
+
+  {
+    "raw": "Chronic Youth: Afronauts + Superman of Malegaon",
+    "expected": "Afronauts"
+  },
+--> "expected": "Afronauts", "Superman of Malegaon"
+
+{
+    "raw": "Chronic Youth: Fifth Cinema + Panel Discussion",
+    "expected": "Chronic Youth"
+  },
+--> "expected": "Fifth Cinema"
+
+{
+    "raw": "Chronic Youth: Go Fish",
+    "expected": "Chronic Youth: Go Fish"
+  },
+--> "expected": "Go Fish"
+
+{
+    "raw": "Chronic Youth: Liminal Traces + Q&A",
+    "expected": "Chronic Youth: Liminal Traces"
+  },
+--> "expected": "Liminal Traces"
+
+{
+    "raw": "Chronic Youth: Puppygirl + Q&A",
+    "expected": "Chronic Youth: Puppygirl"
+  },
+--> "expected": "Puppygirl"
+
+{
+    "raw": "Chronic Youth: With Hasan in Gaza",
+    "expected": "Chronic Youth"
+  },
+--> "expected": "With Hasan in Gaza"
+
+  {
+    "raw": "Ciao UFO + Livestream Q&A",
+    "expected": "UFO"
+  },
+--> "expected": "Ciao UFO"
+
+{
+    "raw": "Cine-Real presents: Pulp Fiction + The Last Picture Shop Crowdfunder",
+    "expected": "Pulp Fiction"
+  },
+--> "expected": ["Pulp Fiction", "The Last Picture Shop Crowdfunder"]
+
+
+  {
+    "raw": "Cold War Visions: The Sacrifice",
+    "expected": "Cold War Visions: The Sacrifice → The Sacrifice"
+  },
+--> "expected": "The Sacrifice"
+
+{
+    "raw": "Cold War Visions: The Sun and the Shadow",
+    "expected": "Cold War Visions: The Sun and the Shadow"
+  },
+--> "expected": "The Sun and the Shadow"
+
+{
+    "raw": "Cold War Visions: We Live Here + Chernobyl 22",
+    "expected": "We Live Here"
+  },
+--> "expected": ["We Live Here" ,"Chernobyl 22"]
+
+  {
+    "raw": "Dancer of the City + Courtship (15*) + intro",
+    "expected": "Dancer of the City"
+  },
+--> "expected": ["Dancer of the City", "Courtship"]
+
+
+  {
+    "raw": "Doc'n Roll 2026: A Century in Sound + Director Q&A",
+    "expected": "Doc'n Roll"
+  },
+--> "expected": "A Century in Sound"
+
+  {
+    "raw": "Doc'n Roll x Rio: PARADISE UK Premiere + Q&amp;A",
+    "expected": "Doc'n Roll x Rio: Paradise"
+  },
+--> "expected": "Paradise"
+
+
+  {
+    "raw": "DocHouse: BAFTA-nominated Shorts",
+    "expected": "BAFTA-nominated"
+  },
+--> "expected": "BAFTA-nominated Shorts"
+
+
+  {
+    "raw": "DocHouse: It's Never Over, Jeff Buckley",
+    "expected": "It's Never Over"
+  },
+--> "expected": "It's Never Over, Jeff Buckley"
+
+
+  {
+    "raw": "Dog-Friendly Screening: The Bride!",
+    "expected": "The Bride"
+  },
+--> "expected": "The Bride!"
+
+  {
+    "raw": "Drink & Dine: Northern Soul: Still Burning",
+    "expected": "Northern Soul"
+  },
+--> "expected": "Northern Soul: Still Burning"
+
+
+  {
+    "raw": "Dukes After Dark: Surprise Movie",
+    "expected": "Dukes After Dark: Surprise Movie"
+  },
+--> "expected": "Surprise Movie"
