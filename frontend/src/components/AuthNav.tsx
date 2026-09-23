@@ -12,7 +12,7 @@ function AuthNav({ onOpenAuth, onOpenProfile }: AuthNavProps) {
     return (
       <button
         onClick={() => onOpenAuth('login')}
-        className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
+        className="text-sm font-medium text-gold-dark hover:text-ink transition-colors"
       >
         Log in
       </button>
@@ -25,7 +25,7 @@ function AuthNav({ onOpenAuth, onOpenProfile }: AuthNavProps) {
       {onOpenProfile && (
         <button
           onClick={onOpenProfile}
-          className="font-medium text-blue-600 hover:text-blue-800 transition-colors"
+          className="font-medium text-gold-dark hover:text-ink transition-colors"
         >
           My Diary
         </button>

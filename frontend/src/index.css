@@ -4,15 +4,44 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f9fafb;
+  background-color: #141414;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Art Deco corner-bracket frame around the main page panel */
+.cs-frame {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  border: 1.5px solid #c8a24a;
+  border-radius: 10px;
+  pointer-events: none;
+}
+.cs-frame::before,
+.cs-frame::after,
+.cs-frame-bottom::before,
+.cs-frame-bottom::after {
+  content: '';
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border: 1.5px solid #c8a24a;
+}
+.cs-frame::before { top: -1.5px; left: -1.5px; border-right: none; border-bottom: none; }
+.cs-frame::after { top: -1.5px; right: -1.5px; border-left: none; border-bottom: none; }
+.cs-frame-bottom {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.cs-frame-bottom::before { bottom: 12.5px; left: 12.5px; border-right: none; border-top: none; }
+.cs-frame-bottom::after { bottom: 12.5px; right: 12.5px; border-left: none; border-top: none; }

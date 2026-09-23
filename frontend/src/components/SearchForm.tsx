@@ -197,17 +197,17 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white shadow-sm rounded-lg p-6">
+    <form onSubmit={handleSubmit} className="bg-white border border-gold rounded-lg p-6">
       <div className="flex flex-wrap items-end gap-4">
         {/* Date — always visible */}
         <div className="flex-none">
-          <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date</label>
+          <label htmlFor="date" className="block text-xs font-semibold uppercase tracking-wide text-gold-dark">Date</label>
           <input
             type="date"
             id="date"
             value={date}
             onChange={e => setDate(e.target.value)}
-            className="mt-1 block rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+            className="mt-1 block rounded-md border-gold/40 bg-cream/40 shadow-sm focus:border-gold focus:ring-gold sm:text-sm"
             required
           />
         </div>
@@ -217,24 +217,24 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
           {mode === 'time' && (
             <div className="flex gap-4">
               <div>
-                <label htmlFor="timeFrom" className="block text-sm font-medium text-gray-700">From</label>
+                <label htmlFor="timeFrom" className="block text-xs font-semibold uppercase tracking-wide text-gold-dark">From</label>
                 <input
                   type="time"
                   id="timeFrom"
                   value={timeFrom}
                   onChange={e => setTimeFrom(e.target.value)}
-                  className="mt-1 block rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  className="mt-1 block rounded-md border-gold/40 bg-cream/40 shadow-sm focus:border-gold focus:ring-gold sm:text-sm"
                   required
                 />
               </div>
               <div>
-                <label htmlFor="timeTo" className="block text-sm font-medium text-gray-700">To</label>
+                <label htmlFor="timeTo" className="block text-xs font-semibold uppercase tracking-wide text-gold-dark">To</label>
                 <input
                   type="time"
                   id="timeTo"
                   value={timeTo}
                   onChange={e => setTimeTo(e.target.value)}
-                  className="mt-1 block rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  className="mt-1 block rounded-md border-gold/40 bg-cream/40 shadow-sm focus:border-gold focus:ring-gold sm:text-sm"
                   required
                 />
               </div>
@@ -243,7 +243,7 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
 
           {mode === 'film' && (
             <div className="relative">
-              <label htmlFor="filmInput" className="block text-sm font-medium text-gray-700">Film title</label>
+              <label htmlFor="filmInput" className="block text-xs font-semibold uppercase tracking-wide text-gold-dark">Film title</label>
               <input
                 type="text"
                 id="filmInput"
@@ -252,15 +252,15 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
                 onFocus={() => filmSuggestions.length > 0 && setShowSuggestions(true)}
                 onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
                 placeholder="Type a film title…"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="mt-1 block w-full rounded-md border-gold/40 bg-cream/40 shadow-sm focus:border-gold focus:ring-gold sm:text-sm"
                 autoComplete="off"
               />
               {showSuggestions && (
-                <ul className="absolute z-20 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto text-sm">
+                <ul className="absolute z-20 mt-1 w-full bg-white border border-gold/40 rounded-md shadow-lg max-h-60 overflow-auto text-sm">
                   {filmSuggestions.map(s => (
                     <li
                       key={s.id}
-                      className="px-3 py-2 cursor-pointer hover:bg-blue-50"
+                      className="px-3 py-2 cursor-pointer hover:bg-cream-dark"
                       onMouseDown={() => {
                         setFilmInput(s.title)
                         setSelectedFilmTitle(s.title)
@@ -278,7 +278,7 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
 
           {mode === 'cinema' && (
             <div className="relative">
-              <label htmlFor="cinemaInput" className="block text-sm font-medium text-gray-700">Cinema</label>
+              <label htmlFor="cinemaInput" className="block text-xs font-semibold uppercase tracking-wide text-gold-dark">Cinema</label>
               <input
                 type="text"
                 id="cinemaInput"
@@ -291,15 +291,15 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
                 onFocus={() => setShowCinemaList(true)}
                 onBlur={() => setTimeout(() => setShowCinemaList(false), 150)}
                 placeholder="Type or select a cinema…"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="mt-1 block w-full rounded-md border-gold/40 bg-cream/40 shadow-sm focus:border-gold focus:ring-gold sm:text-sm"
                 autoComplete="off"
               />
               {showCinemaList && filteredCinemas.length > 0 && (
-                <ul className="absolute z-20 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto text-sm">
+                <ul className="absolute z-20 mt-1 w-full bg-white border border-gold/40 rounded-md shadow-lg max-h-60 overflow-auto text-sm">
                   {filteredCinemas.map(c => (
                     <li
                       key={c.id}
-                      className="px-3 py-2 cursor-pointer hover:bg-blue-50"
+                      className="px-3 py-2 cursor-pointer hover:bg-cream-dark"
                       onMouseDown={() => {
                         setCinemaInput(c.name)
                         setSelectedCinemaId(c.id)
@@ -316,7 +316,7 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
 
           {mode === 'format' && (
             <div>
-              <label htmlFor="format" className="block text-sm font-medium text-gray-700">Format</label>
+              <label htmlFor="format" className="block text-xs font-semibold uppercase tracking-wide text-gold-dark">Format</label>
               <div className="mt-1 flex items-center gap-3">
                 <select
                   id="format"
@@ -325,7 +325,7 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
                     setFormat(e.target.value)
                     onLiveFormatChange?.(e.target.value || null, period)
                   }}
-                  className="block rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  className="block rounded-md border-gold/40 bg-cream/40 shadow-sm focus:border-gold focus:ring-gold sm:text-sm"
                 >
                   <option value="">Any format</option>
                   {FORMAT_OPTIONS.map(f => (
@@ -343,8 +343,8 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
                       }}
                       className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
                         period === p
-                          ? 'bg-gray-900 text-white border-gray-900'
-                          : 'text-gray-500 border-gray-300 hover:border-gray-500 hover:text-gray-700'
+                          ? 'bg-gold text-white border-gold'
+                          : 'text-ink border-gold hover:bg-cream-dark'
                       }`}
                     >
                       {p === 'today' ? 'Today' : 'This week'}
@@ -358,7 +358,7 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
 
         {/* Mode selector — far right */}
         <div className="flex-none flex flex-col gap-1 self-end pb-0.5">
-          <span className="text-xs font-medium text-gray-500 mb-0.5">Search by</span>
+          <span className="text-xs font-semibold uppercase tracking-wide text-gold-dark mb-0.5">Search by</span>
           <div className="flex gap-1">
             {MODE_LABELS.map(({ mode: m, label }) => (
               <button
@@ -367,8 +367,8 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
                 onClick={() => setMode(m)}
                 className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
                   mode === m
-                    ? 'bg-gray-900 text-white border-gray-900'
-                    : 'text-gray-500 border-gray-300 hover:border-gray-500 hover:text-gray-700'
+                    ? 'bg-gold text-white border-gold'
+                    : 'text-ink border-gold hover:bg-cream-dark'
                 }`}
               >
                 {label}
@@ -379,7 +379,7 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
       </div>
 
       {/* Distance & Travel Time Controls */}
-      <div className="mt-4 pt-4 border-t border-gray-200">
+      <div className="mt-4 pt-4 border-t border-gold/30">
         <div className="flex flex-wrap items-center gap-4 mb-3">
           {/* Toggle between browser location and manual address */}
           <div className="flex gap-2">
@@ -388,8 +388,8 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
               onClick={() => setUseManualAddress(false)}
               className={`text-xs px-3 py-1.5 rounded-md border transition-colors ${
                 !useManualAddress
-                  ? 'bg-gray-100 border-gray-400 text-gray-900'
-                  : 'border-gray-300 text-gray-600 hover:border-gray-400'
+                  ? 'bg-gold text-white border-gold'
+                  : 'border-gold/50 text-ink hover:border-gold'
               }`}
             >
               Use my location
@@ -399,8 +399,8 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
               onClick={() => setUseManualAddress(true)}
               className={`text-xs px-3 py-1.5 rounded-md border transition-colors ${
                 useManualAddress
-                  ? 'bg-gray-100 border-gray-400 text-gray-900'
-                  : 'border-gray-300 text-gray-600 hover:border-gray-400'
+                  ? 'bg-gold text-white border-gold'
+                  : 'border-gold/50 text-ink hover:border-gold'
               }`}
             >
               Enter address
@@ -416,7 +416,7 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
                 type="button"
                 onClick={handleGetLocation}
                 disabled={locationLoading}
-                className="px-4 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="px-4 py-2 text-sm border border-gold rounded-md hover:bg-cream-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {locationLoading ? 'Getting location...' : userLocation ? '📍 Location enabled' : '📍 Get location'}
               </button>
@@ -428,7 +428,7 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
                     setUseTfL(false)
                     setLocationError(null)
                   }}
-                  className="text-xs text-gray-500 hover:text-gray-700"
+                  className="text-xs text-gold-dark hover:text-ink"
                   title="Clear location"
                 >
                   ✕
@@ -445,14 +445,14 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
                 value={manualAddress}
                 onChange={(e) => setManualAddress(e.target.value)}
                 placeholder="Enter address (e.g., 125 London Wall)"
-                className="px-3 py-2 text-sm border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="px-3 py-2 text-sm border border-gold/40 bg-cream/40 rounded-md focus:border-gold focus:ring-1 focus:ring-gold"
                 style={{ width: '280px' }}
               />
               <button
                 type="button"
                 onClick={handleGeocodeAddress}
                 disabled={locationLoading}
-                className="px-4 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="px-4 py-2 text-sm border border-gold rounded-md hover:bg-cream-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {locationLoading ? 'Finding...' : userLocation ? '📍 Address set' : '📍 Set location'}
               </button>
@@ -464,7 +464,7 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
                     setUseTfL(false)
                     setLocationError(null)
                   }}
-                  className="text-xs text-gray-500 hover:text-gray-700"
+                  className="text-xs text-gold-dark hover:text-ink"
                   title="Clear location"
                 >
                   ✕
@@ -480,7 +480,7 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
                 type="checkbox"
                 checked={useTfL}
                 onChange={(e) => setUseTfL(e.target.checked)}
-                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                className="rounded border-gold/40 text-gold focus:ring-gold"
               />
               <span>Show travel time (TfL) 🚇</span>
             </label>
@@ -506,7 +506,7 @@ function SearchForm({ city, onSearch, onLiveFormatChange, loading }: SearchFormP
         <button
           type="submit"
           disabled={loading}
-          className="px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-6 py-2 bg-ink text-gold font-semibold uppercase tracking-wide text-sm border border-gold rounded-md hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gold disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? 'Searching...' : 'Search Films'}
         </button>

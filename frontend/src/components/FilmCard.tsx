@@ -57,14 +57,14 @@ function FilmCard({ filmWithCinemas, onCinemaClick, onDirectorClick, onLogShowin
   }
 
   return (
-    <div className="bg-white shadow-sm rounded-lg overflow-hidden border border-gray-200">
+    <div className="bg-white rounded-lg overflow-hidden border border-gold">
       {/* Film Header - Always Visible */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full text-left py-3 px-6 hover:bg-gray-50 transition-colors"
+        className="w-full text-left py-3 px-6 hover:bg-cream-dark/40 transition-colors"
       >
         <div className="flex items-center">
-          <h2 className="w-1/2 text-xl font-semibold text-gray-900 pr-4">
+          <h2 className="w-1/2 text-lg font-bold tracking-wide text-ink pr-4">
             {displayTitle}
             {film.year && (
               <span className="text-gray-500 font-normal ml-2">({film.year})</span>
@@ -78,7 +78,7 @@ function FilmCard({ filmWithCinemas, onCinemaClick, onDirectorClick, onLogShowin
           </span>
 
           <svg
-            className={`h-6 w-6 text-gray-400 ml-4 flex-shrink-0 transition-transform ${
+            className={`h-6 w-6 text-gold ml-4 flex-shrink-0 transition-transform ${
               expanded ? 'rotate-180' : ''
             }`}
             fill="none"
@@ -98,7 +98,7 @@ function FilmCard({ filmWithCinemas, onCinemaClick, onDirectorClick, onLogShowin
 
       {/* Expanded Content - Cinemas and Showtimes */}
       {expanded && (
-        <div className="border-t border-gray-200 bg-gray-50 p-6">
+        <div className="border-t border-gold/30 bg-cream/40 p-6">
           {(film.directors?.length || film.countries?.length || film.cast?.length) && (
             <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-600 mb-3">
               {film.directors && film.directors.length > 0 && (
@@ -108,7 +108,7 @@ function FilmCard({ filmWithCinemas, onCinemaClick, onDirectorClick, onLogShowin
                     <span key={dir}>
                       <button
                         onClick={e => { e.stopPropagation(); onDirectorClick(dir, film.id) }}
-                        className="hover:text-blue-600 hover:underline transition-colors"
+                        className="hover:text-gold-dark hover:underline transition-colors"
                       >
                         {dir}
                       </button>
@@ -150,7 +150,7 @@ function FilmCard({ filmWithCinemas, onCinemaClick, onDirectorClick, onLogShowin
                   <div>
                     <button
                       onClick={() => onCinemaClick(cinemaWithShowings.cinema)}
-                      className="font-medium text-gray-900 hover:text-blue-600 hover:underline transition-colors text-left"
+                      className="font-medium text-gray-900 hover:text-gold-dark hover:underline transition-colors text-left"
                     >
                       {cinemaWithShowings.cinema.name}
                     </button>
@@ -167,19 +167,19 @@ function FilmCard({ filmWithCinemas, onCinemaClick, onDirectorClick, onLogShowin
                   {cinemaWithShowings.times.map((showing) => (
                     <div
                       key={showing.id}
-                      className="bg-white border border-gray-200 rounded-md px-3 py-2"
+                      className="bg-white border border-gold/50 rounded-full px-3 py-1.5"
                     >
                       {showing.booking_url ? (
                         <a
                           href={showing.booking_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-blue-600 hover:text-blue-800 font-medium"
+                          className="text-gold-dark hover:text-ink font-semibold"
                         >
                           {displayTime(showing.start_time)}
                         </a>
                       ) : (
-                        <span className="font-medium text-gray-900">
+                        <span className="font-semibold text-gray-900">
                           {displayTime(showing.start_time)}
                         </span>
                       )}
@@ -205,7 +205,7 @@ function FilmCard({ filmWithCinemas, onCinemaClick, onDirectorClick, onLogShowin
                       {user && onLogShowing && (
                         <button
                           onClick={() => onLogShowing(film, cinemaWithShowings.cinema, showing)}
-                          className="ml-2 text-xs text-gray-400 hover:text-blue-600 transition-colors"
+                          className="ml-2 text-xs text-gray-400 hover:text-gold-dark transition-colors"
                           title="Log as watched"
                         >
                           ✓ Log

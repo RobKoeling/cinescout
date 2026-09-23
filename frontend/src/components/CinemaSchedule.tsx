@@ -34,12 +34,12 @@ export default function CinemaSchedule({ films, onDirectorClick }: CinemaSchedul
     .sort((a, b) => a.times[0].start_time.localeCompare(b.times[0].start_time))
 
   return (
-    <div className="bg-white shadow-sm rounded-lg border border-gray-200 divide-y divide-gray-100">
+    <div className="bg-white rounded-lg border border-gold divide-y divide-gold/20">
       {rows.map(({ film, times }) => (
         <div key={film.id} className="flex items-baseline gap-4 px-6 py-3">
           {/* Film info */}
           <div className="w-64 flex-shrink-0">
-            <span className="font-medium text-gray-900">{film.title}</span>
+            <span className="font-bold tracking-wide text-ink">{film.title}</span>
             {film.year && (
               <span className="ml-1.5 text-gray-400 text-sm">({film.year})</span>
             )}
@@ -49,7 +49,7 @@ export default function CinemaSchedule({ films, onDirectorClick }: CinemaSchedul
                   <span key={dir}>
                     <button
                       onClick={() => onDirectorClick(dir, film.id)}
-                      className="hover:text-blue-600 hover:underline transition-colors"
+                      className="hover:text-gold-dark hover:underline transition-colors"
                     >
                       {dir}
                     </button>
@@ -69,12 +69,12 @@ export default function CinemaSchedule({ films, onDirectorClick }: CinemaSchedul
                     href={showing.booking_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100 rounded px-2 py-0.5 text-sm font-medium transition-colors"
+                    className="bg-cream-dark border border-gold/50 text-gold-dark hover:bg-gold hover:text-white rounded-full px-2.5 py-0.5 text-sm font-semibold transition-colors"
                   >
                     {formatTime(showing.start_time)}
                   </a>
                 ) : (
-                  <span className="bg-gray-100 border border-gray-200 text-gray-700 rounded px-2 py-0.5 text-sm font-medium">
+                  <span className="bg-cream-dark border border-gold/20 text-gray-700 rounded-full px-2.5 py-0.5 text-sm font-semibold">
                     {formatTime(showing.start_time)}
                   </span>
                 )}

@@ -201,40 +201,46 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">CineScout</h1>
-              <p className="mt-1 text-sm text-gray-600">
-                Find films showing in independent cinemas
-              </p>
-            </div>
-            <div className="flex items-center gap-4">
-              {/* City selector */}
-              <div className="flex gap-1">
-                {(Object.keys(CITY_LABELS) as City[]).map(c => (
-                  <button
-                    key={c}
-                    onClick={() => handleCityChange(c)}
-                    className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-colors ${
-                      city === c
-                        ? 'bg-gray-900 text-white border-gray-900'
-                        : 'text-gray-500 border-gray-300 hover:border-gray-500 hover:text-gray-700'
-                    }`}
-                  >
-                    {CITY_LABELS[c]}
-                  </button>
-                ))}
-              </div>
-              <AuthNav onOpenAuth={setAuthModalMode} onOpenProfile={() => setView('profile')} />
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-ink flex justify-center px-4 py-8 sm:py-10">
+      <div className="relative w-full max-w-6xl bg-cream rounded-2xl shadow-2xl">
+        <div className="cs-frame"></div>
+        <div className="cs-frame-bottom"></div>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <header className="relative pt-10 pb-6 text-center">
+          <div className="absolute top-8 right-8 sm:right-10">
+            <AuthNav onOpenAuth={setAuthModalMode} onOpenProfile={() => setView('profile')} />
+          </div>
+
+          <h1 className="font-display text-4xl text-ink tracking-wide">CineScout</h1>
+          <p className="mt-1 text-xs uppercase tracking-widest text-gold-dark">
+            Find films showing in independent cinemas
+          </p>
+
+          <div className="flex items-center justify-center gap-2 my-4">
+            <span className="h-px w-16 bg-gold"></span>
+            <span className="w-2 h-2 bg-gold rotate-45"></span>
+            <span className="h-px w-16 bg-gold"></span>
+          </div>
+
+          {/* City selector */}
+          <div className="flex justify-center gap-1">
+            {(Object.keys(CITY_LABELS) as City[]).map(c => (
+              <button
+                key={c}
+                onClick={() => handleCityChange(c)}
+                className={`px-4 py-1.5 rounded-full text-sm font-semibold border transition-colors ${
+                  city === c
+                    ? 'bg-gold text-white border-gold'
+                    : 'text-ink border-gold hover:bg-cream-dark'
+                }`}
+              >
+                {CITY_LABELS[c]}
+              </button>
+            ))}
+          </div>
+        </header>
+
+        <main className="relative px-4 sm:px-8 lg:px-10 pb-10">
         {view === 'profile' ? (
           <ProfilePage onBack={() => setView('search')} />
         ) : (
@@ -254,14 +260,14 @@ function App() {
 
             {loading && (
               <div className="mt-8 text-center">
-                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gold"></div>
                 <p className="mt-2 text-sm text-gray-600">Searching for films...</p>
               </div>
             )}
 
             {!loading && showings && (
               <div className="mt-8">
-                <div className="mb-4 text-sm text-gray-600">
+                <div className="mb-4 text-xs uppercase tracking-widest text-gold-dark">
                   Found {filteredFilms.length} film{filteredFilms.length !== 1 ? 's' : ''}
                 </div>
                 {activeMode === 'cinema' ? (
@@ -287,7 +293,8 @@ function App() {
             )}
           </>
         )}
-      </main>
+        </main>
+      </div>
 
       {selectedDirector && (
         <DirectorModal
