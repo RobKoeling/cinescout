@@ -6,7 +6,9 @@ public per-user diary RSS feed (https://letterboxd.com/<username>/rss/),
 which needs no authentication.
 """
 
+import html
 import logging
+import re
 from dataclasses import dataclass
 from datetime import date, datetime
 from xml.etree import ElementTree
@@ -23,6 +25,13 @@ _NAMESPACES = {
     "tmdb": "https://themoviedb.org",
 }
 
+# Each watchlist poster carries e.g. data-item-full-display-name="Clayface (2026)".
+_WATCHLIST_ENTRY_RE = re.compile(r'data-item-full-display-name="([^"]+)"')
+_WATCHLIST_YEAR_RE = re.compile(r"^(.*)\s\((\d{4})\)$")
+
+# Safety cap on pagination — a real watchlist should never span this many pages.
+_MAX_WATCHLIST_PAGES = 200
+
 
 @dataclass
 class LetterboxdEntry:
@@ -35,6 +44,14 @@ class LetterboxdEntry:
     rewatch: bool
     tmdb_id: int | None
     letterboxd_url: str | None
+
+
+@dataclass
+class WatchlistEntry:
+    """One film parsed from a user's Letterboxd watchlist page."""
+
+    title: str
+    year: int | None
 
 
 class LetterboxdClient:
@@ -89,6 +106,59 @@ class LetterboxdClient:
         except Exception as e:
             logger.warning(f"Letterboxd profile check failed for {username!r}: {e}")
             return None
+
+    async def fetch_watchlist(self, username: str) -> list[WatchlistEntry] | None:
+        """
+        Fetch and parse a user's public watchlist pages.
+
+        Unlike the diary, Letterboxd exposes no RSS feed for watchlists — this
+        walks the paginated HTML instead, extracting each entry's
+        `data-item-full-display-name` ("Title (Year)") attribute rather than a
+        TMDb id (not present on this page), so callers must go through
+        FilmMatcher.match_or_create_film's title/year fuzzy matching rather
+        than the diary import's tmdb_id-based lookup.
+
+        Returns None on any failure to fetch the first page (unknown
+        username, network error, private profile). Returns [] for a
+        confirmed-empty watchlist.
+        """
+        entries: list[WatchlistEntry] = []
+        try:
+            async with httpx.AsyncClient(timeout=settings.scrape_timeout, verify=False) as client:
+                for page in range(1, _MAX_WATCHLIST_PAGES + 1):
+                    url = (
+                        f"{self.BASE_URL}/{username}/watchlist/"
+                        if page == 1
+                        else f"{self.BASE_URL}/{username}/watchlist/page/{page}/"
+                    )
+                    response = await client.get(url)
+                    if response.status_code == 404:
+                        if page == 1:
+                            logger.warning(f"Letterboxd user not found: {username}")
+                            return None
+                        break
+                    response.raise_for_status()
+
+                    page_entries = self._parse_watchlist_page(response.text)
+                    if not page_entries:
+                        break
+                    entries.extend(page_entries)
+        except Exception as e:
+            logger.error(f"Letterboxd watchlist fetch error for {username!r}: {e}")
+            return None
+
+        return entries
+
+    def _parse_watchlist_page(self, html_text: str) -> list[WatchlistEntry]:
+        entries = []
+        for match in _WATCHLIST_ENTRY_RE.finditer(html_text):
+            display_name = html.unescape(match.group(1))
+            year_match = _WATCHLIST_YEAR_RE.match(display_name)
+            if year_match:
+                entries.append(WatchlistEntry(title=year_match.group(1), year=int(year_match.group(2))))
+            else:
+                entries.append(WatchlistEntry(title=display_name, year=None))
+        return entries
 
     def _parse_diary(self, xml_text: str) -> list[LetterboxdEntry]:
         root = ElementTree.fromstring(xml_text)

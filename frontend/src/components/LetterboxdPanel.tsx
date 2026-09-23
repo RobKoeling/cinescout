@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import { importLetterboxdDiary, linkLetterboxdUsername } from '../api/letterboxd'
+import { importWatchlist } from '../api/watchlist'
 import { useAuth } from '../hooks/useAuth'
-import type { LetterboxdImportResult, User } from '../types'
+import type { LetterboxdImportResult, LetterboxdWatchlistImportResult, User } from '../types'
 
 interface LetterboxdPanelProps {
   user: User
+  onWatchlistImported?: () => void
 }
 
-function LetterboxdPanel({ user }: LetterboxdPanelProps) {
+function LetterboxdPanel({ user, onWatchlistImported }: LetterboxdPanelProps) {
   const { updateUser } = useAuth()
   const [username, setUsername] = useState(user.letterboxd_username ?? '')
   const [saving, setSaving] = useState(false)
@@ -16,6 +18,11 @@ function LetterboxdPanel({ user }: LetterboxdPanelProps) {
   const [importing, setImporting] = useState(false)
   const [importError, setImportError] = useState<string | null>(null)
   const [importResult, setImportResult] = useState<LetterboxdImportResult | null>(null)
+
+  const [importingWatchlist, setImportingWatchlist] = useState(false)
+  const [watchlistImportError, setWatchlistImportError] = useState<string | null>(null)
+  const [watchlistImportResult, setWatchlistImportResult] =
+    useState<LetterboxdWatchlistImportResult | null>(null)
 
   const handleSave = async () => {
     setSaving(true)
@@ -41,6 +48,21 @@ function LetterboxdPanel({ user }: LetterboxdPanelProps) {
       setImportError(err instanceof Error ? err.message : 'Failed to import Letterboxd diary')
     } finally {
       setImporting(false)
+    }
+  }
+
+  const handleImportWatchlist = async () => {
+    setImportingWatchlist(true)
+    setWatchlistImportError(null)
+    setWatchlistImportResult(null)
+    try {
+      const result = await importWatchlist()
+      setWatchlistImportResult(result)
+      onWatchlistImported?.()
+    } catch (err) {
+      setWatchlistImportError(err instanceof Error ? err.message : 'Failed to import Letterboxd watchlist')
+    } finally {
+      setImportingWatchlist(false)
     }
   }
 
@@ -88,6 +110,27 @@ function LetterboxdPanel({ user }: LetterboxdPanelProps) {
               ` (${importResult.entries_skipped_duplicate} already logged)`}
             {importResult.entries_unmatched > 0 &&
               ` (${importResult.entries_unmatched} could not be matched)`}
+            .
+          </p>
+        )}
+      </div>
+
+      <div className="mt-4">
+        <button
+          onClick={handleImportWatchlist}
+          disabled={!user.letterboxd_username || importingWatchlist}
+          className="text-sm font-medium text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          {importingWatchlist ? 'Importing…' : 'Import my watchlist'}
+        </button>
+        {watchlistImportError && <p className="mt-2 text-sm text-red-800">{watchlistImportError}</p>}
+        {watchlistImportResult && (
+          <p className="mt-2 text-sm text-green-700">
+            Synced {watchlistImportResult.entries_found} films
+            {watchlistImportResult.entries_imported > 0 &&
+              ` (${watchlistImportResult.entries_imported} new)`}
+            {watchlistImportResult.entries_removed > 0 &&
+              ` (${watchlistImportResult.entries_removed} removed)`}
             .
           </p>
         )}

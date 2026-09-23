@@ -19,6 +19,7 @@ from cinescout.admin.views import (
     ScrapeToolsView,
     ShowingAdmin,
     UserAdmin,
+    WatchlistItemAdmin,
     WatchLogAdmin,
 )
 from cinescout.api.routes import (
@@ -30,6 +31,7 @@ from cinescout.api.routes import (
     letterboxd,
     showings,
     watch_logs,
+    watchlist,
 )
 from cinescout.config import settings
 from cinescout.database import engine
@@ -94,6 +96,7 @@ app.include_router(admin.router, prefix="/api", tags=["admin"])
 app.include_router(auth.router, prefix="/api", tags=["auth"])
 app.include_router(watch_logs.router, prefix="/api", tags=["watch-logs"])
 app.include_router(letterboxd.router, prefix="/api", tags=["letterboxd"])
+app.include_router(watchlist.router, prefix="/api", tags=["watchlist"])
 
 # Setup SQLAdmin
 auth_backend = AdminAuth(secret_key=settings.admin_secret_key)
@@ -105,6 +108,7 @@ for view in [
     FilmAliasAdmin,
     UserAdmin,
     WatchLogAdmin,
+    WatchlistItemAdmin,
     ScrapeToolsView,
     PasswordChangeView,
 ]:

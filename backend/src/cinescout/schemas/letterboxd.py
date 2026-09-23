@@ -17,3 +17,12 @@ class LetterboxdImportResponse(BaseModel):
     entries_imported: int
     entries_skipped_duplicate: int
     entries_unmatched: int
+
+
+class LetterboxdWatchlistImportResponse(BaseModel):
+    """Result summary for a watchlist sync."""
+
+    status: str
+    entries_found: int
+    entries_imported: int
+    entries_removed: int

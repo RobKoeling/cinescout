@@ -16,6 +16,7 @@ from cinescout.models.film_alias import FilmAlias
 from cinescout.models.showing import Showing
 from cinescout.models.user import User
 from cinescout.models.watch_log import WatchLog
+from cinescout.models.watchlist_item import WatchlistItem
 from cinescout.scripts.backfill_tmdb import backfill
 from cinescout.scripts.seed_cinemas import seed_cinemas
 from cinescout.scripts.smoke_test import SmokeTestReport, run_smoke_test
@@ -114,6 +115,18 @@ class WatchLogAdmin(ModelView, model=WatchLog):
     ]
     column_searchable_list = [WatchLog.film_id]
     column_sortable_list = [WatchLog.watched_date]
+    can_create = False
+
+
+class WatchlistItemAdmin(ModelView, model=WatchlistItem):
+    column_list = [
+        WatchlistItem.id,
+        WatchlistItem.user_id,
+        WatchlistItem.film_id,
+        WatchlistItem.created_at,
+    ]
+    column_searchable_list = [WatchlistItem.film_id]
+    column_sortable_list = [WatchlistItem.created_at]
     can_create = False
 
 

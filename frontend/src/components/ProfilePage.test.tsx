@@ -1,19 +1,39 @@
 import { screen, fireEvent, waitFor } from '@testing-library/react'
-import { describe, it, expect, vi, afterEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import ProfilePage from './ProfilePage'
 import { renderWithAuth, makeUser } from '../test/authTestUtils'
 import type { WatchLogEntry } from '../types'
 
-const mockFetch = vi.fn()
+function mockResponse(body: unknown, status = 200) {
+  return { ok: status >= 200 && status < 300, status, json: async () => body }
+}
+
+// ProfilePage now also fires a GET /watchlist/upcoming on mount (via
+// WatchlistUpcoming) alongside the diary's GET/DELETE /watch-logs calls —
+// route responses by URL/method rather than call order, since effect order
+// between sibling components isn't something tests should depend on.
+let watchLogsResponse = () => mockResponse([])
+let deleteWatchLogResponse = () => mockResponse(undefined, 204)
+
+const mockFetch = vi.fn((url: string, init?: RequestInit) => {
+  if (url.includes('/watchlist/upcoming')) {
+    return Promise.resolve(mockResponse([]))
+  }
+  if (init?.method === 'DELETE') {
+    return Promise.resolve(deleteWatchLogResponse())
+  }
+  return Promise.resolve(watchLogsResponse())
+})
 global.fetch = mockFetch
+
+beforeEach(() => {
+  watchLogsResponse = () => mockResponse([])
+  deleteWatchLogResponse = () => mockResponse(undefined, 204)
+})
 
 afterEach(() => {
   vi.clearAllMocks()
 })
-
-function mockResponse(body: unknown, status = 200) {
-  return { ok: status >= 200 && status < 300, status, json: async () => body }
-}
 
 function makeEntry(overrides: Partial<WatchLogEntry> = {}): WatchLogEntry {
   return {
@@ -54,7 +74,7 @@ function makeEntry(overrides: Partial<WatchLogEntry> = {}): WatchLogEntry {
 
 describe('ProfilePage', () => {
   it('fetches and renders entries on mount', async () => {
-    mockFetch.mockResolvedValueOnce(mockResponse([makeEntry()]))
+    watchLogsResponse = () => mockResponse([makeEntry()])
     renderWithAuth(<ProfilePage onBack={vi.fn()} />, { user: makeUser() })
 
     expect(await screen.findByText('Nosferatu')).toBeInTheDocument()
@@ -63,32 +83,29 @@ describe('ProfilePage', () => {
   })
 
   it('shows an empty state when there are no entries', async () => {
-    mockFetch.mockResolvedValueOnce(mockResponse([]))
     renderWithAuth(<ProfilePage onBack={vi.fn()} />, { user: makeUser() })
 
     expect(await screen.findByText(/haven't logged any films yet/)).toBeInTheDocument()
   })
 
   it('shows an error message when the fetch fails', async () => {
-    mockFetch.mockResolvedValueOnce(mockResponse({ detail: 'Not authenticated' }, 401))
+    watchLogsResponse = () => mockResponse({ detail: 'Not authenticated' }, 401)
     renderWithAuth(<ProfilePage onBack={vi.fn()} />, { user: makeUser() })
 
     expect(await screen.findByText('Not authenticated')).toBeInTheDocument()
   })
 
   it('removes an entry after a successful delete', async () => {
-    mockFetch.mockResolvedValueOnce(mockResponse([makeEntry()]))
+    watchLogsResponse = () => mockResponse([makeEntry()])
     renderWithAuth(<ProfilePage onBack={vi.fn()} />, { user: makeUser() })
     await screen.findByText('Nosferatu')
 
-    mockFetch.mockResolvedValueOnce({ ok: true, status: 204, json: async () => undefined })
     fireEvent.click(screen.getByRole('button', { name: 'Delete' }))
 
     await waitFor(() => expect(screen.queryByText('Nosferatu')).not.toBeInTheDocument())
   })
 
   it('calls onBack when Back to search is clicked', async () => {
-    mockFetch.mockResolvedValueOnce(mockResponse([]))
     const onBack = vi.fn()
     renderWithAuth(<ProfilePage onBack={onBack} />, { user: makeUser() })
     await screen.findByText(/haven't logged any films yet/)
@@ -98,7 +115,6 @@ describe('ProfilePage', () => {
   })
 
   it('opens ManualLogModal when + Log a film is clicked', async () => {
-    mockFetch.mockResolvedValueOnce(mockResponse([]))
     renderWithAuth(<ProfilePage onBack={vi.fn()} />, { user: makeUser() })
     await screen.findByText(/haven't logged any films yet/)
 

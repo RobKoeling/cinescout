@@ -10,6 +10,7 @@ from cinescout.models.base import Base, TimestampMixin
 
 if TYPE_CHECKING:
     from cinescout.models.watch_log import WatchLog
+    from cinescout.models.watchlist_item import WatchlistItem
 
 
 class User(Base, TimestampMixin):
@@ -29,6 +30,10 @@ class User(Base, TimestampMixin):
     )
 
     watch_logs: Mapped[list["WatchLog"]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
+    watchlist_items: Mapped[list["WatchlistItem"]] = relationship(
         back_populates="user",
         cascade="all, delete-orphan",
     )

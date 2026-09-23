@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import LetterboxdPanel from './LetterboxdPanel'
 import ManualLogModal from './ManualLogModal'
 import StarRating from './StarRating'
+import WatchlistPanel from './WatchlistPanel'
+import WatchlistUpcoming from './WatchlistUpcoming'
 import { deleteWatchLog, listWatchLogs } from '../api/watchLogs'
 import { useAuth } from '../hooks/useAuth'
 import type { WatchLogEntry } from '../types'
@@ -18,6 +20,7 @@ function ProfilePage({ onBack }: ProfilePageProps) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [showManualLogModal, setShowManualLogModal] = useState(false)
+  const [watchlistReloadToken, setWatchlistReloadToken] = useState(0)
 
   const loadEntries = () => {
     setLoading(true)
@@ -58,7 +61,15 @@ function ProfilePage({ onBack }: ProfilePageProps) {
         ← Back to search
       </button>
 
-      {user && <LetterboxdPanel user={user} />}
+      {user && (
+        <LetterboxdPanel
+          user={user}
+          onWatchlistImported={() => setWatchlistReloadToken((t) => t + 1)}
+        />
+      )}
+
+      <WatchlistUpcoming reloadToken={watchlistReloadToken} />
+      <WatchlistPanel reloadToken={watchlistReloadToken} />
 
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-bold text-gray-900">My Diary</h2>

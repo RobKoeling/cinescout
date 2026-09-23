@@ -136,3 +136,29 @@ export interface LetterboxdImportResult {
   entries_skipped_duplicate: number
   entries_unmatched: number
 }
+
+export interface LetterboxdWatchlistImportResult {
+  status: string
+  entries_found: number
+  entries_imported: number
+  entries_removed: number
+}
+
+// ── Watchlist ────────────────────────────────────────────────────────────────
+
+export interface WatchlistItem {
+  id: number
+  film_id: string
+  created_at: string
+  film: Film
+}
+
+export interface UpcomingWatchlistShowing {
+  id: number
+  start_time: string
+  booking_url: string | null
+  screen_name: string | null
+  format_tags: string | null
+  film: Film
+  cinema: Cinema
+}
