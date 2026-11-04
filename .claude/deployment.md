@@ -28,7 +28,7 @@ fly deploy --local-only
 # Backend (from backend/)
 fly deploy --local-only
 
-# Force full rebuild (clears Docker layer cache — use when code changes seem ignored)
+# Force full rebuild (clears container layer cache — use when code changes seem ignored)
 fly deploy --local-only --no-cache
 
 # Push a secret
@@ -68,3 +68,15 @@ fly logs -a cinescout-api          # live logs
 fly status -a cinescout-api        # machine health
 fly secrets list -a cinescout-api  # confirm secrets are deployed
 ```
+
+## Podman and `fly deploy --local-only`
+
+Local builds use Podman via its Docker-compatible API socket. Before deploying:
+
+```bash
+podman machine start
+export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')"
+fly deploy --local-only
+```
+
+The `Dockerfile`s are plain OCI build files and work unchanged with Podman.

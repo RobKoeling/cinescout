@@ -69,7 +69,7 @@ cinescout/
 
 - Python 3.11+
 - Node.js 18+
-- Docker & Docker Compose (for local Postgres/Redis)
+- Podman (with `podman compose`) for local Postgres/Redis
 
 ### Setup
 
@@ -81,7 +81,8 @@ cinescout/
 
 2. Start infrastructure:
    ```bash
-   docker-compose up -d
+   podman machine start   # macOS, first time: podman machine init
+   podman compose up -d
    ```
 
 3. Set up backend:

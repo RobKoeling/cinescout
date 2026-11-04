@@ -98,7 +98,7 @@ For eventual mobile support:
 
 ### Phase 1: Foundation (Days 1-3)
 - Project structure (monorepo with frontend + backend)
-- Docker setup for local Postgres/Redis
+- Container (Podman) setup for local Postgres/Redis
 - Database models and migrations
 - Seed cinema data
 - Basic FastAPI app with health check

@@ -91,7 +91,7 @@ keywords field). Year hints improve film disambiguation.
 
 | Variable | Required | Notes |
 |---|---|---|
-| `DATABASE_URL` | yes | asyncpg URL; docker-compose provides default |
+| `DATABASE_URL` | yes | asyncpg URL; `compose.yaml` (podman compose) provides default |
 | `TMDB_API_KEY` | yes | https://www.themoviedb.org/settings/api |
 | `REDIS_URL` | no | falls back to in-process cache |
 | `TFL_APP_KEY` | no | 50 req/min without; 500 with |

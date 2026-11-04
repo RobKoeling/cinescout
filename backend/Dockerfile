@@ -31,13 +31,13 @@ RUN apt-get update && apt-get install -y \
 # Set working directory
 WORKDIR /app
 
-# Upgrade pip (with trusted-host for macOS Docker SSL issues)
+# Upgrade pip (with trusted-host for macOS container SSL issues)
 RUN pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org --upgrade pip setuptools wheel
 
 # Copy requirements first (for caching)
 COPY requirements.txt .
 
-# Install Python dependencies (with trusted-host for macOS Docker SSL issues)
+# Install Python dependencies (with trusted-host for macOS container SSL issues)
 RUN pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org --no-cache-dir -r requirements.txt
 
 # Trust the corporate TLS-inspecting proxy (Zscaler) some devs build behind,
@@ -53,7 +53,7 @@ RUN playwright install-deps chromium
 # Copy application code
 COPY . .
 
-# Install the package (with trusted-host for macOS Docker SSL issues)
+# Install the package (with trusted-host for macOS container SSL issues)
 RUN pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -e .
 
 # Expose port

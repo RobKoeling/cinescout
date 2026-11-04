@@ -7,7 +7,7 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Configure npm to bypass SSL verification (for macOS Docker builds)
+# Configure npm to bypass SSL verification (for macOS container builds)
 RUN npm config set strict-ssl false
 
 # Install dependencies (with legacy-peer-deps to handle vitest version conflict)
