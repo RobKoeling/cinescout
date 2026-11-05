@@ -71,12 +71,38 @@ fly secrets list -a cinescout-api  # confirm secrets are deployed
 
 ## Podman and `fly deploy --local-only`
 
-Local builds use Podman via its Docker-compatible API socket. Before deploying:
+Local builds use Podman via its Docker-compatible API socket. Podman lives in
+`/opt/podman/bin` (not on the default PATH). Before deploying:
 
 ```bash
+export PATH=/opt/podman/bin:$PATH
 podman machine start
 export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')"
 fly deploy --local-only
 ```
 
 The `Dockerfile`s are plain OCI build files and work unchanged with Podman.
+
+### One-time Podman VM setup (redo if the VM is recreated with `podman machine init`)
+
+Two problems showed up on this corporate Mac, both fixed inside the VM:
+
+1. **"insufficient UIDs or GIDs available in user namespace"** — flyctl uploads the
+   build context owned by the macOS user/group IDs (very large numbers), which exceed
+   the VM's default 1,000,000-ID range. Widen it, starting *above* the user's own UID
+   (the range may not include it):
+   ```bash
+   podman machine ssh 'sudo sed -i "s/^core:100000:1000000$/core:300000000:2000000000/" /etc/subuid /etc/subgid && podman system migrate'
+   podman machine stop && podman machine start
+   podman machine ssh 'systemctl --user restart podman.socket'
+   ```
+2. **Image push to registry.fly.io dies mid-upload** ("broken pipe" / "app repository
+   not found") — the Zscaler TLS proxy. Trust its CA inside the VM:
+   ```bash
+   B=$(base64 < backend/certs/zscaler-bundle.crt | tr -d '\n')
+   podman machine ssh "echo $B | base64 -d | sudo tee /etc/pki/ca-trust/source/anchors/zscaler-bundle.crt >/dev/null && sudo update-ca-trust && systemctl --user restart podman.socket"
+   ```
+
+If flyctl says "docker is unavailable", the VM's API socket is down: run
+`podman machine ssh 'systemctl --user restart podman.socket'`.
+`fly deploy --remote-only` does not work on this network (Depot builder TLS resets).
