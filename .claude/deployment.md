@@ -103,6 +103,13 @@ Two problems showed up on this corporate Mac, both fixed inside the VM:
    podman machine ssh "echo $B | base64 -d | sudo tee /etc/pki/ca-trust/source/anchors/zscaler-bundle.crt >/dev/null && sudo update-ca-trust && systemctl --user restart podman.socket"
    ```
 
+**Side effect of changing the subuid/subgid range:** files in existing Podman volumes
+and cached images are owned by the *old* mapped IDs, so after a change the local
+Postgres container can fail with "permission denied" (e.g. on `/var/run/postgresql`
+or the data dir). Fix: re-own the volume's `_data` directory inside the VM to the
+new mapped postgres ID (here `300000069:300000069`), remove the old containers and
+cached images, then recreate with `podman compose up -d`. Data is preserved.
+
 If flyctl says "docker is unavailable", the VM's API socket is down: run
 `podman machine ssh 'systemctl --user restart podman.socket'`.
 `fly deploy --remote-only` does not work on this network (Depot builder TLS resets).
