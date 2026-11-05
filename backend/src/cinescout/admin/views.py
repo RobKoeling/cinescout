@@ -7,7 +7,7 @@ from datetime import date
 from sqladmin import BaseView, ModelView, expose
 from sqlalchemy import select
 from starlette.requests import Request
-from starlette.responses import HTMLResponse
+from starlette.responses import HTMLResponse, RedirectResponse
 
 from cinescout.config import settings
 from cinescout.database import AsyncSessionLocal
@@ -176,8 +176,9 @@ _TOOLS_TEMPLATE = """\
     <input type="file" name="aliases_file" accept=".json,application/json" required class="form-control" style="width:auto">
     <button name="action" value="import_aliases" class="btn btn-outline-warning">Import Aliases</button>
   </form>
+  <div id="alias-status">
   {% if alias_import.status != 'idle' %}
-  <p class="mt-3">
+  <p class="mt-3"{% if alias_import.status == 'running' %} data-running{% endif %}>
     {% if alias_import.status == 'running' %}<span class="badge bg-warning text-dark">Running</span>
     {% elif alias_import.status == 'done' %}<span class="badge bg-success">Done</span>
     {% else %}<span class="badge bg-danger">Error</span>{% endif %}
@@ -186,18 +187,17 @@ _TOOLS_TEMPLATE = """\
     {{ alias_import.films_created }} films created, {{ alias_import.missing_film }} film not found
     {% if alias_import.error %}<br><span class="text-danger">{{ alias_import.error }}</span>{% endif %}
   </p>
-  {% if alias_import.status == 'running' %}
-  <script>setTimeout(function() { location.reload(); }, 3000);</script>
   {% endif %}
-  {% endif %}
+  </div>
 
   <hr class="my-4">
 
   <h2>Scrape Progress</h2>
+  <div id="scrape-progress">
   {% if scrape_progress.status == 'idle' %}
   <p class="text-muted">No scrape has been run yet.</p>
   {% else %}
-  <p>
+  <p{% if scrape_progress.status == 'running' %} data-running{% endif %}>
     {% if scrape_progress.status == 'running' %}
     <span class="badge bg-warning text-dark">Running</span>
     {% else %}
@@ -229,10 +229,8 @@ _TOOLS_TEMPLATE = """\
     {% endfor %}
     </tbody>
   </table>
-  {% if scrape_progress.status == 'running' %}
-  <script>setTimeout(function() { location.reload(); }, 3000);</script>
   {% endif %}
-  {% endif %}
+  </div>
 
   <hr class="my-4">
 
@@ -286,6 +284,24 @@ _TOOLS_TEMPLATE = """\
   </div>
   {% endif %}
   <script>
+    (function () {
+      function poll() {
+        fetch(location.pathname, {credentials: 'same-origin'})
+          .then(function (r) { return r.text(); })
+          .then(function (t) {
+            var d = new DOMParser().parseFromString(t, 'text/html');
+            ['scrape-progress', 'alias-status'].forEach(function (id) {
+              var n = d.getElementById(id), o = document.getElementById(id);
+              if (n && o) o.innerHTML = n.innerHTML;
+            });
+            if (document.querySelector('[data-running]')) setTimeout(poll, 3000);
+          })
+          .catch(function () { setTimeout(poll, 5000); });
+      }
+      if (document.querySelector('[data-running]')) setTimeout(poll, 3000);
+    })();
+  </script>
+  <script>
     document.getElementById('select-all')?.addEventListener('change', function() {
       document.querySelectorAll('input[name="cinema_ids"]').forEach(cb => cb.checked = this.checked);
     });
@@ -300,9 +316,9 @@ class ScrapeToolsView(BaseView):
     icon = "fa-wrench"
 
     @expose("/tools", methods=["GET", "POST"])
-    async def tools(self, request: Request) -> HTMLResponse:
-        message: str | None = None
-        error: str | None = None
+    async def tools(self, request: Request) -> HTMLResponse | RedirectResponse:
+        message: str | None = request.session.pop("flash_message", None)
+        error: str | None = request.session.pop("flash_error", None)
         smoke_report: SmokeTestReport | None = None
 
         if request.method == "POST":
@@ -352,6 +368,12 @@ class ScrapeToolsView(BaseView):
                 min_showings = int(form.get("min_showings") or 1)
                 check_date = date.fromisoformat(str(raw_date))
                 smoke_report = await run_smoke_test(check_date, min_showings)
+
+            if action != "smoke_test":
+                # Post/Redirect/Get: a refresh must never re-submit an action.
+                request.session["flash_message"] = message
+                request.session["flash_error"] = error
+                return RedirectResponse(request.url.path, status_code=303)
 
         tmpl = self.templates.env.from_string(_TOOLS_TEMPLATE)
         content = await tmpl.render_async(
