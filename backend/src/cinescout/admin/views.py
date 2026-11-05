@@ -1,6 +1,7 @@
 """SQLAdmin model and tool views."""
 
 import asyncio
+import json
 from datetime import date
 
 from sqladmin import BaseView, ModelView, expose
@@ -21,6 +22,12 @@ from cinescout.scripts.backfill_tmdb import backfill
 from cinescout.scripts.seed_cinemas import seed_cinemas
 from cinescout.scripts.smoke_test import SmokeTestReport, run_smoke_test
 from cinescout.services.auth_service import hash_password
+from cinescout.services.title_alias_import import (
+    get_alias_import_status,
+    import_title_aliases,
+    mark_alias_import_pending,
+    validate_entries,
+)
 from cinescout.tasks.scrape_job import (
     get_scrape_progress,
     mark_scrape_pending,
@@ -163,6 +170,29 @@ _TOOLS_TEMPLATE = """\
 
   <hr class="my-4">
 
+  <h2>Title Aliases</h2>
+  <p class="text-muted mb-2">Import a JSON file from <code>export_title_aliases</code>. Existing aliases are never overwritten.</p>
+  <form method="post" enctype="multipart/form-data" class="d-flex align-items-center gap-2 flex-wrap">
+    <input type="file" name="aliases_file" accept=".json,application/json" required class="form-control" style="width:auto">
+    <button name="action" value="import_aliases" class="btn btn-outline-warning">Import Aliases</button>
+  </form>
+  {% if alias_import.status != 'idle' %}
+  <p class="mt-3">
+    {% if alias_import.status == 'running' %}<span class="badge bg-warning text-dark">Running</span>
+    {% elif alias_import.status == 'done' %}<span class="badge bg-success">Done</span>
+    {% else %}<span class="badge bg-danger">Error</span>{% endif %}
+    {{ alias_import.processed }} / {{ alias_import.total }} processed &middot;
+    {{ alias_import.added }} added, {{ alias_import.skipped_existing }} already existed,
+    {{ alias_import.films_created }} films created, {{ alias_import.missing_film }} film not found
+    {% if alias_import.error %}<br><span class="text-danger">{{ alias_import.error }}</span>{% endif %}
+  </p>
+  {% if alias_import.status == 'running' %}
+  <script>setTimeout(function() { location.reload(); }, 3000);</script>
+  {% endif %}
+  {% endif %}
+
+  <hr class="my-4">
+
   <h2>Scrape Progress</h2>
   {% if scrape_progress.status == 'idle' %}
   <p class="text-muted">No scrape has been run yet.</p>
@@ -278,7 +308,19 @@ class ScrapeToolsView(BaseView):
         if request.method == "POST":
             form = await request.form()
             action = form.get("action")
-            if action == "reset_password":
+            if action == "import_aliases":
+                upload = form.get("aliases_file")
+                try:
+                    if upload is None or isinstance(upload, str):
+                        raise ValueError("No file uploaded")
+                    entries = validate_entries(json.loads((await upload.read()).decode("utf-8")))
+                except (ValueError, UnicodeDecodeError) as exc:
+                    error = f"Could not read alias file: {exc}"
+                else:
+                    mark_alias_import_pending(len(entries))
+                    asyncio.create_task(import_title_aliases(entries))
+                    message = f"Importing {len(entries)} aliases in background."
+            elif action == "reset_password":
                 username = str(form.get("reset_username") or "").strip()
                 new_password = str(form.get("reset_new_password") or "")
                 if len(new_password) < 8:
@@ -318,6 +360,7 @@ class ScrapeToolsView(BaseView):
             error=error,
             smoke_report=smoke_report,
             scrape_progress=get_scrape_progress(),
+            alias_import=get_alias_import_status(),
             today=str(date.today()),
         )
         return HTMLResponse(content)
