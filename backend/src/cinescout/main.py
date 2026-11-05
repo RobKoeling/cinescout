@@ -1,6 +1,5 @@
 """FastAPI application entry point."""
 
-import asyncio
 import logging
 from contextlib import asynccontextmanager
 
@@ -55,9 +54,8 @@ async def lifespan(app: FastAPI):
     scheduler.start()
     logger.info("Scheduler started — weekly scrape registered for every Wednesday at 03:00")
 
-    # Fire a one-off startup scrape in the background
-    asyncio.create_task(run_scrape_all())
-    logger.info("Startup scrape triggered in background")
+    # No startup scrape: every deploy/restart/wake used to fire a full scrape,
+    # which tied up the app. Use the weekly job or the admin Tools button.
 
     yield
 
