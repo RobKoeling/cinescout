@@ -106,6 +106,10 @@ async def extract_film_title(raw_title: str) -> str:
                         {"role": "system", "content": _SYSTEM},
                         {"role": "user", "content": key},
                     ],
+                    # Deterministic output: the same raw title must always normalize
+                    # to the same string, or it silently creates a duplicate Film
+                    # (and duplicate showings) under a different film_id each time.
+                    "options": {"temperature": 0, "seed": 0},
                 },
             )
             r.raise_for_status()
