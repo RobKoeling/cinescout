@@ -1,3 +1,6 @@
+# Make sure the Podman containers (Postgres + Redis) are running
+./start_containers.sh
+
 # Install / sync dependencies (after pulling changes etc.)
 cd backend && uv sync --extra dev --system-certs
 

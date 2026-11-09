@@ -6,6 +6,9 @@ set -e
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 
+echo "Ensuring Postgres/Redis containers are running..."
+"$ROOT/start_containers.sh"
+
 cleanup() {
   echo ""
   echo "Shutting down..."
