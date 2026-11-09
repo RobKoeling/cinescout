@@ -113,3 +113,33 @@ cached images, then recreate with `podman compose up -d`. Data is preserved.
 If flyctl says "docker is unavailable", the VM's API socket is down: run
 `podman machine ssh 'systemctl --user restart podman.socket'`.
 `fly deploy --remote-only` does not work on this network (Depot builder TLS resets).
+
+## Local containers after a reboot
+
+Containers (`cinescout-db-1`, `cinescout-redis-1`) survive a reboot but are stopped,
+and nothing restarts them. With the Podman machine running:
+
+```bash
+/opt/podman/bin/podman start cinescout-db-1 cinescout-redis-1
+```
+
+`podman compose` delegates to an external `docker-compose`/`podman-compose`; it stops
+working if neither is installed (it broke when Docker was removed). `podman start`
+needs no compose tool.
+
+If `podman ps` says "Cannot connect to Podman ... ssh: rejected" (and Podman Desktop
+shows no containers) while `podman machine list` says the VM is running, the VM's API
+socket is down. Restart it:
+
+```bash
+podman machine ssh 'systemctl --user restart podman.socket'
+```
+
+If that prints `configure storage: overlay: recover stale temp dirs ... operation not
+permitted`, remove the stale directory it names as root (it lives under
+`~/.local/share/containers/storage/overlay/tempdirs/` in the VM — leftover layer
+extractions, not volumes), then restart the socket again:
+
+```bash
+podman machine ssh 'sudo rm -rf ~/.local/share/containers/storage/overlay/tempdirs/temp-dir-*; systemctl --user restart podman.socket'
+```

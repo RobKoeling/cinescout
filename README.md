@@ -69,7 +69,7 @@ cinescout/
 
 - Python 3.11+
 - Node.js 18+
-- Podman (with `podman compose`) for local Postgres/Redis
+- Podman for local Postgres/Redis (`podman compose` needs `podman-compose` or `docker-compose` installed)
 
 ### Setup
 
@@ -82,8 +82,15 @@ cinescout/
 2. Start infrastructure:
    ```bash
    podman machine start   # macOS, first time: podman machine init
-   podman compose up -d
+   podman compose up -d   # first time (creates the containers)
    ```
+
+   After a reboot the containers still exist but are stopped. Start the machine,
+   then:
+   ```bash
+   podman start cinescout-db-1 cinescout-redis-1
+   ```
+   See `.claude/deployment.md` if Podman reports it can't connect.
 
 3. Set up backend:
    ```bash
