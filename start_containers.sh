@@ -40,12 +40,30 @@ else
 fi
 
 # 4. Wait for Postgres to be ready (up to ~60 s)
+ready=0
 for _ in $(seq 1 30); do
   if podman exec cinescout-db-1 pg_isready -U postgres >/dev/null 2>&1; then
-    echo "Postgres and Redis are up."
-    exit 0
+    ready=1
+    break
   fi
   sleep 2
 done
-echo "Postgres did not become ready in time. Check: podman logs cinescout-db-1" >&2
-exit 1
+if [ "$ready" -ne 1 ]; then
+  echo "Postgres did not become ready in time. Check: podman logs cinescout-db-1" >&2
+  exit 1
+fi
+echo "Postgres and Redis are up."
+
+# 5. Ollama (optional): local title extraction uses it. Warn only, since scraping
+#    still works without it, but titles then get regex cleanup only (as in production).
+OLLAMA_MODEL=llama3.2
+tags="$(curl -s -m 3 http://localhost:11434/api/tags 2>/dev/null)"
+if [ -z "$tags" ]; then
+  echo "WARNING: Ollama is not running (http://localhost:11434). Local scrapes will skip LLM title extraction." >&2
+  echo "         Start it with: ollama serve   (or open the Ollama app)" >&2
+elif ! printf '%s' "$tags" | grep -q "\"name\":\"$OLLAMA_MODEL"; then
+  echo "WARNING: Ollama is running but model '$OLLAMA_MODEL' is missing. Run: ollama pull $OLLAMA_MODEL" >&2
+else
+  echo "Ollama is up (model $OLLAMA_MODEL)."
+fi
+exit 0
